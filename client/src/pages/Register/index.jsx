@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { Button, Form, Input, message } from 'antd';
-// import { registerUser } from '../../apicalls/usersApi';
-// import { useNavigate } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
-// import { setLoader } from '../../redux/loaderSlice';
+import { registerUser } from '../../apicall/userApi';
+
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setLoader } from '../../redux/loaderSlice';
+
 const index = () => {
-    // const navigate = useNavigate();
-    // const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const onFinish = async (values) => {
         try {
             dispatch(setLoader(true));
