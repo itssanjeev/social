@@ -28,15 +28,15 @@ const index = () => {
     };
 
     return (
-        <div className='  bg-slate-500 rounded-lg h-screen w-full  flex items-center justify-center '>
-            <div className=' flex items-center justify-center flex-col pr-10 bg-slate-400 '>
+        <div className='  bg-slate-500  h-screen w-full  flex items-center justify-center '>
+            <div className=' flex items-center justify-center flex-col pr-10 bg-slate-400 rounded-lg'>
                 <div className='text-3xl mb-4'>Connect Me</div>
                 <div className=''>
                     <Form
                         name="register"
                         labelCol={{ span: 8 }}
                         wrapperCol={{ span: 16 }}
-                        className='lg:min-w-[600px] md:ml-1'
+                        className='lg:min-w-[600px]  md:min-w-[400px]'
                         // initialValues={{ remember: true }}
                         onFinish={onFinish}
                         onFinishFailed={onFinishFailed}
