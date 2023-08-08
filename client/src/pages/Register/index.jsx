@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Button, Form, Input, message } from 'antd';
 import { registerUser } from '../../apicall/userApi';
-
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLoader } from '../../redux/loaderSlice';
+
 
 const index = () => {
     const navigate = useNavigate();
@@ -80,7 +80,8 @@ const index = () => {
                         </Form.Item>
                     </Form>
                 </div>
-                <div className='cursor-pointer'>Already have an account?<span>Login</span></div>
+                <div className='cursor-pointer'>Already have an account?
+                    <Link to='/login'><span>Login</span></Link> </div>
             </div>
         </div>
     )
