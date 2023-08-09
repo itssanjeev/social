@@ -17,6 +17,7 @@ const index = () => {
             if (data.success === false) {
                 navigate("/login");
             }
+            localStorage.setItem('user', JSON.stringify(data.data));
             dispatch(setUser(data.data));
             dispatch(setLoader(false));
         } catch (error) {

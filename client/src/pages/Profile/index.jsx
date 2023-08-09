@@ -37,10 +37,9 @@ const index = () => {
     // useEffect(() => {
     //     console.log('hi buddy', userPost);
     // }, [userPost])
-
-    // useEffect(() => {
-    //     console.log(currentUser);
-    // }, [currentUser])
+    useEffect(() => {
+        currentUser;
+    }, [currentUser]);
 
     return (
         currentUser &&

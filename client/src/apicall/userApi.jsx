@@ -31,3 +31,12 @@ export const getCurrentUser = async () => {
     }
 }
 
+//edit user profile
+export const updateUserProfile = async (payload) => {
+    try {
+        const response = await axiosInstances.post('/api/users/edit-user-profile', payload);
+        return response.data;
+    } catch (error) {
+        return error.message;
+    }
+}
