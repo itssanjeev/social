@@ -74,9 +74,12 @@ const index = () => {
 
     return (
         <div className=''>
-            <Row>
+            <Row className=''>
                 {/* this is for showing post of currentUser */}
-                <Col span={12}>
+                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-red-400'>
+
+                </Col>
+                <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                     <div className='w-full bg-slate-50'>
                         {
                             posts &&
@@ -97,12 +100,12 @@ const index = () => {
                                         <p className='ml-5 text-2xl flex items-center'>{post.title ? post.title : null}</p>
 
                                     </div>
-                                    <img className='w-full h-[600px]' src={post.content} alt="" />
+                                    <img className='w-full h-[600px] sm:min-h[400px]' src={post.content} alt="" />
                                     <div className='w-full h-20 border-2 border-black bg-slate-200 flex flex-row justify-between items-center'>
                                         <i className="ml-7 mr-7 text-5xl ri-thumb-up-line"></i>
                                         <i className="ml-7 mr-7 text-5xl ri-thumb-down-line"></i>
                                         <i className="ml-7 mr-7 text-5xl ri-discuss-line"></i>
-                                        <i className="ml-7 mr-7 text-5xl ri-share-fill"></i>
+                                        <i className=" mr-7 text-5xl ri-share-fill"></i>
                                     </div>
                                 </div>
                             ))
@@ -111,7 +114,7 @@ const index = () => {
                     </div>
                 </Col>
                 {/* this is for showing post comments */}
-                <Col span={12} className='w-full bg-green-700'>
+                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-green-700'>
 
                 </Col>
 

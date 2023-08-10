@@ -53,14 +53,14 @@ const UploadPost = () => {
             onFinishFailed={onFinishFailed}
         >
             <div className='flex items-center justify-center h-screen bg-slate-200'>
-                <div className='w-4/5 md:w-1/2 bg-white shadow-lg'>
+                <div className='w-4/5 md:w-1/2  bg-white shadow-lg'>
                     <div className='aspect-4-3 relative'>
-                        <div className='absolute inset-0 flex items-center justify-center flex-col'>
+                        <div className='absolute inset-0 flex items-center justify-center flex-col '>
                             <Form.Item
                                 label="title"
                                 name="postTitle"
                             >
-                                <Input className='w-[300px]' />
+                                <Input className='w-[300px] ' />
                             </Form.Item>
                             <Dropzone onDrop={handleDrop} accept="image/*">
                                 {({ getRootProps, getInputProps }) => (
