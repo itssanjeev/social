@@ -1,19 +1,19 @@
-import { axiosInstance } from "./apiInstance";
+import { axiosInstances } from "./apiInstance";
 
 //upload post 
 export const uploadPost = async (payload) => {
     try {
-        const response = await axiosInstance.post('/api/post/addNewPost', payload);
+        const response = await axiosInstances.post('/api/posts/addNewPost', payload);
         return response.data;
     } catch (error) {
         return error.message;
     }
 }
 
-//get all post at once
+// get all post at once
 // export const getAllPost = async () => {
 //     try {
-//         const response = await axiosInstance.get('/api/post/getAllPost');
+//         const response = await axiosInstances.get('/api/post/getAllPost');
 //         return response.data;
 //     } catch (error) {
 //         return error.message;
