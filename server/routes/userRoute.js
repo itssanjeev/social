@@ -134,4 +134,31 @@ router.post("/edit-user-profile", authMiddleware, multer({ storage: storage }).s
 
 })
 
+//follow user
+router.post('/followUser', authMiddleware, async (req, res) => {
+    try {
+        const { userIdToFollow } = req.body
+        const userId = req.userId;
+        const userToFollow = await User.findById(userIdToFollow);
+        if (!userToFollow) {
+            throw new Error("user is not found to follow ");
+        }
+
+        //update followers and following both for user 
+        await User.findByIdAndUpdate(userId, { $push: { following: userIdToFollow } })
+        await User.findByIdAndUpdate(userIdToFollow, { $push: { followers: userId } })
+        const user = await User.findById(userId);
+        res.send({
+            success: true,
+            message: "you are following ",
+            data: user
+        })
+    } catch (error) {
+        res.send({
+            success: true,
+            message: error
+        })
+    }
+})
+
 module.exports = router;

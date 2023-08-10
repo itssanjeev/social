@@ -6,20 +6,26 @@ import { getCurrentUser } from '../../apicall/userApi';
 import { setUser } from '../../redux/userSlice';
 import { Row, Col } from 'antd';
 import { getAllPost } from '../../apicall/postApi';
+import { followUser } from '../../apicall/userApi';
 const index = () => {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const getCurrentUsers = async () => {
+    // const getCurrentUsersFun = async () => {
     //     try {
     //         // console.log(user);
     //         dispatch(setLoader(true));
-    //         const data = await getCurrentUser();
-    //         console.log(data.data);
-    //         dispatch(setUser(data.data));
+    //         const currentUser = await getCurrentUser();
+    //         console.log(currentUser);
+    //         if (currentUser.success === false) {
+    //             navigate("/login");
+    //         }
+    //         console.log(currentUser);
+    //         dispatch(setUser(currentUser.data));
     //         dispatch(setLoader(false));
     //     } catch (error) {
     //         console.log(error.message);
+
     //     }
     // }
     const getAllPostFunction = async () => {
@@ -33,8 +39,22 @@ const index = () => {
             console.log(error.message);
         }
     }
+
     const currentUser = useSelector((state) => state.users.user);
     console.log(currentUser);
+    const followUserFun = async (values) => {
+        try {
+            dispatch(setLoader(true));
+            const response = await followUser({ userIdToFollow: values });
+            console.log(response);
+            dispatch(setLoader(false));
+            // console.log(response.data);
+            dispatch(setUser(response.data));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const showFollowButton = (id) => {
         let flag = false;
         //ye toh khud ka post id check karne ke liye hai 
@@ -60,7 +80,7 @@ const index = () => {
 
     // useEffect(() => {
     //     const fetchData = async () => {
-    //         await getCurrentUsers();
+    //         await getCurrentUsersFun();
     //     };
     //     fetchData();
     // }, []);

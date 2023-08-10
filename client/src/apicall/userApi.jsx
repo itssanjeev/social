@@ -41,3 +41,15 @@ export const updateUserProfile = async (payload) => {
     }
 }
 
+//this api is called to follow other user 
+export const followUser = async (payload) => {
+    try {
+        console.log(payload);
+        const response = await axiosInstances.post('/api/users/followUser', payload);
+        return response.data;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+
