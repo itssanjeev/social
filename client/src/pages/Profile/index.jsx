@@ -5,14 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from '../../redux/loaderSlice';
 import Devider from '../../component/Devider';
 // import { getUserPost } from '../../apicalls/postApi';
-
+import { getCurrentUser } from '../../apicall/userApi';
+import { setUser } from '../../redux/userSlice';
 const index = () => {
     // const [userPost, setUserPost] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const getCurrentUserFun = async () => {
+        const data = await getCurrentUser();
+        dispatch(setUser(data.data));
+    }
     const currentUser = useSelector((state) => state.users.user);
     console.log(currentUser);
-    // console.log(currentUser);
 
 
     // const getUserPostFun = async () => {
@@ -37,10 +41,9 @@ const index = () => {
     // useEffect(() => {
     //     console.log('hi buddy', userPost);
     // }, [userPost])
-    useEffect(() => {
-        currentUser;
-    }, [currentUser]);
-
+    // useEffect(() => {
+    //     getCurrentUserFun();
+    // }, [])
     return (
         currentUser &&
         (
