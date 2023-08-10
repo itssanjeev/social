@@ -40,3 +40,4 @@ export const updateUserProfile = async (payload) => {
         return error.message;
     }
 }
+

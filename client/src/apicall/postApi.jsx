@@ -11,14 +11,14 @@ export const uploadPost = async (payload) => {
 }
 
 // get all post at once
-// export const getAllPost = async () => {
-//     try {
-//         const response = await axiosInstances.get('/api/post/getAllPost');
-//         return response.data;
-//     } catch (error) {
-//         return error.message;
-//     }
-// }
+export const getAllPost = async () => {
+    try {
+        const response = await axiosInstances.get('/api/posts/getAllPost');
+        return response.data;
+    } catch (error) {
+        return error.message;
+    }
+}
 
 //get the user Post
 // export const getUserPost = async () => {

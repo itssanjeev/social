@@ -5,36 +5,77 @@ import { setLoader } from '../../redux/loaderSlice';
 import { getCurrentUser } from '../../apicall/userApi';
 import { setUser } from '../../redux/userSlice';
 import { Row, Col } from 'antd';
-
+import { getAllPost } from '../../apicall/postApi';
 const index = () => {
+    const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const getCurrentUsers = async () => {
+    // const getCurrentUsers = async () => {
+    //     try {
+    //         // console.log(user);
+    //         dispatch(setLoader(true));
+    //         const data = await getCurrentUser();
+    //         console.log(data.data);
+    //         dispatch(setUser(data.data));
+    //         dispatch(setLoader(false));
+    //     } catch (error) {
+    //         console.log(error.message);
+    //     }
+    // }
+    const getAllPostFunction = async () => {
         try {
-            // console.log(user);
             dispatch(setLoader(true));
-            const data = await getCurrentUser();
-            console.log(data.data);
-            dispatch(setUser(data.data));
+            const data = await getAllPost();
             dispatch(setLoader(false));
+            setPosts(data.data);
+            // console.log(data);
         } catch (error) {
             console.log(error.message);
         }
     }
     const currentUser = useSelector((state) => state.users.user);
     console.log(currentUser);
-    +
+    const showFollowButton = (id) => {
+        let flag = false;
+        //ye toh khud ka post id check karne ke liye hai 
+        if (currentUser._id === id) {
+            flag = true;
+        }
 
-        useEffect(() => {
-            const fetchData = async () => {
-                await getCurrentUsers();
-            };
-            fetchData();
-        }, []);
+        //ye yah check karne ke liye hai agar currentUser already follow karta hai kya 
+        for (let i = 0; i < currentUser.following.length; i++) {
+            if (currentUser.following[i] === id) {
+                flag = true;
+            }
+        }
+
+        if (flag) {
+            return false;
+        } else {
+            return true;
+        }
+
+
+    }
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         await getCurrentUsers();
+    //     };
+    //     fetchData();
+    // }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await getAllPostFunction();
+        };
+        fetchData();
+    }, []);
+
     return (
         <div className=''>
             <Row>
-                {/* this is for showing post of user */}
+                {/* this is for showing post of currentUser */}
                 <Col span={12}>
                     <div className='w-full bg-slate-50'>
                         {

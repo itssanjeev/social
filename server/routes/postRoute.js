@@ -59,18 +59,18 @@ router.post('/addNewPost', authMiddleware, multer({ storage: storage }).single("
 })
 
 //get all post at once 
-// router.get('/getAllPost', async (req, res) => {
-//     try {
-//         // const posts = await Post.find().populate('user', 'userName').select('content', 'title');
-//         const posts = await Post.find().populate('user');
-//         res.json({
-//             data: posts,
-//             success: true
-//         })
-//     } catch (error) {
-//         res.send(error.message);
-//     }
-// })
+router.get('/getAllPost', async (req, res) => {
+    try {
+        // const posts = await Post.find().populate('user', 'userName').select('content', 'title');
+        const posts = await Post.find().populate('user');
+        res.json({
+            data: posts,
+            success: true
+        })
+    } catch (error) {
+        res.send(error.message);
+    }
+})
 
 // user Post 
 // router.get('/getUserPost', authMiddleware, async (req, res) => {
