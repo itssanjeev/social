@@ -41,9 +41,9 @@ const index = () => {
     // useEffect(() => {
     //     console.log('hi buddy', userPost);
     // }, [userPost])
-    // useEffect(() => {
-    //     getCurrentUserFun();
-    // }, [])
+    useEffect(() => {
+        getCurrentUserFun();
+    }, [])
     return (
         currentUser &&
         (
