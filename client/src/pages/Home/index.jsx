@@ -78,12 +78,7 @@ const index = () => {
 
     }
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         await getCurrentUsersFun();
-    //     };
-    //     fetchData();
-    // }, []);
+
 
     useEffect(() => {
         const fetchData = async () => {

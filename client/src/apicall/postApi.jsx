@@ -21,14 +21,14 @@ export const getAllPost = async () => {
 }
 
 //get the user Post
-// export const getUserPost = async () => {
-//     try {
-//         const response = await axiosInstance.get('/api/post/getUserPost');
-//         return response.data;
-//     } catch (error) {
-//         return error.message;
-//     }
-// }
+export const getUserPost = async () => {
+    try {
+        const response = await axiosInstances.get('/api/posts/getUserPost');
+        return response.data;
+    } catch (error) {
+        return error.message;
+    }
+}
 
 //get another user Porifle
 // export const getAnotherUserPost = async () => {

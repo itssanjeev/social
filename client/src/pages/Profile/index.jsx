@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoader } from '../../redux/loaderSlice';
 import Devider from '../../component/Devider';
-// import { getUserPost } from '../../apicalls/postApi';
 import { getCurrentUser } from '../../apicall/userApi';
 import { setUser } from '../../redux/userSlice';
+import { getUserPost } from '../../apicall/postApi';
 const index = () => {
-    // const [userPost, setUserPost] = useState([]);
+    const [userPost, setUserPost] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const getCurrentUserFun = async () => {
@@ -19,24 +19,24 @@ const index = () => {
     console.log(currentUser);
 
 
-    // const getUserPostFun = async () => {
-    //     try {
-    //         dispatch(setLoader(true));
-    //         const data = await getUserPost();
-    //         dispatch(setLoader(false));
-    //         setUserPost(data.data);
-    //         // console.log(data);
-    //     } catch (error) {
-    //         console.log(error.message);
-    //     }
-    // }
+    const getUserPostFun = async () => {
+        try {
+            dispatch(setLoader(true));
+            const data = await getUserPost();
+            dispatch(setLoader(false));
+            setUserPost(data.data);
+            // console.log(data);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         await getUserPostFun();
-    //     }
-    //     fetchData();
-    // }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+            await getUserPostFun();
+        }
+        fetchData();
+    }, []);
 
     // useEffect(() => {
     //     console.log('hi buddy', userPost);
@@ -91,7 +91,7 @@ const index = () => {
                             </div>
                         </div>
                     </Col>
-                    {/* <Col span={14} offset={4}>
+                    <Col span={14} offset={4}>
                         <div className='bg-gray-100 mr-1 border-solid border-black h-screen'>
                             <div className="grid grid-cols-4 gap-4">
                                 {
@@ -103,7 +103,7 @@ const index = () => {
                                 }
                             </div>
                         </div>
-                    </Col> */}
+                    </Col>
                 </Row>
                 <div>
                 </div>

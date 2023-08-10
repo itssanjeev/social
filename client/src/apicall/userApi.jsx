@@ -53,3 +53,16 @@ export const followUser = async (payload) => {
 }
 
 
+//to get followers of the user 
+export const followersApi = async () => {
+    try {
+        const response = await axiosInstances.get('/api/users/getFollowers');
+        // console.log();
+        return response.data.data.followers;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+
+

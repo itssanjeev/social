@@ -73,19 +73,19 @@ router.get('/getAllPost', async (req, res) => {
 })
 
 // user Post 
-// router.get('/getUserPost', authMiddleware, async (req, res) => {
-//     try {
-//         const userId = req.userId;
-//         // console.log(userId)
-//         const userPost = await Post.find({ user: userId });
-//         // console.log(userPost);
-//         res.send({
-//             success: true,
-//             data: userPost,
-//         })
-//     } catch (error) {
-//         res.send(error.message);
-//     }
-// })
+router.get('/getUserPost', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.userId;
+        // console.log(userId)
+        const userPost = await Post.find({ user: userId });
+        // console.log(userPost);
+        res.send({
+            success: true,
+            data: userPost,
+        })
+    } catch (error) {
+        res.send(error.message);
+    }
+})
 
 module.exports = router;
