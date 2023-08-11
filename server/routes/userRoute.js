@@ -178,4 +178,19 @@ router.get('/getFollowers', authMiddleware, async (req, res) => {
     }
 })
 
+//get other user 
+router.post('/getOtherUser', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.body.otherUserId;
+        // console.log(userId);
+        const user = await User.findById(userId);
+        res.json({
+            success: true,
+            data: user
+        })
+    } catch (error) {
+        res.send(error.message)
+    }
+})
+
 module.exports = router;

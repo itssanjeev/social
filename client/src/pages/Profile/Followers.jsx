@@ -16,16 +16,16 @@ const Followers = () => {
             dispatch(setLoader(false));
 
             setData(result)
-            console.log(result);
+            // console.log(result);
         } catch (error) {
             console.log(error);
         }
     }
-    const handleVisitProfile = (userId) => {
-        const data = { 'userid': userId }
-        // localStorage.setItem('anotherUserId', JSON.stringify(data));
-        // navigate('/AnotherUserProfile')
-        console.log(data);
+    const handleVisitProfile = (id) => {
+        localStorage.setItem('otherUserId', id);
+        // console.log(localStorage.getItem('otherUserId'));
+        // console.log(id);
+        navigate('/OthersProfile');
     }
     useEffect(() => {
         followersFun();

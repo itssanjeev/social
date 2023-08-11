@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import UploadPost from './pages/UploadPost';
 import Spinner from './component/Spinner';
 import Followers from './pages/Profile/Followers';
+import OthersProfile from './pages/OthersProfile'
 
 import ProtectedPage from './component/ProtectedPage';
 const App = () => {
@@ -27,6 +28,8 @@ const App = () => {
           <Route path='/editProfile' element={<ProtectedPage><EditProfile></EditProfile></ProtectedPage>}></Route>
           <Route path='/uploadPost' element={<ProtectedPage><UploadPost></UploadPost></ProtectedPage>}></Route>
           <Route path='/followers' element={<ProtectedPage><Followers></Followers></ProtectedPage>}></Route>
+          <Route path='/OthersProfile' element={<ProtectedPage><OthersProfile></OthersProfile></ProtectedPage>}></Route>
+
         </Routes>
       </BrowserRouter>
     </>

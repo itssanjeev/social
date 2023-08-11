@@ -88,4 +88,19 @@ router.get('/getUserPost', authMiddleware, async (req, res) => {
     }
 })
 
+router.post('/getOtherUserPost', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.body.otherUserId;
+        // console.log(userId);
+        const userPost = await Post.find({ user: userId });
+        // console.log(userPost);
+        res.send({
+            success: true,
+            data: userPost
+        })
+    } catch (error) {
+        res.send(error.message);
+    }
+})
+
 module.exports = router;
