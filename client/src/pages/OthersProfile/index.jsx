@@ -32,6 +32,10 @@ const index = () => {
             console.log(error.message);
         }
     }
+    const vistFollowers = (id) => {
+        localStorage.setItem('followerId', id);
+        navigate('/followers');
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -65,7 +69,7 @@ const index = () => {
                                     <div>{otherUser.posts.length}</div>
                                     <div>posts</div>
                                 </div>
-                                <div className='flex flex-col space-y-1 justify-center items-center cursor-pointer' onClick={() => navigate('/followers')}>
+                                <div className='flex flex-col space-y-1 justify-center items-center cursor-pointer' onClick={() => vistFollowers(otherUser._id)}>
                                     <div>{otherUser.followers.length}</div>
                                     <div >followers</div>
                                 </div>

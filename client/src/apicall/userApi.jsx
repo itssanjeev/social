@@ -46,6 +46,7 @@ export const followUser = async (payload) => {
     try {
         console.log(payload);
         const response = await axiosInstances.post('/api/users/followUser', payload);
+        console.log(response);
         return response.data;
     } catch (error) {
         return error.message;
@@ -54,11 +55,12 @@ export const followUser = async (payload) => {
 
 
 //to get followers of the user 
-export const followersApi = async () => {
+export const followersApi = async (payload) => {
     try {
-        const response = await axiosInstances.get('/api/users/getFollowers');
-        // console.log();
-        return response.data.data.followers;
+        console.log(payload);
+        const response = await axiosInstances.post('/api/users/getFollowers', payload);
+        // console.log(response.data);
+        return response.data;
     } catch (error) {
         return error.message;
     }

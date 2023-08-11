@@ -38,9 +38,11 @@ const index = () => {
         fetchData();
     }, []);
 
-    // useEffect(() => {
-    //     console.log('hi buddy', userPost);
-    // }, [userPost])
+    const vistFollowers = (id) => {
+        console.log(id);
+        localStorage.setItem('followerId', id);
+        navigate('/followers');
+    }
     useEffect(() => {
         getCurrentUserFun();
     }, [])
@@ -66,7 +68,7 @@ const index = () => {
                                     <div>{currentUser.posts.length}</div>
                                     <div>posts</div>
                                 </div>
-                                <div className='flex flex-col space-y-1 justify-center items-center cursor-pointer' onClick={() => navigate('/followers')}>
+                                <div className='flex flex-col space-y-1 justify-center items-center cursor-pointer' onClick={() => vistFollowers(currentUser._id)}>
                                     <div>{currentUser.followers.length}</div>
                                     <div >followers</div>
                                 </div>

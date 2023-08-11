@@ -9,13 +9,16 @@ const Followers = () => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const followersFun = async (req, res) => {
+    const followersFun = async () => {
         try {
+            const id = localStorage.getItem('followerId')
+            console.log(id);
             dispatch(setLoader(true));
-            const result = await followersApi();
+            const result = await followersApi({ followerId: id });
+            console.log(result.data);
             dispatch(setLoader(false));
 
-            setData(result)
+            setData(result.data.followers)
             // console.log(result);
         } catch (error) {
             console.log(error);
@@ -40,6 +43,7 @@ const Followers = () => {
                 border: '1px solid rgba(140, 140, 140, 0.35)',
             }}
         >
+
             <InfiniteScroll
                 dataLength={data.length}
                 next={followersFun}

@@ -162,9 +162,10 @@ router.post('/followUser', authMiddleware, async (req, res) => {
 })
 
 //to get followers of the currentUser 
-router.get('/getFollowers', authMiddleware, async (req, res) => {
+router.post('/getFollowers', authMiddleware, async (req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.body.followerId;
+        // console.log('getFollowers', userId);
         const userFollowers = await User.findById(userId).populate("followers");
         // console.log(userFollowers)
         res.json({
