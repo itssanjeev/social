@@ -22,12 +22,12 @@ const ProtectedPage = ({ children }) => {
     return (
         currentUser &&
         <div className=''>
-            <header className=' bg-gray-100'>
+            <header className=' bg-blue-200'>
                 <Row style={{ height: "50px", border: "2px solid gray" }}>
                     <Col span={6}>
                         <Row>
                             <Col span={12}>
-                                <div className='text-2xl'>🫂</div>
+                                <div className='text-2xl border-gray-400 text-red-600'>{currentUser.username}</div>
                             </Col>
                             <Col span={12}>
                                 <div className='text-2xl cursor-pointer'><i className="ri-gallery-upload-line" onClick={() => {
@@ -40,13 +40,12 @@ const ProtectedPage = ({ children }) => {
 
 
                     <Col span={8} offset={2}>
-                        <Row>
+                        <Row className='flex justify-between'>
                             <Col span={6} className='flex items-center justify-center '><i className="ri-home-4-line text-4xl cursor-pointer"
                                 onClick={() => {
                                     navigate('/')
                                 }}
                             ></i></Col>
-                            <Col span={6} className='flex items-center justify-center'><i className="ri-contacts-book-2-line text-4xl"></i></Col>
                             <Col span={6} className='flex items-center justify-center'><i className="ri-notification-2-line text-4xl"></i></Col>
                             <Col span={6} className='flex items-center justify-center'>
                                 <i className="ri-search-line text-4xl"></i>
@@ -54,9 +53,9 @@ const ProtectedPage = ({ children }) => {
                         </Row>
                     </Col>
                     <Col span={6} offset={2}>
-                        <Row className='flex items-end justify-end'>
-                            <Col span={5} className='flex items-center justify-center'><i className="ri-mail-line text-4xl"></i></Col>
-                            <Col span={4} className=' flex items-center justify-center'><i className="ri-account-circle-fill text-4xl cursor-pointer"
+                        <Row className='flex items-end justify-between'>
+                            <Col span={5} className='flex items-center justify-center '><i className="ri-mail-line text-4xl"></i></Col>
+                            <Col span={4} className=' flex items-center justify-center mr-8'><i className="ri-account-circle-fill text-4xl cursor-pointer"
                                 onClick={() => {
                                     navigate("/profile")
                                 }}

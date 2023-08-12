@@ -194,4 +194,22 @@ router.post('/getOtherUser', authMiddleware, async (req, res) => {
     }
 })
 
+//get followring api 
+router.post('/getFollowing', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.body.followingId;
+        // console.log(userId);
+        const userFollowing = await User.findById(userId).populate('following');
+        console.log(userFollowing);
+        res.json({
+            success: true,
+            data: userFollowing
+        })
+    } catch (error) {
+        res.send({
+            message: error.message
+        })
+    }
+})
+
 module.exports = router;

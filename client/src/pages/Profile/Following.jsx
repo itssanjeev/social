@@ -4,22 +4,21 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch } from 'react-redux';
 import { setLoader } from '../../redux/loaderSlice';
 import { useNavigate } from 'react-router-dom';
-import { followersApi } from '../../apicall/userApi';
-const Followers = () => {
+import { followingApi } from '../../apicall/userApi';
+const Following = () => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const followersFun = async () => {
+    const followingFun = async () => {
         try {
-            //followersId is a id of user on which we click user 
-            const id = localStorage.getItem('followerId')
-            console.log(id);
+            const id = localStorage.getItem('followingId')
+            // console.log(id);
             dispatch(setLoader(true));
-            const result = await followersApi({ followerId: id });
-            console.log(result.data);
+            const result = await followingApi({ followingId: id });
+            // console.log(result.data.following);
             dispatch(setLoader(false));
 
-            setData(result.data.followers)
+            setData(result.data.following)
             // console.log(result);
         } catch (error) {
             console.log(error);
@@ -32,7 +31,7 @@ const Followers = () => {
         navigate('/OthersProfile');
     }
     useEffect(() => {
-        followersFun();
+        followingFun();
     }, [])
     return (
         <div
@@ -80,4 +79,4 @@ const Followers = () => {
         </div>
     );
 };
-export default Followers;
+export default Following;
