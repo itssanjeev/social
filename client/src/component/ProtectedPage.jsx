@@ -24,7 +24,7 @@ const ProtectedPage = ({ children }) => {
     return (
         currentUser &&
         <div className=''>
-            <header className=' bg-blue-200'>
+            <header className=' bg-sky-200'>
                 <Row style={{ height: "50px", border: "2px solid gray" }}>
                     <Col span={6}>
                         <Row>
@@ -49,7 +49,7 @@ const ProtectedPage = ({ children }) => {
                                 }}
                             ></i></Col>
                             <Col span={6} className='flex items-center justify-center'><i className="ri-notification-2-line text-4xl"></i></Col>
-                            <Col span={6} className='flex items-center justify-center'
+                            <Col span={6} className='flex items-center justify-center cursor-pointer'
                                 onClick={() => { navigate('/search') }}>
                                 <i className="ri-search-line text-4xl"></i>
                             </Col>

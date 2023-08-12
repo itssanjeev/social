@@ -212,4 +212,27 @@ router.post('/getFollowing', authMiddleware, async (req, res) => {
     }
 })
 
+//search functionallity 
+router.post('/searchUser', authMiddleware, async (req, res) => {
+    try {
+        const text = req.body.text;
+        // console.log(text);
+        const users = await User.find(
+            {
+                $or: [
+                    { username: { $regex: text, $options: 'i' } },
+                    { name: { $regex: text, $options: 'i' } }
+                ]
+            }
+        );
+        // console.log(users);
+        res.json({
+            success: true,
+            data: users
+        })
+    } catch (error) {
+        res.send(error.message);
+    }
+})
+
 module.exports = router;

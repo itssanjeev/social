@@ -78,3 +78,14 @@ export const followingApi = async (payload) => {
         return error.message;
     }
 }
+
+//search user 
+export const searchUser = async (payload) => {
+    try {
+        console.log(payload);
+        const response = await axiosInstances.post('/api/users/searchUser', payload);
+        return response.data;
+    } catch (error) {
+        return error.message;
+    }
+}

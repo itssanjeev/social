@@ -57,7 +57,7 @@ const index = () => {
         (
             <div>
                 <Row>
-                    <Col span={6} className='border-r-2 border-red-600'>
+                    <Col className='border-r-2 border-red-600' xs={24} sm={24} md={24} lg={10} xl={10}>
                         <div className='flex flex-col'>
                             <div className='flex items-center justify-center flex-col mt-2'>
                                 {
@@ -99,7 +99,7 @@ const index = () => {
                             </div>
                         </div>
                     </Col>
-                    <Col span={14} offset={4}>
+                    <Col offset={0} xs={0} sm={0} md={0} lg={10} xl={14}>
                         <div className='bg-gray-100 mr-1 border-solid border-black h-screen'>
                             <div className="grid grid-cols-4 gap-4">
                                 {

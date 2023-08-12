@@ -41,11 +41,11 @@ const Following = () => {
         <div
             id="scrollableDiv"
             style={{
-                height: 400,
                 overflow: 'auto',
                 padding: '0 16px',
                 border: '1px solid rgba(140, 140, 140, 0.35)',
             }}
+            className='h-screen bg-sky-100'
         >
 
             <InfiniteScroll
@@ -74,7 +74,6 @@ const Following = () => {
                                     title={<div >{item.name}</div>}
                                     description={item.username}
                                 />
-                                <div>Content</div>
                             </List.Item>
                         </div>
                     )}
