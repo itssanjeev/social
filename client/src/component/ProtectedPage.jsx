@@ -49,7 +49,8 @@ const ProtectedPage = ({ children }) => {
                                 }}
                             ></i></Col>
                             <Col span={6} className='flex items-center justify-center'><i className="ri-notification-2-line text-4xl"></i></Col>
-                            <Col span={6} className='flex items-center justify-center'>
+                            <Col span={6} className='flex items-center justify-center'
+                                onClick={() => { navigate('/search') }}>
                                 <i className="ri-search-line text-4xl"></i>
                             </Col>
                         </Row>

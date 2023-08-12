@@ -41,7 +41,7 @@ const index = () => {
     }
 
     const currentUser = useSelector((state) => state.users.user);
-    console.log(currentUser);
+    // console.log(currentUser);
     const followUserFun = async (values) => {
         try {
             dispatch(setLoader(true));
@@ -57,12 +57,12 @@ const index = () => {
 
     const showFollowButton = (id) => {
         let flag = false;
-        //ye toh khud ka post id check karne ke liye hai 
+        //ye toh khud ka post id check karne ke liye hai
         if (currentUser._id === id) {
             flag = true;
         }
 
-        //ye yah check karne ke liye hai agar currentUser already follow karta hai kya 
+        //ye yah check karne ke liye hai agar currentUser already follow karta hai kya
         for (let i = 0; i < currentUser.following.length; i++) {
             if (currentUser.following[i] === id) {
                 flag = true;

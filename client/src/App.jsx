@@ -11,6 +11,7 @@ import Spinner from './component/Spinner';
 import Followers from './pages/Profile/Followers';
 import OthersProfile from './pages/OthersProfile'
 import Following from './pages/Profile/Following';
+import Search from './pages/Search';
 
 import ProtectedPage from './component/ProtectedPage';
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
           <Route path='/followers' element={<ProtectedPage><Followers></Followers></ProtectedPage>}></Route>
           <Route path='/following' element={<ProtectedPage><Following></Following></ProtectedPage>}></Route>
           <Route path='/OthersProfile' element={<ProtectedPage><OthersProfile></OthersProfile></ProtectedPage>}></Route>
+          <Route path='/search' element={<ProtectedPage><Search></Search></ProtectedPage>}></Route>
 
         </Routes>
       </BrowserRouter>
