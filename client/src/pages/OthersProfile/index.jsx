@@ -55,7 +55,7 @@ const index = () => {
         otherUser &&
         (
             <div>
-                <Row className='bg-sky-50'>
+                <Row className='bg-sky-50 h-screen'>
                     <Col className='border-r-2 border-red-600' xs={24} sm={24} md={24} lg={10} xl={10}>
                         <div className='flex flex-col'>
                             <div className='flex items-center justify-center flex-col mt-2'>
