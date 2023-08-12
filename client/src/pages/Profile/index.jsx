@@ -56,7 +56,7 @@ const index = () => {
         currentUser &&
         (
             <div>
-                <Row>
+                <Row className='bg-sky-50'>
                     <Col className='border-r-2 border-red-600' xs={24} sm={24} md={24} lg={10} xl={10}>
                         <div className='flex flex-col'>
                             <div className='flex items-center justify-center flex-col mt-2'>
@@ -88,8 +88,8 @@ const index = () => {
                                     <p className='text-3xl text-gray-800'>{currentUser.bio}</p>
                                 </div>
                             </div>
-                            <div className='ml-12 mt-5'>
-                                <Button className='bg-zinc-300 shadow-lg w-3/4' onClick={() => navigate("/editProfile")}>Edit Profile</Button>
+                            <div className=' mt-5 flex flex-row w-full  justify-center'>
+                                <div className=' bg-gray-600 h-8 text-2xl rounded-md cursor-pointer w-3/4 text-center' onClick={() => navigate("/editProfile")}>Edit</div>
                             </div>
                             <Devider className='mt-8'></Devider>
                             <div>
@@ -100,7 +100,7 @@ const index = () => {
                         </div>
                     </Col>
                     <Col offset={0} xs={0} sm={0} md={0} lg={10} xl={14}>
-                        <div className='bg-gray-100 mr-1 border-solid border-black h-screen'>
+                        <div className=' mr-1 border-solid border-black h-screen'>
                             <div className="grid grid-cols-4 gap-4">
                                 {
                                     userPost?.map((post) => (

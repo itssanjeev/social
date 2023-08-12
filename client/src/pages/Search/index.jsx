@@ -36,7 +36,7 @@ const index = () => {
     return (
         <div >
             <div className='w-full  bg-sky-100 flex  justify-center flex-row'>
-                <input type="text" placeholder=' input userid ' className='lg:w-1/2 bg-slate-100 h-8  w-full' onChange={handleChange}
+                <input type="text" placeholder=' enter keyword ' className='lg:w-1/2 bg-slate-100 h-8  w-full' onChange={handleChange}
                 />
                 <div className='flex-row mt-0'>
                     <i className="ri-search-line text-4xl bg-sky-200" onClick={() => searchUserFun()}></i>
