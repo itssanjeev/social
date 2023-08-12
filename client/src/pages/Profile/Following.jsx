@@ -27,8 +27,12 @@ const Following = () => {
     const handleVisitProfile = (id) => {
         localStorage.setItem('otherUserId', id);
         // console.log(localStorage.getItem('otherUserId'));
-        // console.log(id);
-        navigate('/OthersProfile');
+        const currentUserId = localStorage.getItem('currentUserId');
+        if (currentUserId === id) {
+            navigate('/profile');
+        } else {
+            navigate('/OthersProfile');
+        }
     }
     useEffect(() => {
         followingFun();

@@ -29,7 +29,14 @@ const Followers = () => {
         localStorage.setItem('otherUserId', id);
         // console.log(localStorage.getItem('otherUserId'));
         // console.log(id);
-        navigate('/OthersProfile');
+        const currentUserId = localStorage.getItem('currentUserId');
+        // console.log(currentUserId, 'cur');
+        // console.log(id, 'id');
+        if (currentUserId === id) {
+            navigate('/profile');
+        } else {
+            navigate('/OthersProfile');
+        }
     }
     useEffect(() => {
         followersFun();

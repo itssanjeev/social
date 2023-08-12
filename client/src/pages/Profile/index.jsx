@@ -16,7 +16,7 @@ const index = () => {
         dispatch(setUser(data.data));
     }
     const currentUser = useSelector((state) => state.users.user);
-    console.log(currentUser);
+    // console.log(currentUser);
 
 
     const getUserPostFun = async () => {

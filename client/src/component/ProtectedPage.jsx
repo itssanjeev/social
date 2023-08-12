@@ -13,6 +13,8 @@ const ProtectedPage = ({ children }) => {
     const currentUserFun = async () => {
         const data = await getCurrentUser();
         console.log(data.data);
+        localStorage.setItem('currentUserId', data.data._id);
+        // console.log(localStorage.getItem('currentUserId'));
         setCurrentUser(data.data);
         dispatch(setUser(data.data));
     }
