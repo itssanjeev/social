@@ -94,7 +94,7 @@ const index = () => {
                             <Devider className='mt-8'></Devider>
                             <div>
                                 <div className='flex flex-col space-y-1 justify-center items-center '>
-                                    <div className='text-xl'>Post Liked &nbsp;({currentUser.postLiked.length})</div>
+                                    <div className='text-xl'>Post Liked &nbsp;({currentUser.postLiked?.length})</div>
                                 </div>
                             </div>
                         </div>

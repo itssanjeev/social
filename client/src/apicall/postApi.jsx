@@ -30,13 +30,15 @@ export const getUserPost = async () => {
     }
 }
 
-//get another user Porifle
-// export const getAnotherUserPost = async () => {
-//     try {
-//         const response = await axiosInstance.get('/api/post/getAnotherUserPost');
-//         console.log(response);
-//         return response.data;
-//     } catch (error) {
-//         return error.message;
-//     }
-// }
+//to get the likes number of people do
+export const postLike = async (payload) => {
+    try {
+        // console.log(payload);
+        const response = await axiosInstances.post('./api/posts/likes', payload);
+        // console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error.message);
+        return error.message;
+    }
+}

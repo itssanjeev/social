@@ -7,6 +7,7 @@ import { setUser } from '../../redux/userSlice';
 import { Row, Col } from 'antd';
 import { getAllPost } from '../../apicall/postApi';
 import { followUser } from '../../apicall/userApi';
+import Likes from '../Interaction/Likes/Likes';
 const index = () => {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
@@ -117,7 +118,7 @@ const index = () => {
                                     </div>
                                     <img className='w-full h-[600px] sm:min-h[400px]' src={post.content} alt="" />
                                     <div className='w-full h-20 border-2 border-black bg-slate-200 flex flex-row justify-between items-center'>
-                                        <i className="ml-7 mr-7 text-5xl ri-thumb-up-line"></i>
+                                        <Likes userId={currentUser._id} postId={post._id}></Likes>
                                         <i className="ml-7 mr-7 text-5xl ri-thumb-down-line"></i>
                                         <i className="ml-7 mr-7 text-5xl ri-discuss-line"></i>
                                         <i className=" mr-7 text-5xl ri-share-fill"></i>

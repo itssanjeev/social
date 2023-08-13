@@ -5,6 +5,7 @@ const Post = require('../models/postModel');
 const cloudinary = require('../config/cloudinary');
 const multer = require('multer');
 const path = require('path');
+const { error } = require('console');
 
 
 // get image form pc to local storage
@@ -98,6 +99,42 @@ router.post('/getOtherUserPost', authMiddleware, async (req, res) => {
             success: true,
             data: userPost
         })
+    } catch (error) {
+        res.send(error.message);
+    }
+})
+
+router.post('/likes', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const postId = req.body.postId;
+        const beforeLikePost = await Post.findOne({ _id: postId });
+        const liked = beforeLikePost.likes;
+
+        //if user id present in liked array it return true else false 
+        const alreadyLiked = liked.some(like => {
+            return like._id.toString() === userId;
+            // console.log(like._id);
+        });
+        console.log(alreadyLiked);
+        if (!alreadyLiked) {
+            await Post.findByIdAndUpdate(
+                postId,
+                { $push: { likes: userId } },
+                { new: true }
+            )
+            const posts = await Post.findById(postId).populate('likes');
+            // console.log(posts);
+            res.send({
+                success: true,
+                data: posts
+            })
+        } else {
+            res.send({
+                success: false,
+                data: "already liked"
+            })
+        }
     } catch (error) {
         res.send(error.message);
     }
