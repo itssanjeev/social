@@ -30,7 +30,7 @@ export const getUserPost = async () => {
     }
 }
 
-//to get the likes number of people do
+//to get the post likes  number of people do
 export const postLike = async (payload) => {
     try {
         // console.log(payload);
@@ -39,6 +39,29 @@ export const postLike = async (payload) => {
         return response.data;
     } catch (error) {
         console.log(error.message);
+        return error.message;
+    }
+}
+
+//to get the dislike of the  the post 
+export const postDistLike = async (payload) => {
+    try {
+        const response = await axiosInstances.post('./api/posts/disLikes', payload);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error.message);
+        return error.message;
+    }
+}
+
+//comment on the post 
+export const commentOnPost = async (payload) => {
+    try {
+        const response = await axiosInstances.post('./api/posts/comment', payload);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
         return error.message;
     }
 }

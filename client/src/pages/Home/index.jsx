@@ -8,6 +8,8 @@ import { Row, Col } from 'antd';
 import { getAllPost } from '../../apicall/postApi';
 import { followUser } from '../../apicall/userApi';
 import Likes from '../Interaction/Likes/Likes';
+import DisLikes from '../Interaction/DisLikes/DisLikes';
+import Comment from '../Interaction/comments/comment';
 const index = () => {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
@@ -33,8 +35,10 @@ const index = () => {
         try {
             dispatch(setLoader(true));
             const data = await getAllPost();
+            console.log(data.data);
             dispatch(setLoader(false));
             setPosts(data.data);
+
             // console.log(data);
         } catch (error) {
             console.log(error.message);
@@ -118,9 +122,9 @@ const index = () => {
                                     </div>
                                     <img className='w-full h-[600px] sm:min-h[400px]' src={post.content} alt="" />
                                     <div className='w-full h-20 border-2 border-black bg-slate-200 flex flex-row justify-between items-center'>
-                                        <Likes userId={currentUser._id} postId={post._id}></Likes>
-                                        <i className="ml-7 mr-7 text-5xl ri-thumb-down-line"></i>
-                                        <i className="ml-7 mr-7 text-5xl ri-discuss-line"></i>
+                                        <Likes userId={currentUser._id} postId={post._id} initialLike={post.likes}></Likes>
+                                        <DisLikes userId={currentUser._id} postId={post._id} initialDisLike={post.dislikes}></DisLikes>
+                                        <Comment userId={currentUser._id} postId={post._id} comment={post.comment} ></Comment>
                                         <i className=" mr-7 text-5xl ri-share-fill"></i>
                                     </div>
                                 </div>

@@ -2,11 +2,11 @@ const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const User = require('../models/userModel')
 const Post = require('../models/postModel');
+const Comment = require('../models/commentModel');
 const cloudinary = require('../config/cloudinary');
 const multer = require('multer');
 const path = require('path');
-const { error } = require('console');
-
+const fs = require('fs');
 
 // get image form pc to local storage
 const storage = multer.diskStorage({
@@ -31,7 +31,10 @@ router.post('/addNewPost', authMiddleware, multer({ storage: storage }).single("
         const result = await cloudinary.uploader.upload(file.path, {
             folder: "connectMe",
         });
-        // console.log(result.secure_url);
+
+        // Remove the uploaded file from local storage
+        fs.unlinkSync(file.path); // This deletes the file from the local directory
+
         const newPost = new Post({
             title: req.body.postTitle,
             content: result.secure_url,
@@ -62,8 +65,7 @@ router.post('/addNewPost', authMiddleware, multer({ storage: storage }).single("
 //get all post at once 
 router.get('/getAllPost', async (req, res) => {
     try {
-        // const posts = await Post.find().populate('user', 'userName').select('content', 'title');
-        const posts = await Post.find().populate('user');
+        const posts = await Post.find().populate('user').populate('likes').populate('comment');
         res.json({
             data: posts,
             success: true
@@ -114,7 +116,6 @@ router.post('/likes', authMiddleware, async (req, res) => {
         //if user id present in liked array it return true else false 
         const alreadyLiked = liked.some(like => {
             return like._id.toString() === userId;
-            // console.log(like._id);
         });
         console.log(alreadyLiked);
         if (!alreadyLiked) {
@@ -135,6 +136,68 @@ router.post('/likes', authMiddleware, async (req, res) => {
                 data: "already liked"
             })
         }
+    } catch (error) {
+        res.send(error.message);
+    }
+})
+
+router.post('/dislikes', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const postId = req.body.postId;
+        const beforeLikePost = await Post.findOne({ _id: postId });
+        const disliked = beforeLikePost.dislikes;
+
+        //if user id present in liked array it return true else false 
+        const alreadyDisLiked = disliked.some(dislikes => {
+            return dislikes._id.toString() === userId;
+        });
+        console.log(alreadyDisLiked);
+        if (!alreadyDisLiked) {
+            await Post.findByIdAndUpdate(
+                postId,
+                { $push: { dislikes: userId } },
+                { new: true }
+            )
+            const posts = await Post.findById(postId).populate('dislikes');
+            // console.log(posts);
+            res.send({
+                success: true,
+                data: posts
+            })
+        } else {
+            res.send({
+                success: false,
+                data: "already disliked"
+            })
+        }
+    } catch (error) {
+        res.send(error.message);
+    }
+})
+
+router.post('/comment', authMiddleware, async (req, res) => {
+    try {
+        const postId = req.body.postId;
+        const userId = req.body.userId;
+        const userComments = req.body.comment;
+        const user = await User.findById(userId);
+        const newComment = new Comment({
+            usern: user._id,
+            comment: userComments
+        })
+        const comment = await newComment.save();
+        const updatedPost = await Post.findByIdAndUpdate(
+            postId,
+            { $push: { comment: comment._id } },
+            { new: true }
+        )
+        const realComment = await Post.findById(postId).populate('comment').populate('user')
+        res.send({
+            message: "commented successfully",
+            data: realComment
+        })
+
     } catch (error) {
         res.send(error.message);
     }
