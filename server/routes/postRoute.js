@@ -65,7 +65,12 @@ router.post('/addNewPost', authMiddleware, multer({ storage: storage }).single("
 //get all post at once 
 router.get('/getAllPost', async (req, res) => {
     try {
-        const posts = await Post.find().populate('user').populate('likes').populate('comment');
+        const posts = await Post.find().populate('user').populate('likes').populate({
+            path: 'comment',
+            populate: {
+                path: 'user'
+            }
+        });
         res.json({
             data: posts,
             success: true
@@ -152,7 +157,7 @@ router.post('/dislikes', authMiddleware, async (req, res) => {
         const alreadyDisLiked = disliked.some(dislikes => {
             return dislikes._id.toString() === userId;
         });
-        console.log(alreadyDisLiked);
+        // console.log(alreadyDisLiked);
         if (!alreadyDisLiked) {
             await Post.findByIdAndUpdate(
                 postId,
@@ -183,7 +188,7 @@ router.post('/comment', authMiddleware, async (req, res) => {
         const userComments = req.body.comment;
         const user = await User.findById(userId);
         const newComment = new Comment({
-            usern: user._id,
+            user: user._id,
             comment: userComments
         })
         const comment = await newComment.save();
@@ -192,10 +197,18 @@ router.post('/comment', authMiddleware, async (req, res) => {
             { $push: { comment: comment._id } },
             { new: true }
         )
-        const realComment = await Post.findById(postId).populate('comment').populate('user')
+        const newdata = await Post.findById(postId).populate({
+            path: 'comment',
+            populate: {
+                path: 'user',
+            }
+        }).select('comment').exec();
+        // console.log(updatedPost);
+        // const realComment = await Post.findById(postId).populate('comment');
         res.send({
             message: "commented successfully",
-            data: realComment
+            data: newdata,
+            // newdata: newdata
         })
 
     } catch (error) {

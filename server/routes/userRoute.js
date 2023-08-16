@@ -143,7 +143,17 @@ router.post('/followUser', authMiddleware, async (req, res) => {
         if (!userToFollow) {
             throw new Error("user is not found to follow ");
         }
-
+        // console.log(userToFollow);
+        const alreadyFollowing = false;
+        userToFollow.followers.forEach(user => {
+            console.log(user.toString());
+            if (userId === user.toString()) {
+                alreadyFollowing = true;
+            }
+        })
+        if (alreadyFollowing) {
+            throw new Error("alreay following the user");
+        }
         //update followers and following both for user 
         await User.findByIdAndUpdate(userId, { $push: { following: userIdToFollow } })
         await User.findByIdAndUpdate(userIdToFollow, { $push: { followers: userId } })
@@ -155,8 +165,8 @@ router.post('/followUser', authMiddleware, async (req, res) => {
         })
     } catch (error) {
         res.send({
-            success: true,
-            message: error
+            success: false,
+            message: error.message
         })
     }
 })

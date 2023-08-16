@@ -1,4 +1,4 @@
-import { Button, Row, Col, message } from 'antd';
+import { Row, Col, message } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,8 +7,10 @@ import Devider from '../../component/Devider';
 import { getOtherUser } from '../../apicall/otherUserApi';
 import { setOtherUser } from '../../redux/otherUserSlice';
 import { getOtherUserPost } from '../../apicall/otherPost';
+import { followUser } from '../../apicall/userApi';
 const index = () => {
     const [userPost, setUserPost] = useState([]);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const getOtherUserFun = async () => {
@@ -41,16 +43,47 @@ const index = () => {
         navigate('/following');
     }
 
+    const followUserFun = async () => {
+        try {
+            const values = localStorage.getItem('otherUserId')
+            console.log(values);
+            dispatch(setLoader(true));
+            const response = await followUser({ userIdToFollow: values });
+            console.log(response);
+            getOtherUserFun();
+            dispatch(setLoader(false));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const showFollowButton = () => {
+        console.log('hello hemant how are you');
+        let flag = false;
+        const currentUserId = localStorage.getItem('currentUserId')
+        //ye yah check karne ke liye hai agar currentUser already follow karta hai kya
+        for (let i = 0; i < otherUser.followers.length; i++) {
+            if (otherUser.followers[i] === currentUserId) {
+                flag = true;
+                console.log(flag);
+            }
+        }
+        if (flag) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             await getUserPostFun();
+            await getOtherUserFun();
         }
         fetchData();
     }, []);
 
-    useEffect(() => {
-        getOtherUserFun();
-    }, [])
+
     return (
         otherUser &&
         (
@@ -89,7 +122,7 @@ const index = () => {
                             </div>
                             <div className=' mt-5 flex flex-row justify-center'>
                                 <div className='bg-gray-600 h-8 text-2xl  rounded-md cursor-pointer text-sky-100' >Message</div>
-                                <div className='bg-gray-600 h-8 text-2xl ml-3 rounded-md cursor-pointer text-sky-100'>follow</div>
+                                <div className='bg-gray-600 h-8 text-2xl ml-3 rounded-md cursor-pointer text-sky-100' onClick={followUserFun}>{showFollowButton() ? 'follow' : 'following'}</div>
                             </div>
                             <Devider className='mt-8'></Devider>
                             <div>

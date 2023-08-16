@@ -66,7 +66,6 @@ const index = () => {
         if (currentUser._id === id) {
             flag = true;
         }
-
         //ye yah check karne ke liye hai agar currentUser already follow karta hai kya
         for (let i = 0; i < currentUser.following.length; i++) {
             if (currentUser.following[i] === id) {
@@ -83,6 +82,15 @@ const index = () => {
 
     }
 
+    const handleVisitProfile = (id) => {
+        localStorage.setItem('otherUserId', id);
+        const currentUserId = localStorage.getItem('currentUserId');
+        if (currentUserId === id) {
+            navigate('/profile');
+        } else {
+            navigate('/OthersProfile');
+        }
+    }
 
 
     useEffect(() => {
@@ -108,7 +116,7 @@ const index = () => {
                                     <div className='w-full h-14 border-2 border-black bg-slate-200 flex flex-row  '>
                                         <div className='flex flex-col'>
                                             <div className='flex flex-row'>
-                                                <p className='font-mono text-2xl ml-1 font-bold cursor-pointer '>{post.user.username}</p>
+                                                <p className='font-mono text-2xl ml-1 font-bold cursor-pointer ' onClick={() => handleVisitProfile(post.user._id)}>{post.user.username}</p>
                                                 {
                                                     showFollowButton(post.user._id) ? <p className='cursor-pointer ml-2 text- flex items-center'
                                                         onClick={() => followUserFun(post.user._id)}

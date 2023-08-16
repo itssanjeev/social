@@ -7,6 +7,7 @@ import Devider from '../../component/Devider';
 import { getCurrentUser } from '../../apicall/userApi';
 import { setUser } from '../../redux/userSlice';
 import { getUserPost } from '../../apicall/postApi';
+
 const index = () => {
     const [userPost, setUserPost] = useState([]);
     const dispatch = useDispatch();
@@ -48,6 +49,8 @@ const index = () => {
         localStorage.setItem('followingId', id);
         navigate('/following');
     }
+
+
 
     useEffect(() => {
         getCurrentUserFun();

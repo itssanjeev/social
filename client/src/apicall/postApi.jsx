@@ -59,7 +59,7 @@ export const postDistLike = async (payload) => {
 export const commentOnPost = async (payload) => {
     try {
         const response = await axiosInstances.post('./api/posts/comment', payload);
-        console.log(response.data);
+        // console.log(response.data.newdata);
         return response.data;
     } catch (error) {
         return error.message;

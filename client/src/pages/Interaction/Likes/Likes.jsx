@@ -15,10 +15,9 @@ const Likes = ({ userId, postId, initialLike }) => {
         const result = await postLike({ userId: userId, postId: postId })
         // console.log(result.data);
         if (result.success) {
-            // console.log('before', alreadyLiked);
             setAlreadyLiked(!alreadyLiked);
             const updatedLikes = [...likes, result.data.likes]
-            console.log(updatedLikes);
+            // console.log(updatedLikes);
             SetLikes(updatedLikes);
         }
     }
