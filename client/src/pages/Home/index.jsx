@@ -38,8 +38,6 @@ const index = () => {
             console.log(data.data);
             dispatch(setLoader(false));
             setPosts(data.data);
-
-            // console.log(data);
         } catch (error) {
             console.log(error.message);
         }
@@ -126,12 +124,11 @@ const index = () => {
                                             </div>
                                         </div>
                                         <p className='ml-5 text-2xl flex items-center'>{post.title ? post.title : null}</p>
-
                                     </div>
                                     <img className='w-full h-[600px] sm:min-h[400px]' src={post.content} alt="" />
                                     <div className='w-full h-20 border-2 border-black bg-slate-200 flex flex-row justify-between items-center'>
-                                        <Likes userId={currentUser._id} postId={post._id} initialLike={post.likes}></Likes>
-                                        <DisLikes userId={currentUser._id} postId={post._id} initialDisLike={post.dislikes}></DisLikes>
+                                        <Likes userId={currentUser._id} postId={post._id} initialLike={post.likes} getAllPostFunction={getAllPostFunction}></Likes>
+                                        <DisLikes userId={currentUser._id} postId={post._id} initialDisLike={post.dislikes} getAllPostFunction={getAllPostFunction}></DisLikes>
                                         <Comment userId={currentUser._id} postId={post._id} comment={post.comment} ></Comment>
                                         <i className=" mr-7 text-5xl ri-share-fill"></i>
                                     </div>

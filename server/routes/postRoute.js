@@ -111,6 +111,7 @@ router.post('/getOtherUserPost', authMiddleware, async (req, res) => {
     }
 })
 
+
 router.post('/likes', authMiddleware, async (req, res) => {
     try {
         const userId = req.body.userId;
@@ -129,18 +130,19 @@ router.post('/likes', authMiddleware, async (req, res) => {
                 { $push: { likes: userId } },
                 { new: true }
             )
-            const posts = await Post.findById(postId).populate('likes');
-            // console.log(posts);
-            res.send({
-                success: true,
-                data: posts
-            })
+            likeFlag = true;
         } else {
-            res.send({
-                success: false,
-                data: "already liked"
-            })
+            await Post.findByIdAndUpdate(
+                postId,
+                { $pull: { likes: userId } },
+                { new: true }
+            )
         }
+        const posts = await Post.findById(postId).populate('likes');
+        res.send({
+            success: true,
+            data: posts
+        })
     } catch (error) {
         res.send(error.message);
     }
@@ -164,18 +166,20 @@ router.post('/dislikes', authMiddleware, async (req, res) => {
                 { $push: { dislikes: userId } },
                 { new: true }
             )
-            const posts = await Post.findById(postId).populate('dislikes');
-            // console.log(posts);
-            res.send({
-                success: true,
-                data: posts
-            })
+
         } else {
-            res.send({
-                success: false,
-                data: "already disliked"
-            })
+            await Post.findByIdAndUpdate(
+                postId,
+                { $pull: { dislikes: userId } },
+                { new: true }
+            )
         }
+        const posts = await Post.findById(postId).populate('dislikes');
+        // console.log(posts);
+        res.send({
+            success: true,
+            data: posts
+        })
     } catch (error) {
         res.send(error.message);
     }

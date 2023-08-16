@@ -5,22 +5,17 @@ import { Avatar, Divider, List, Skeleton } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 
-const Likes = ({ userId, postId, initialLike }) => {
+const Likes = ({ userId, postId, initialLike, getAllPostFunction }) => {
     const navigate = useNavigate();
-    const [likes, SetLikes] = useState(initialLike);
     const [open, setOpen] = useState(false);
-    const [alreadyLiked, setAlreadyLiked] = useState(false);
 
     const handleClick = async () => {
         const result = await postLike({ userId: userId, postId: postId })
-        // console.log(result.data);
         if (result.success) {
-            setAlreadyLiked(!alreadyLiked);
-            const updatedLikes = [...likes, result.data.likes]
-            // console.log(updatedLikes);
-            SetLikes(updatedLikes);
+            getAllPostFunction();
         }
     }
+
     const handleVisitProfile = (id) => {
         localStorage.setItem('otherUserId', id);
         const currentUserId = localStorage.getItem('currentUserId');
@@ -30,9 +25,21 @@ const Likes = ({ userId, postId, initialLike }) => {
             navigate('/OthersProfile');
         }
     }
-    useEffect(() => {
-        setAlreadyLiked(initialLike.some(l => l._id === userId));
-    }, [likes])
+
+    const alreadyLike = () => {
+        let flag = false;
+        initialLike.forEach(li => {
+            if (li._id === userId) {
+                flag = true;
+            }
+        })
+        if (flag) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     const renderLikedUsers = () => {
         return (
             <div
@@ -47,7 +54,7 @@ const Likes = ({ userId, postId, initialLike }) => {
             >
 
                 <InfiniteScroll
-                    dataLength={likes.length}
+                    dataLength={initialLike.length}
                     loader={
                         <Skeleton
                             avatar
@@ -61,7 +68,7 @@ const Likes = ({ userId, postId, initialLike }) => {
                     scrollableTarget="scrollableDiv"
                 >
                     <List
-                        dataSource={likes}
+                        dataSource={initialLike}
                         renderItem={(item) => (
                             <div className='cursor-pointer' onClick={() => handleVisitProfile(item._id)}>
                                 <List.Item key={item._id}>
@@ -84,11 +91,11 @@ const Likes = ({ userId, postId, initialLike }) => {
         <div className='flex flex-col' onClick={handleClick}>
             <div className='ml-7 mr-7 text-5xl cursor-pointer'>
                 {
-                    alreadyLiked ? <i className='ri-thumb-up-fill' >{console.log(alreadyLiked)}</i> : <i className='ri-thumb-up-line'>{console.log(alreadyLiked)}</i>
+                    alreadyLike() ? <i className='ri-thumb-up-fill' ></i> : <i className='ri-thumb-up-line'></i>
 
                 }
             </div>
-            <div className='flex justify-center font-bold cursor-pointer mt-2' onClick={() => setOpen(true)}>{likes ? likes.length : 0} likes</div>
+            <div className='flex justify-center font-bold cursor-pointer mt-2' onClick={() => setOpen(true)}>{initialLike ? initialLike.length : 0} likes</div>
             <div>
                 <Modal
                     title="post Liked by"
