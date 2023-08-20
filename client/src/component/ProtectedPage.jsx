@@ -14,7 +14,6 @@ const ProtectedPage = ({ children }) => {
         const data = await getCurrentUser();
         console.log(data.data);
         localStorage.setItem('currentUserId', data.data._id);
-        // console.log(localStorage.getItem('currentUserId'));
         setCurrentUser(data.data);
         dispatch(setUser(data.data));
     }
@@ -24,7 +23,7 @@ const ProtectedPage = ({ children }) => {
     return (
         currentUser &&
         <div className=''>
-            <header className=' bg-sky-200'>
+            <header className=' bg-sky-200   w-full '>
                 <Row style={{ height: "50px", border: "2px solid gray" }}>
                     <Col span={6}>
                         <Row>
@@ -57,7 +56,9 @@ const ProtectedPage = ({ children }) => {
                     </Col>
                     <Col span={6} offset={2}>
                         <Row className='flex items-end justify-between'>
-                            <Col span={5} className='flex items-center justify-center '><i className="ri-mail-line text-4xl"></i></Col>
+                            <Col span={5} className='flex items-center justify-center '><i className="ri-mail-line text-4xl cursor-pointer" onClick={() => {
+                                navigate('/message');
+                            }}></i></Col>
                             <Col span={4} className=' flex items-center justify-center mr-8'><i className="ri-account-circle-fill text-4xl cursor-pointer"
                                 onClick={() => {
                                     navigate("/profile")

@@ -102,7 +102,6 @@ const Comment = ({ userId, postId, comment }) => {
                         <textarea type="text" placeholder='write something' className='h-14 w-full bg-sky-50' onChange={handleComment} />
                         <div className='bg-sky-50 cursor-pointer flex justify-center items-center' onClick={commentFun}><i className="ri-send-plane-2-fill w-10 text-4xl"></i></div>
                     </div>
-
                 </Modal>
             </div>
         </div>

@@ -106,36 +106,37 @@ const index = () => {
 
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                    <div className='w-full bg-slate-50'>
-                        {
-                            posts &&
-                            posts.map((post) => (
-                                <div className=' border-spacing-2 border-black flex items-center justify-center flex-col mb-5' key={post._id}>
-                                    <div className='w-full h-14 border-2 border-black bg-slate-200 flex flex-row  '>
-                                        <div className='flex flex-col'>
-                                            <div className='flex flex-row'>
-                                                <p className='font-mono text-2xl ml-1 font-bold cursor-pointer ' onClick={() => handleVisitProfile(post.user._id)}>{post.user.username}</p>
-                                                {
-                                                    showFollowButton(post.user._id) ? <p className='cursor-pointer ml-2 text- flex items-center'
-                                                        onClick={() => followUserFun(post.user._id)}
-                                                    >follow</p> : null
-                                                }
+                    <div className='h-screen '>
+                        <div className='w-full bg-slate-50 overflow-y-scroll h-full mb-2'>
+                            {
+                                posts &&
+                                posts.map((post) => (
+                                    <div className=' border-spacing-2 border-black flex items-center justify-center flex-col mb-5' key={post._id}>
+                                        <div className='w-full h-14 border-2 border-black bg-slate-200 flex flex-row  '>
+                                            <div className='flex flex-col'>
+                                                <div className='flex flex-row'>
+                                                    <p className='font-mono text-2xl ml-1 font-bold cursor-pointer ' onClick={() => handleVisitProfile(post.user._id)}>{post.user.username}</p>
+                                                    {
+                                                        showFollowButton(post.user._id) ? <p className='cursor-pointer ml-2 text- flex items-center'
+                                                            onClick={() => followUserFun(post.user._id)}
+                                                        >follow</p> : null
+                                                    }
 
+                                                </div>
                                             </div>
+                                            <p className='ml-5 text-2xl flex items-center'>{post.title ? post.title : null}</p>
                                         </div>
-                                        <p className='ml-5 text-2xl flex items-center'>{post.title ? post.title : null}</p>
+                                        <img className='w-full h-[600px] sm:min-h[400px]' src={post.content} alt="" />
+                                        <div className='w-full h-20 border-2 border-black bg-slate-200 flex flex-row justify-between items-center'>
+                                            <Likes userId={currentUser._id} postId={post._id} initialLike={post.likes} getAllPostFunction={getAllPostFunction}></Likes>
+                                            <DisLikes userId={currentUser._id} postId={post._id} initialDisLike={post.dislikes} getAllPostFunction={getAllPostFunction}></DisLikes>
+                                            <Comment userId={currentUser._id} postId={post._id} comment={post.comment} ></Comment>
+                                            <i className=" mr-7 text-5xl ri-share-fill"></i>
+                                        </div>
                                     </div>
-                                    <img className='w-full h-[600px] sm:min-h[400px]' src={post.content} alt="" />
-                                    <div className='w-full h-20 border-2 border-black bg-slate-200 flex flex-row justify-between items-center'>
-                                        <Likes userId={currentUser._id} postId={post._id} initialLike={post.likes} getAllPostFunction={getAllPostFunction}></Likes>
-                                        <DisLikes userId={currentUser._id} postId={post._id} initialDisLike={post.dislikes} getAllPostFunction={getAllPostFunction}></DisLikes>
-                                        <Comment userId={currentUser._id} postId={post._id} comment={post.comment} ></Comment>
-                                        <i className=" mr-7 text-5xl ri-share-fill"></i>
-                                    </div>
-                                </div>
-                            ))
-                        }
-
+                                ))
+                            }
+                        </div>
                     </div>
                 </Col>
                 {/* this is for showing post comments */}
