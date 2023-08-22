@@ -20,10 +20,12 @@ const server = http.createServer(app);
 const dbConfig = require('./config/dbConfig');
 const userRoute = require('../server/routes/userRoute');
 const postRoute = require('../server/routes/postRoute')
+const messageRoute = require('../server/routes/messageRoute')
 
 
 app.use('/api/users', userRoute);
 app.use('/api/posts', postRoute);
+app.use('/api/message', messageRoute)
 
 
 // io.on('connection', (socket) => {

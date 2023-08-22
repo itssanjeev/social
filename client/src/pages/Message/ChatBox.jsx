@@ -2,11 +2,13 @@ import { Button, Input } from 'antd';
 import React from 'react'
 import { useState, useEffect } from 'react';
 // import socket from '../../socket/Socket';
-import Devider from '../../component/Devider';
-const ChatBox = () => {
-    const [message, setMessage] = useState('');
-    const [sendMessage, setSendMessage] = useState([]);
-    const [receivedMessages, setReceivedMessages] = useState([]);
+import { sentMessage } from '../../apicall/messageApi';
+import { getAllMessage } from '../../apicall/messageApi';
+
+
+const ChatBox = ({ otherUser }) => {
+    const [text, setText] = useState('');
+    const [message, setMessage] = useState([]);
 
     /* useEffect(() => {
            socket.on('connect', () => {
@@ -31,37 +33,53 @@ const ChatBox = () => {
        };
         */
 
-    const handleSendMessage = () => {
-        setSendMessage([...sendMessage, message]);
-        setMessage('');
+    const currentUserId = localStorage.getItem('currentUserId');
+    const otherUserIds = localStorage.getItem('otherUserId');
+    // const otherUserId = localStorage.getItem('otheruserId');
+    const getAllMessageFun = async () => {
+        try {
+            const response = await getAllMessage({ otherUserId: otherUserIds, currentUserId: currentUserId });
+            console.log(response);
+            setMessage(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+    const handleSendMessage = async () => {
+        const result = await sentMessage({ msg: text, currentUserId: currentUserId, otherUserId: otherUserIds });
+        console.log(result);
+        setText('');
+        getAllMessageFun();
     }
     const handleChange = (e) => {
-        setMessage(e.target.value)
-        // console.log(message);
+        setText(e.target.value)
     }
+    useEffect(() => {
+        getAllMessageFun();
+    }, [])
     return (
         <div>
-            <div className='text-2xl h-10 bg-slate-300 flex  justify-center'>Name </div>
+            <div className='text-2xl h-10 bg-slate-300 flex  justify-center'>{otherUser?.name} </div>
             <div className="h-screen mb-8 overflow-y-scroll flex flex-col-reverse">
                 <div className="p-4">
                     {
-                        sendMessage?.map((msg, index) => (
+                        message.map((m) => (
                             <>
-                                <div key={index}>{msg}</div>
-                                <Devider></Devider>
+                                <div key={m._id} className={`mb-2 font-semibold text-xl ${m.sender == currentUserId ? 'bg-red-200 text-right mr-1' : 'bg-blue-200 text-left ml-1'}`}>
+                                    {m.messages[0].content}</div>
                             </>
                         ))
-
                     }
                 </div>
             </div>
 
-            <div className='flex flex-row absolute bottom-1 w-full'>
+            <div className='flex flex-row absolute bottom-1 w-full ml-2 mr-3'>
                 <Input
                     type="text"
                     placeholder='write something'
                     className='text-black flex-grow bg-slate-100 border border-black'
-                    onChange={handleChange} value={message}
+                    onChange={handleChange} value={text}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             e.preventDefault();

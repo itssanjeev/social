@@ -14,23 +14,23 @@ const index = () => {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const getCurrentUsersFun = async () => {
-    //     try {
-    //         // console.log(user);
-    //         dispatch(setLoader(true));
-    //         const currentUser = await getCurrentUser();
-    //         console.log(currentUser);
-    //         if (currentUser.success === false) {
-    //             navigate("/login");
-    //         }
-    //         console.log(currentUser);
-    //         dispatch(setUser(currentUser.data));
-    //         dispatch(setLoader(false));
-    //     } catch (error) {
-    //         console.log(error.message);
+    const getCurrentUsersFun = async () => {
+        try {
+            // console.log(user);
+            dispatch(setLoader(true));
+            const currentUser = await getCurrentUser();
+            console.log(currentUser);
+            if (currentUser.success === false) {
+                navigate("/login");
+            }
+            console.log(currentUser);
+            dispatch(setUser(currentUser.data));
+            dispatch(setLoader(false));
+        } catch (error) {
+            console.log(error.message);
 
-    //     }
-    // }
+        }
+    }
     const getAllPostFunction = async () => {
         try {
             dispatch(setLoader(true));
@@ -96,6 +96,7 @@ const index = () => {
             await getAllPostFunction();
         };
         fetchData();
+        getCurrentUser();
     }, []);
 
     return (

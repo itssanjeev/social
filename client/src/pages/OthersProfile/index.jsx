@@ -121,7 +121,7 @@ const index = () => {
                                 </div>
                             </div>
                             <div className=' mt-5 flex flex-row justify-center'>
-                                <div className='bg-gray-600 h-8 text-2xl  rounded-md cursor-pointer text-sky-100' >Message</div>
+                                <div className='bg-gray-600 h-8 text-2xl  rounded-md cursor-pointer text-sky-100' onClick={() => navigate('/message')}>Message</div>
                                 <div className='bg-gray-600 h-8 text-2xl ml-3 rounded-md cursor-pointer text-sky-100' onClick={followUserFun}>{showFollowButton() ? 'follow' : 'following'}</div>
                             </div>
                             <Devider className='mt-8'></Devider>
