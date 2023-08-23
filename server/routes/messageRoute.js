@@ -2,6 +2,7 @@ const router = require('express').Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const User = require('../models/userModel');
 const Message = require('../models/messageModel');
+const MessageUserList = require('../models/messageUserListModel');
 
 //sent message to user 
 router.post('/sentMessage', authMiddleware, async (req, res) => {
@@ -59,5 +60,33 @@ router.post('/getMessage', authMiddleware, async (req, res) => {
         res.send(error.message);
     }
 })
+
+router.post('/messageUserList', authMiddleware, async (req, res) => {
+
+    const receiverId = req.body.otherUserId;
+    const senderId = req.body.currentUserId;
+    try {
+        let senderDocument = await MessageUserList.findOne({ sender: senderId });
+        if (!senderDocument) {
+            senderDocument = new MessageUserList({
+                sender: senderId,
+                reciver: []
+            });
+        }
+        if (!senderDocument.reciver.includes(receiverId)) {
+            senderDocument.reciver.push(receiverId);
+            await senderDocument.save();
+        }
+        await senderDocument.populate('reciver');
+        res.send({
+            success: true,
+            message: "list of user Message",
+            recievers: senderDocument.reciver
+        })
+    } catch (error) {
+        res.send(error.message);
+    }
+})
+
 module.exports = router;
 

@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Avatar, Divider, List, Skeleton } from 'antd';
+import { messageUserList } from '../../apicall/messageApi';
 
-const UserList = () => {
+const UserList = ({ otherUser }) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-    const loadMoreData = () => {
-        if (loading) {
-            return;
+    const currentUserId = localStorage.getItem('currentUserId');
+    const otherUserId = localStorage.getItem('otherUserId');
+    const userListFun = async () => {
+        try {
+            const result = await messageUserList({ currentUserId: currentUserId, otherUserId: otherUserId });
+            console.log(result);
+            setData(result.recievers)
+        } catch (error) {
+            console.log(error);
         }
-        setLoading(true);
-        fetch('https://randomusersss.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo')
-            .then((res) => res.json())
-            .then((body) => {
-                setData([...data, ...body.results]);
-                setLoading(false);
-            })
-            .catch(() => {
-                setLoading(false);
-            });
-    };
+    }
+    // const handleUserList = async (otherid) => {
+    //     console.log(otherid);
+    // }
     useEffect(() => {
-        loadMoreData();
+        userListFun();
+        // loadMoreData();
     }, []);
     return (
         <div
@@ -35,8 +36,7 @@ const UserList = () => {
         >
             <InfiniteScroll
                 dataLength={data.length}
-                next={loadMoreData}
-                hasMore={data.length < 50}
+                // hasMore={data.length < 50}
                 loader={
                     <Skeleton
                         avatar
@@ -52,13 +52,13 @@ const UserList = () => {
                 <List
                     dataSource={data}
                     renderItem={(item) => (
-                        <List.Item key={item.email}>
-                            <List.Item.Meta
-                                avatar={<Avatar src={item.picture.large} />}
-                                title={<a href="https://ant.design">{item.name.last}</a>}
-                                description={item.email}
-                            />
-                            <div>Content</div>
+                        <List.Item key={item._id}>
+                            <div >
+                                <List.Item.Meta
+                                    avatar={<Avatar src={item.profilePicture} />}
+                                    title={<div>{item.username}</div>}
+                                />
+                            </div>
                         </List.Item>
                     )}
                 />

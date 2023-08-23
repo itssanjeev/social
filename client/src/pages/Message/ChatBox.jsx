@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { sentMessage } from '../../apicall/messageApi';
 import { getAllMessage } from '../../apicall/messageApi';
 
+const { TextArea } = Input;
 
 const ChatBox = ({ otherUser }) => {
     const [text, setText] = useState('');
@@ -75,8 +76,9 @@ const ChatBox = ({ otherUser }) => {
             </div>
 
             <div className='flex flex-row absolute bottom-1 w-full ml-2 mr-3'>
-                <Input
+                <Input.TextArea
                     type="text"
+                    size='small'
                     placeholder='write something'
                     className='text-black flex-grow bg-slate-100 border border-black'
                     onChange={handleChange} value={text}
@@ -87,7 +89,7 @@ const ChatBox = ({ otherUser }) => {
                         }
                     }}
                 />
-                <Button className='bg-gray-400 ' onClick={handleSendMessage}>send</Button>
+                <Button size='large' className='bg-gray-400 ' onClick={handleSendMessage}>send</Button>
             </div>
         </div>
     )

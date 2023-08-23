@@ -20,3 +20,13 @@ export const getAllMessage = async (payload) => {
         return error;
     }
 }
+
+export const messageUserList = async (payload) => {
+    try {
+        const response = await axiosInstances.post('/api/message/messageUserList', payload);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+}
