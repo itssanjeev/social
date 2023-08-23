@@ -23,7 +23,7 @@ const Message = () => {
         <>
             <Row className=''>
                 <Col xs={24} sm={24} md={8} lg={8} xl={8} className='w-full border-2 border-blue-800 bg-sky-100'>
-                    <UserList otherUser={otherUser}></UserList>
+                    <UserList otherUser={otherUser} getOtherUserFun={getOtherUserFun}></UserList>
                 </Col>
                 <Col xs={0} sm={0} md={16} lg={16} xl={16} >
                     <ChatBox otherUser={otherUser}></ChatBox>

@@ -58,7 +58,7 @@ const ChatBox = ({ otherUser }) => {
     }
     useEffect(() => {
         getAllMessageFun();
-    }, [])
+    }, [otherUserIds])
     return (
         <div>
             <div className='text-2xl h-10 bg-slate-300 flex  justify-center'>{otherUser?.name} </div>
@@ -68,7 +68,8 @@ const ChatBox = ({ otherUser }) => {
                         message.map((m) => (
                             <>
                                 <div key={m._id} className={`mb-2 font-semibold text-xl ${m.sender == currentUserId ? 'bg-red-200 text-right mr-1' : 'bg-blue-200 text-left ml-1'}`}>
-                                    {m.messages[0].content}</div>
+                                    <div className='m-1'>{m.messages[0].content}</div>
+                                </div>
                             </>
                         ))
                     }
