@@ -70,18 +70,18 @@ router.post('/messageUserList', authMiddleware, async (req, res) => {
         if (!senderDocument) {
             senderDocument = new MessageUserList({
                 sender: senderId,
-                reciver: []
+                receiver: []
             });
         }
-        if (!senderDocument.reciver.includes(receiverId)) {
-            senderDocument.reciver.push(receiverId);
+        if (!senderDocument.receiver.includes(receiverId)) {
+            senderDocument.receiver.push(receiverId);
             await senderDocument.save();
         }
-        await senderDocument.populate('reciver');
+        await senderDocument.populate('receiver');
         res.send({
             success: true,
             message: "list of user Message",
-            recievers: senderDocument.reciver
+            recievers: senderDocument.receiver
         })
     } catch (error) {
         res.send(error.message);
