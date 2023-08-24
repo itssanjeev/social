@@ -4,26 +4,28 @@ import { Avatar, Divider, List, Skeleton } from 'antd';
 import { messageUserList } from '../../apicall/messageApi';
 
 const UserList = ({ getOtherUserFun }) => {
-    // const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const currentUserId = localStorage.getItem('currentUserId');
-    const otherUserId = localStorage.getItem('otherUserId');
+    const messageUserListId = localStorage.getItem('messageUserListId');
     const userListFun = async () => {
         try {
-            const result = await messageUserList({ currentUserId: currentUserId, otherUserId: otherUserId });
-            // console.log(result);
+            const result = await messageUserList({ currentUserId: currentUserId, otherUserId: messageUserListId });
+            console.log(result);
             setData(result.recievers)
         } catch (error) {
             console.log(error);
         }
     }
     const handleUserList = async (otherid) => {
-        localStorage.setItem('otherUserId', otherid);
+        console.log(otherid);
+        localStorage.setItem('messageUserListId', otherid)
         getOtherUserFun();
     }
     useEffect(() => {
         userListFun();
-    }, []);
+        // loadMoreData();
+    }, [messageUserListId]);
     return (
         <div
             id="scrollableDiv"
@@ -35,8 +37,7 @@ const UserList = ({ getOtherUserFun }) => {
             className='h-screen'
         >
             <InfiniteScroll
-                dataLength={data.length}
-                // hasMore={data.length < 50}
+                dataLength={data?.length}
                 loader={
                     <Skeleton
                         avatar
@@ -52,7 +53,7 @@ const UserList = ({ getOtherUserFun }) => {
                 <List
                     dataSource={data}
                     renderItem={(item) => (
-                        <List.Item key={item._id} className={`cursor-pointer ${otherUserId == item._id ? `bg-green-200` : `bg-sky-100`}`} onClick={() => handleUserList(item._id)}>
+                        <List.Item key={item._id} onClick={() => handleUserList(item._id)} className={`cursor-pointer ${item._id === messageUserListId ? 'bg-green-200' : 'bg-sky-100'}`}>
                             <div >
                                 <List.Item.Meta
                                     avatar={<Avatar src={item.profilePicture} />}
