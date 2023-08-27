@@ -61,6 +61,7 @@ router.post('/getMessage', authMiddleware, async (req, res) => {
     }
 })
 
+//view the list of other user whom current user is massage
 router.post('/messageUserList', authMiddleware, async (req, res) => {
 
     const receiverId = req.body.otherUserId;

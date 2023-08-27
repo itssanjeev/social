@@ -7,4 +7,5 @@ connection.on('connected', () => {
 connection.on('error', () => {
     console.log('database connection failed!');
 })
+
 module.exports = connection;

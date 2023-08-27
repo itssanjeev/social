@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const mongoose = require('mongoose');
 const authMiddleware = require('../middleware/authMiddleware');
 const User = require('../models/userModel')
 const Post = require('../models/postModel');
@@ -7,6 +8,7 @@ const cloudinary = require('../config/cloudinary');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const Notification = require('../models/noficationModel');
 
 // get image form pc to local storage
 const storage = multer.diskStorage({
@@ -111,39 +113,53 @@ router.post('/getOtherUserPost', authMiddleware, async (req, res) => {
     }
 })
 
-
+//like the posts 
 router.post('/likes', authMiddleware, async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try {
         const userId = req.body.userId;
         const postId = req.body.postId;
-        const beforeLikePost = await Post.findOne({ _id: postId });
+        const beforeLikePost = await Post.findOne({ _id: postId }).session(session);
         const liked = beforeLikePost.likes;
 
         //if user id present in liked array it return true else false 
         const alreadyLiked = liked.some(like => {
             return like._id.toString() === userId;
         });
-        console.log(alreadyLiked);
+        // console.log(alreadyLiked);
         if (!alreadyLiked) {
             await Post.findByIdAndUpdate(
                 postId,
                 { $push: { likes: userId } },
-                { new: true }
+                { new: true, session }
             )
-            likeFlag = true;
+
+            // likeFlag = true;
+            const notification = new Notification({
+                user: userId,
+                action: 'like',
+                post: postId
+            });
+            await notification.save();
+
         } else {
             await Post.findByIdAndUpdate(
                 postId,
                 { $pull: { likes: userId } },
-                { new: true }
+                { new: true, session }
             )
         }
-        const posts = await Post.findById(postId).populate('likes');
+        const posts = await Post.findById(postId).populate('likes').session(session);
+        await session.commitTransaction();
+        session.endSession();
         res.send({
             success: true,
             data: posts
         })
     } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
         res.send(error.message);
     }
 })

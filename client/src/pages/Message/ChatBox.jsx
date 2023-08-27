@@ -35,11 +35,11 @@ const ChatBox = ({ otherUser }) => {
         */
 
     const currentUserId = localStorage.getItem('currentUserId');
-    const otherUserIds = localStorage.getItem('otherUserId');
+    const messageUserListId = localStorage.getItem('messageUserListId');
     // const otherUserId = localStorage.getItem('otheruserId');
     const getAllMessageFun = async () => {
         try {
-            const response = await getAllMessage({ otherUserId: otherUserIds, currentUserId: currentUserId });
+            const response = await getAllMessage({ otherUserId: messageUserListId, currentUserId: currentUserId });
             console.log(response);
             setMessage(response.data);
         } catch (error) {
@@ -48,7 +48,7 @@ const ChatBox = ({ otherUser }) => {
 
     }
     const handleSendMessage = async () => {
-        const result = await sentMessage({ msg: text, currentUserId: currentUserId, otherUserId: otherUserIds });
+        const result = await sentMessage({ msg: text, currentUserId: currentUserId, otherUserId: messageUserListId });
         console.log(result);
         setText('');
         getAllMessageFun();
@@ -58,7 +58,7 @@ const ChatBox = ({ otherUser }) => {
     }
     useEffect(() => {
         getAllMessageFun();
-    }, [otherUserIds])
+    }, [messageUserListId])
     return (
         <div>
             <div className='text-2xl h-10 bg-slate-300 flex  justify-center'>{otherUser?.name} </div>
