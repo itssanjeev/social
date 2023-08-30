@@ -221,6 +221,9 @@ router.post('/comment', authMiddleware, async (req, res) => {
         const userId = req.body.userId;
         const userComments = req.body.comment;
         const user = await User.findById(userId);
+        const post = await Post.findOne({ _id: postId });
+        const postOwner = post.user.toString();
+
         const newComment = new Comment({
             user: user._id,
             comment: userComments
@@ -231,14 +234,30 @@ router.post('/comment', authMiddleware, async (req, res) => {
             { $push: { comment: comment._id } },
             { new: true }
         )
+
+
         const newdata = await Post.findById(postId).populate({
             path: 'comment',
             populate: {
                 path: 'user',
             }
         }).select('comment').exec();
-        // console.log(updatedPost);
-        // const realComment = await Post.findById(postId).populate('comment');
+
+        /*notification part */
+        const notification = new Notification({
+            receiver: postOwner,
+            sender: userId,
+            action: 'comment',
+            post: postId,
+            read: false,
+        });
+        await notification.save();
+        const userSocket = socketManager.getUserSocket(postOwner);
+        if (userSocket) {
+            console.log('Sending notification...');
+            userSocket.emit('notification', `${user.username} has commented you post ${postId}`);
+        }
+
         res.send({
             message: "commented successfully",
             data: newdata,
