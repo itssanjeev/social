@@ -6,6 +6,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const cloudinary = require('../config/cloudinary')
 const multer = require('multer');
 const path = require('path');
+const socketManager = require('../socket/socketManager');
 
 router.post('/register', async (req, res) => {
     try {
@@ -47,7 +48,8 @@ router.post('/login', async (req, res) => {
             throw new Error('wrong password');
         }
         const token = jwt.sign({ userid: user._id }, process.env.SECRET_TOKEN, { expiresIn: "30d" });
-
+        socketManager.setUserSocket(user._id, null);
+        // socketManager.getUserSocket(user._id, 'login socket route');
         res.send({
             success: true,
             message: "login successfully",

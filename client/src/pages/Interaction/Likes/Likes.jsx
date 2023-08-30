@@ -10,6 +10,7 @@ const Likes = ({ userId, postId, initialLike, getAllPostFunction }) => {
     const [open, setOpen] = useState(false);
 
     const handleClick = async () => {
+        console.log('click on like');
         const result = await postLike({ userId: userId, postId: postId })
         if (result.success) {
             getAllPostFunction();

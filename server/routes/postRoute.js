@@ -9,6 +9,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const Notification = require('../models/noficationModel');
+const socketManager = require('../socket/socketManager');
 
 // get image form pc to local storage
 const storage = multer.diskStorage({
@@ -118,15 +119,20 @@ router.post('/likes', authMiddleware, async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
+        //userId is the current userId who is liking the post 
         const userId = req.body.userId;
         const postId = req.body.postId;
         const beforeLikePost = await Post.findOne({ _id: postId }).session(session);
         const liked = beforeLikePost.likes;
+        const postOwner = beforeLikePost.user.toString();
+        console.log(postOwner, 'post like 128');
+        const currentUser = await User.find({ _id: userId });
 
         //if user id present in liked array it return true else false 
         const alreadyLiked = liked.some(like => {
             return like._id.toString() === userId;
         });
+
         // console.log(alreadyLiked);
         if (!alreadyLiked) {
             await Post.findByIdAndUpdate(
@@ -135,14 +141,20 @@ router.post('/likes', authMiddleware, async (req, res) => {
                 { new: true, session }
             )
 
-            // likeFlag = true;
+            //i have to send the notification whose post will be liked so i am stroing user as postowner id
             const notification = new Notification({
-                user: userId,
+                receiver: postOwner,
+                sender: userId,
                 action: 'like',
-                post: postId
+                post: postId,
+                read: false,
             });
             await notification.save();
-
+            const userSocket = socketManager.getUserSocket(postOwner);
+            if (userSocket) {
+                console.log('Sending notification...');
+                userSocket.emit('notification', `${currentUser[0].username} has liked you post ${postId}`);
+            }
         } else {
             await Post.findByIdAndUpdate(
                 postId,
@@ -158,8 +170,10 @@ router.post('/likes', authMiddleware, async (req, res) => {
             data: posts
         })
     } catch (error) {
+        console.log(error.message);
         await session.abortTransaction();
         session.endSession();
+
         res.send(error.message);
     }
 })
@@ -237,3 +251,8 @@ router.post('/comment', authMiddleware, async (req, res) => {
 })
 
 module.exports = router;
+
+
+
+
+

@@ -3,18 +3,19 @@ const app = express();
 app.use(express.json());
 require('dotenv').config();
 const cors = require('cors');
+const socketManager = require('../server/socket/socketManager');
 app.use(cors());
 
 
 const http = require('http');
 const server = http.createServer(app);
-// const io = require('socket.io')(server, {
-//    cors: {
-//       origin: 'http://localhost:5173',
-//       methods: ['GET', 'POST'],
-//       credentials: true
-//    }
-// });
+const io = require('socket.io')(server, {
+    cors: {
+        origin: 'http://localhost:5173',
+        methods: ['GET', 'POST'],
+        credentials: true
+    }
+});
 
 
 const dbConfig = require('./config/dbConfig');
@@ -30,18 +31,17 @@ app.use('/api/message', messageRoute)
 app.use('/api/notification', notificationRoute);
 
 
-// io.on('connection', (socket) => {
-//    console.log('A user connected:', socket.id);
-
-//    socket.on('disconnect', () => {
-//       console.log('User disconnected:', socket.id);
-//    });
-
-//    socket.on('chatMessage', (message) => {
-//       console.log('Received message:', message);
-//       io.emit('chatMessage', message);
-//    });
-// });
+io.on('connection', (socket) => {
+    socket.on('joinRoom', currentUserId => {
+        console.log('A user connected:', socket.id);
+        console.log('user', currentUserId);
+        socket.join(currentUserId);
+        socketManager.setUserSocket(currentUserId, socket);
+    })
+    socket.on('disconnect', () => {
+        console.log('user disconnected', socket.id);
+    })
+});
 
 
 const port = process.env.PORT || 8080;

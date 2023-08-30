@@ -1,15 +1,20 @@
-import { Col, Row } from 'antd';
+import { Col, Row, notification } from 'antd';
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '../apicall/userApi';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/userSlice';
+import socket from '../socket/Socket';
+import { getNotificationApi } from '../apicall/notificationApi';
+import { setNotification } from '../redux/notificationSlice';
 
 
 const ProtectedPage = ({ children }) => {
+    const currentUserId = localStorage.getItem('currentUserId');
     const [currentUser, setCurrentUser] = useState();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
     const currentUserFun = async () => {
         const data = await getCurrentUser();
         console.log(data.data);
@@ -19,7 +24,54 @@ const ProtectedPage = ({ children }) => {
     }
     useEffect(() => {
         currentUserFun();
-    }, [])
+    }, []);
+
+
+    /*------------------------------------notification part from here----------------------------*/
+    const [countNotification, setCountNotification] = useState(0);
+    useEffect(() => {
+        socket.emit('joinRoom', currentUserId);
+    }, []);
+    useEffect(() => {
+        // Set up the event listener when the component mounts
+        const handleNotification = message => {
+            if (message) {
+                getNotificationFun();
+            }
+        };
+
+        socket.on('notification', handleNotification);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            socket.off('notification', handleNotification);
+        };
+    }, []);
+
+
+    const getNotificationFun = async () => {
+
+        try {
+            const result = await getNotificationApi({ currentUserId: currentUserId });
+            console.log(location, 'protectedpage location 56');
+            for (const element of result.data) {
+                if (element.read === false) {
+                    setCountNotification(countNotification + 1);
+                    break;
+                } else {
+                    setCountNotification(0);
+                }
+            };
+            dispatch(setNotification(result.data));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        if (location.pathname !== '/notification') {
+            getNotificationFun();
+        }
+    }, [location]);
     return (
         currentUser &&
         <div className=''>
@@ -47,7 +99,7 @@ const ProtectedPage = ({ children }) => {
                                     navigate('/')
                                 }}
                             ></i></Col>
-                            <Col span={6} className='flex items-center justify-center'><i className="ri-notification-2-line text-4xl cursor-pointer" onClick={() => { navigate('/notification') }}></i></Col>
+                            <Col span={6} className='flex items-center justify-center'><i className={`ri-notification-2-line text-4xl cursor-pointer ${countNotification > 0 ? 'text-red-700 animate-pulse' : ''}`} onClick={() => { navigate('/notification') }} ></i></Col>
                             <Col span={6} className='flex items-center justify-center cursor-pointer'
                                 onClick={() => { navigate('/search') }}>
                                 <i className="ri-search-line text-4xl"></i>
