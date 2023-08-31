@@ -241,9 +241,9 @@ router.post('/comment', authMiddleware, async (req, res) => {
             populate: {
                 path: 'user',
             }
-        }).select('comment').exec();
+        }).select('comment').sort({ createdAt: -1 }).exec();
 
-        /*notification part */
+        /*---------------------notification part----------------*/
         const notification = new Notification({
             receiver: postOwner,
             sender: userId,
@@ -257,7 +257,7 @@ router.post('/comment', authMiddleware, async (req, res) => {
             console.log('Sending notification...');
             userSocket.emit('notification', `${user.username} has commented you post ${postId}`);
         }
-
+        /*--------------------------------------------------------*/
         res.send({
             message: "commented successfully",
             data: newdata,
