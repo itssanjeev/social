@@ -4,6 +4,7 @@ import { loginUser } from '../../apicall/userApi';
 import { Link, useNavigate } from 'react-router-dom';
 import { setUser } from '../../redux/userSlice';
 import { useDispatch } from 'react-redux';
+import { getCurrentUser } from '../../apicall/userApi';
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -12,10 +13,18 @@ const Login = () => {
         try {
             const response = await loginUser(values);
             console.log(response);
-            if (response.success) {
+            if (response.success === true) {
                 dispatch(setUser(response.data));
                 localStorage.setItem("token", response.data);
+
                 setIsLogin(true);
+                try {
+                    const data = await getCurrentUser();
+                    localStorage.setItem('currentUserId', data.data._id);
+                } catch (error) {
+                    console.log(error);
+                }
+
                 navigate("/");
             } else {
                 throw new error(response.message);

@@ -19,7 +19,7 @@ const index = () => {
             // console.log(user);
             dispatch(setLoader(true));
             const currentUser = await getCurrentUser();
-            console.log(currentUser);
+            console.log(currentUser.success);
             if (currentUser.success === false) {
                 navigate("/login");
             }

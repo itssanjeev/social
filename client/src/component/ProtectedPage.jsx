@@ -10,17 +10,23 @@ import { setNotification } from '../redux/notificationSlice';
 
 
 const ProtectedPage = ({ children }) => {
-    const currentUserId = localStorage.getItem('currentUserId');
+    let currentUserId = localStorage.getItem('currentUserId');
     const [currentUser, setCurrentUser] = useState();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
+
     const currentUserFun = async () => {
         const data = await getCurrentUser();
-        console.log(data.data);
-        localStorage.setItem('currentUserId', data.data._id);
-        setCurrentUser(data.data);
-        dispatch(setUser(data.data));
+        if (!currentUserId) {
+            navigate('/login');
+            return;
+        } else {
+            setCurrentUser(data.data);
+            dispatch(setUser(data.data));
+        }
+        // localStorage.setItem('currentUserId', data.data._id);
+
     }
     useEffect(() => {
         currentUserFun();
@@ -53,16 +59,19 @@ const ProtectedPage = ({ children }) => {
 
         try {
             const result = await getNotificationApi({ currentUserId: currentUserId });
-            console.log(location, 'protectedpage location 56');
-            for (const element of result.data) {
-                if (element.read === false) {
-                    setCountNotification(countNotification + 1);
-                    break;
-                } else {
-                    setCountNotification(0);
-                }
-            };
-            dispatch(setNotification(result.data));
+            //console.log(location, 'protectedpage location 56');
+            if (result && Array.isArray(result.data)) {
+                for (const element of result?.data) {
+                    if (element.read === false) {
+                        setCountNotification(countNotification + 1);
+                        break;
+                    } else {
+                        setCountNotification(0);
+                    }
+                };
+                dispatch(setNotification(result.data));
+            }
+
         } catch (error) {
             console.log(error);
         }

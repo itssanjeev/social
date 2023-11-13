@@ -25,6 +25,7 @@ export const loginUser = async (payload) => {
 export const getCurrentUser = async () => {
     try {
         const response = await axiosInstances.get('/api/users/get-current-user');
+        // console.log(response.data), 'current user api 28';
         return response.data;
     } catch (error) {
         return error.message;
