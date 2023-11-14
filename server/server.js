@@ -4,7 +4,11 @@ app.use(express.json());
 require('dotenv').config();
 const cors = require('cors');
 const socketManager = require('../server/socket/socketManager');
-app.use(cors());
+app.use(cors({
+    origin: ["https://deploy-mern-1whq.vercel.app"],
+    methods: ["POST", "GET"],
+    credentials: true
+}));
 
 
 const http = require('http');
