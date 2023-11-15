@@ -1,11 +1,17 @@
 {
     "version": 2,
-    "name": "social media",
-    "framework": "node",
-    "routes": [
+    "name": "",
+    "builds": [
         {
-            "src": "/(.*)",
-            "dest": "/"
+            "src": "server.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "framework": "node",
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/"
         }
     ]
 }
