@@ -1,12 +1,6 @@
 {
     "version": 2,
     "name": "",
-    "builds": [
-        {
-            "src": "server.js",
-            "use": "@vercel/node"
-        }
-    ],
     "framework": "node",
     "rewrites": [
         {
