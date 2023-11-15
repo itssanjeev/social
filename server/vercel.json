@@ -1,11 +1,10 @@
 {
     "version": 2,
-    "name": "",
-    "framework": "node",
-    "rewrites": [
+    "name": "music-album",
+    "routes": [
         {
-            "source": "/(.*)",
-            "destination": "/"
+            "src": "/(.*)",
+            "dest": "/"
         }
     ]
 }
