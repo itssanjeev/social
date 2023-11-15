@@ -8,7 +8,10 @@ app.use(cors());
 
 
 const http = require('http');
-const server = http.createServer(app);
+const server = app.listen(port, () => {
+    console.log(`server has been started on ${port}`);
+});
+
 const io = require('socket.io')(server, {
     cors: {
         origin: '*',
@@ -16,6 +19,7 @@ const io = require('socket.io')(server, {
         credentials: true
     }
 });
+
 
 
 const dbConfig = require('./config/dbConfig');
