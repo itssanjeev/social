@@ -5,7 +5,7 @@ require('dotenv').config();
 const cors = require('cors');
 const socketManager = require('../server/socket/socketManager');
 //sssapp.use(cors());
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 
 const http = require('http');
