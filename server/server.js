@@ -4,7 +4,8 @@ app.use(express.json());
 require('dotenv').config();
 const cors = require('cors');
 const socketManager = require('../server/socket/socketManager');
-
+//sssapp.use(cors());
+app.use(cors({ origin: '*' }));
 
 
 const http = require('http');
@@ -12,11 +13,7 @@ const server = app.listen(port, () => {
     console.log(`server has been started on ${port}`);
 });
 
-const corsOptions = {
-    origin: '*',
-    credentials: true,
-};
-app.use(cors(corsOptions));
+
 const io = require('socket.io')(server, {
     cors: {
         origin: '*',
