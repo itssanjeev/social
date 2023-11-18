@@ -6,7 +6,7 @@ function getToken() {
 }
 
 export const axiosInstances = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'connect-me-two.vercel.app',
     headers: {
         authorization: `Bearer ${getToken()}`
     }
