@@ -39,7 +39,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({ username: req.body.username });
-        // console.log(user._id);
+        console.log(user._id);
         if (!user) {
             throw new Error('user is not found');
         }

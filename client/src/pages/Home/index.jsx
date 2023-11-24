@@ -10,6 +10,9 @@ import { followUser } from '../../apicall/userApi';
 import Likes from '../Interaction/Likes/Likes';
 import DisLikes from '../Interaction/DisLikes/DisLikes';
 import Comment from '../Interaction/comments/comment';
+
+
+
 const index = () => {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
