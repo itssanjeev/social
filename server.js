@@ -3,7 +3,8 @@ const app = express();
 app.use(express.json());
 require('dotenv').config();
 const cors = require('cors');
-const socketManager = require('./socket/socketManager');
+const socketManager = require('./server/socket/socketManager');
+
 app.use(cors());
 const path = require('path');
 
@@ -18,7 +19,7 @@ const server = app.listen(port, () => {
 
 const io = require('socket.io')(server, {
     cors: {
-        origin: 'https://connect-me-front.vercel.app/',
+        origin: '*',
         methods: ['GET', 'POST'],
         credentials: true
     }
@@ -26,11 +27,11 @@ const io = require('socket.io')(server, {
 
 
 
-const dbConfig = require('./config/dbConfig');
-const userRoute = require('./routes/userRoute');
-const postRoute = require('./routes/postRoute')
-const messageRoute = require('./routes/messageRoute')
-const notificationRoute = require('./routes/notificationRoute');
+const dbConfig = require('./server/config/dbConfig');
+const userRoute = require('./server/routes/userRoute');
+const postRoute = require('./server/routes/postRoute')
+const messageRoute = require('./server/routes/messageRoute')
+const notificationRoute = require('./server/routes/notificationRoute');
 
 
 
