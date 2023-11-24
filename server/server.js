@@ -67,5 +67,3 @@ if (process.env.NODE_ENV === "production") {
     });
 }
 /*--------------------deployment-------------*/
-
-// server.listen(port, () => console.log(`server has been started on ${port}`));
