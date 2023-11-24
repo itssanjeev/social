@@ -3,7 +3,7 @@ const app = express();
 app.use(express.json());
 require('dotenv').config();
 const cors = require('cors');
-const socketManager = require('../server/socket/socketManager');
+const socketManager = require('./socket/socketManager');
 app.use(cors());
 const path = require('path');
 
@@ -27,10 +27,10 @@ const io = require('socket.io')(server, {
 
 
 const dbConfig = require('./config/dbConfig');
-const userRoute = require('../server/routes/userRoute');
-const postRoute = require('../server/routes/postRoute')
-const messageRoute = require('../server/routes/messageRoute')
-const notificationRoute = require('../server/routes/notificationRoute');
+const userRoute = require('./routes/userRoute');
+const postRoute = require('./routes/postRoute')
+const messageRoute = require('./routes/messageRoute')
+const notificationRoute = require('./routes/notificationRoute');
 
 
 
