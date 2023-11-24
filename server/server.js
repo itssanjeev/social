@@ -5,7 +5,7 @@ require('dotenv').config();
 const cors = require('cors');
 const socketManager = require('../server/socket/socketManager');
 //sssapp.use(cors());
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: 'https://connect-me-front.vercel.app/' }));
 
 
 const http = require('http');
@@ -16,7 +16,7 @@ const server = app.listen(port, () => {
 
 const io = require('socket.io')(server, {
     cors: {
-        origin: 'http://localhost:5173',
+        origin: 'https://connect-me-front.vercel.app/',
         methods: ['GET', 'POST'],
         credentials: true
     }
