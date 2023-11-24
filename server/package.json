@@ -4,7 +4,13 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node server.js"
+=======
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "build": "cd server  && npm install && cd ../client  && npm install && npm run build"
+>>>>>>> local
   },
   "author": "",
   "license": "ISC",

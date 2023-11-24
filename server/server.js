@@ -4,8 +4,8 @@ app.use(express.json());
 require('dotenv').config();
 const cors = require('cors');
 const socketManager = require('../server/socket/socketManager');
-//sssapp.use(cors());
-app.use(cors({ origin: 'https://connect-me-front.vercel.app/' }));
+app.use(cors());
+const path = require('path');
 
 
 const http = require('http');
@@ -31,6 +31,7 @@ const messageRoute = require('../server/routes/messageRoute')
 const notificationRoute = require('../server/routes/notificationRoute');
 
 
+
 app.use('/api/users', userRoute);
 app.use('/api/posts', postRoute);
 app.use('/api/message', messageRoute)
@@ -48,7 +49,20 @@ io.on('connection', (socket) => {
         console.log('user disconnected', socket.id);
     })
 });
+/*-------------------deployment---------------*/
+const __dirname1 = path.resolve();
 
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname1, "../client/dist")));
 
+    app.get("*", (req, res) =>
+        res.sendFile(path.resolve(__dirname1, "client", "dist", "index.html"))
+    );
+} else {
+    app.get("/", (req, res) => {
+        res.send("API is running..");
+    });
+}
+/*--------------------deployment-------------*/
 const port = process.env.PORT || 8080;
 server.listen(port, () => console.log(`server has been started on ${port}`));
