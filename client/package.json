@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vite": "^2.0.0",
     "@reduxjs/toolkit": "^1.9.5",
     "antd": "^5.8.2",
     "axios": "^1.4.0",
@@ -24,12 +23,13 @@
     "react-router-dom": "^6.14.2",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
-    "socket.io-client": "^4.7.2"
+    "socket.io-client": "^4.7.2",
+    "vite": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
-    "@vitejs/plugin-react": "^4.0.3",
+    "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.32.2",
