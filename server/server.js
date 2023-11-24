@@ -9,6 +9,8 @@ const path = require('path');
 
 
 const http = require('http');
+
+const port = process.env.PORT || 8080;
 const server = app.listen(port, () => {
     console.log(`server has been started on ${port}`);
 });
@@ -49,6 +51,7 @@ io.on('connection', (socket) => {
         console.log('user disconnected', socket.id);
     })
 });
+
 /*-------------------deployment---------------*/
 const __dirname1 = path.resolve();
 
@@ -64,5 +67,5 @@ if (process.env.NODE_ENV === "production") {
     });
 }
 /*--------------------deployment-------------*/
-const port = process.env.PORT || 8080;
-server.listen(port, () => console.log(`server has been started on ${port}`));
+
+// server.listen(port, () => console.log(`server has been started on ${port}`));
