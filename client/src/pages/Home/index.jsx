@@ -9,7 +9,7 @@ import { getAllPost } from '../../apicall/postApi';
 import { followUser } from '../../apicall/userApi';
 import Likes from '../Interaction/Likes/Likes';
 import DisLikes from '../Interaction/DisLikes/DisLikes';
-import Comment from '../Interaction/comments/comment';
+import Comment from '../Interaction/Comments/index';
 
 
 
