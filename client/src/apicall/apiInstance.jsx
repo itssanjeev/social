@@ -6,7 +6,7 @@ function getToken() {
 }
 
 export const axiosInstances = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'https://connectme-backend-9zma.onrender.com',
     headers: {
         authorization: `Bearer ${getToken()}`
     }
