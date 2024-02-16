@@ -5,6 +5,5 @@ const authMiddleware = require('../middleware/authMiddleware')
 const messageRoute = router.post('/sentMessage', authMiddleware, messageController.SentMessage)
     .post('/getMessage', authMiddleware, messageController.GetMessage)
     .post('/messageUserList', authMiddleware, messageController.MessaageUserList)
-
 module.exports = messageRoute;
 
