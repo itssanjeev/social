@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '../apicall/userApi';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/userSlice';
-import socket from '../socket/Socket';
+// import socket from '../socket/Socket';
 import { getNotificationApi } from '../apicall/notificationApi';
 import { setNotification } from '../redux/notificationSlice';
 
@@ -35,24 +35,24 @@ const ProtectedPage = ({ children }) => {
 
     /*------------------------------------notification part from here----------------------------*/
     const [countNotification, setCountNotification] = useState(0);
-    useEffect(() => {
-        socket.emit('joinRoom', currentUserId);
-    }, []);
-    useEffect(() => {
-        // Set up the event listener when the component mounts
-        const handleNotification = message => {
-            if (message) {
-                getNotificationFun();
-            }
-        };
+    // useEffect(() => {
+    //     socket.emit('joinRoom', currentUserId);
+    // }, []);
+    // useEffect(() => {
+    //     // Set up the event listener when the component mounts
+    //     const handleNotification = message => {
+    //         if (message) {
+    //             getNotificationFun();
+    //         }
+    //     };
 
-        socket.on('notification', handleNotification);
+    //     socket.on('notification', handleNotification);
 
-        // Clean up the event listener when the component unmounts
-        return () => {
-            socket.off('notification', handleNotification);
-        };
-    }, []);
+    //     // Clean up the event listener when the component unmounts
+    //     return () => {
+    //         socket.off('notification', handleNotification);
+    //     };
+    // }, []);
 
 
     const getNotificationFun = async () => {

@@ -15,6 +15,8 @@ import Search from './pages/Search';
 import ProtectedPage from './component/ProtectedPage';
 import Message from './pages/Message/Message';
 import Notificaton from './pages/Notification/Notificaton';
+import AdminHome from './pages/Admin/AdminHome';
+
 
 const App = () => {
   const { loading } = useSelector(state => state.loaders);
@@ -37,6 +39,7 @@ const App = () => {
           <Route path='/search' element={<ProtectedPage><Search></Search></ProtectedPage>}></Route>
           <Route path='/message' element={<ProtectedPage><Message></Message></ProtectedPage>}></Route>
           <Route path='/notification' element={<ProtectedPage><Notificaton></Notificaton></ProtectedPage>}></Route>
+          <Route path='/admin' element={<ProtectedPage><AdminHome></AdminHome></ProtectedPage>}></Route>
         </Routes>
       </BrowserRouter>
     </div>
