@@ -4,7 +4,7 @@ app.use(express.json());
 require('dotenv').config();
 const cors = require('cors');
 const socketManager = require('../server/socket/socketManager');
-app.use(cors({ origin: 'https://connect-you-to-me.netlify.app/' }));
+app.use(cors({ origin: '*' }));
 
 const port = process.env.PORT || 8080;
 const http = require('http');
@@ -15,7 +15,7 @@ const server = app.listen(port, () => {
 
 const io = require('socket.io')(server, {
     cors: {
-        origin: 'https://connect-you-to-me.netlify.app/',
+        origin: '*',
         methods: ['GET', 'POST'],
         credentials: true
     }
