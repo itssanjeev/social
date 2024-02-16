@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-const socket = io('https://connectme-backend-9zma.onrender.com', {
+const socket = io('http://localhost:8080', {
     withCredentials: true,
 });
 
