@@ -10,6 +10,9 @@ import { followUser } from '../../apicall/userApi';
 import Likes from '../Interaction/Likes/Likes';
 import DisLikes from '../Interaction/DisLikes/DisLikes';
 import Comment from '../Interaction/Comments/index';
+import { Space, Tag } from 'antd';
+const { CheckableTag } = Tag;
+const tagsData = ['Movies', 'Books', 'Music', 'Sports'];
 
 
 
@@ -93,6 +96,8 @@ const index = () => {
             navigate('/OthersProfile');
         }
     }
+
+
     useEffect(() => {
         getCurrentUsersFun();
     }, [])
@@ -108,7 +113,8 @@ const index = () => {
             <Row className=''>
                 {/* this is for showing post of currentUser */}
                 <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-orange-100'>
-
+                    <div className='bg-slate-400 m-3'>
+                    </div>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                     <div className='h-screen '>
