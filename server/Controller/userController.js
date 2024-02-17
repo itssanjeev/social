@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const cloudinary = require('../config/cloudinary')
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+
 // const socketManager = require('../socket/socketManager');
 
 exports.Register = async (req, res) => {
@@ -132,6 +134,8 @@ exports.EditUserProfile = async (req, res) => {
                 { $set: updatedData }, // Update the specified properties
                 { new: true } // Return the updated user in the response
             );
+            // Remove the uploaded file from local storage
+            fs.unlinkSync(file.path);
             res.send({
                 success: true,
                 message: "profile updated!"
