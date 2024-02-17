@@ -5,18 +5,17 @@ import { setLoader } from '../../redux/loaderSlice';
 import { getCurrentUser } from '../../apicall/userApi';
 import { setUser } from '../../redux/userSlice';
 import { Row, Col } from 'antd';
-import { getAllPost } from '../../apicall/postApi';
+import { getPostAdminApi } from '../../apicall/adminApi';
 import { followUser } from '../../apicall/userApi';
 import Likes from '../Interaction/Likes/Likes';
 import DisLikes from '../Interaction/DisLikes/DisLikes';
 import Comment from '../Interaction/Comments/index';
-import { Space, Tag } from 'antd';
-const { CheckableTag } = Tag;
-const tagsData = ['Movies', 'Books', 'Music', 'Sports'];
+import { Button } from 'antd';
+import { approvePostApi } from '../../apicall/adminApi';
+import { blockPostApi } from '../../apicall/adminApi';
+import { message } from 'antd';
 
-
-
-const index = () => {
+const AdminHome = () => {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -24,12 +23,12 @@ const index = () => {
         try {
             dispatch(setLoader(true));
             const currentUser = await getCurrentUser();
-            // console.log(currentUser);
+            console.log(currentUser);
             if (currentUser.success === false) {
                 navigate("/login");
             }
-            if (currentUser.data.role === 'admin') {
-                navigate('/admin');
+            if (currentUser.data.role === 'user') {
+                navigate('/');
             }
             dispatch(setUser(currentUser.data));
             dispatch(setLoader(false));
@@ -41,7 +40,7 @@ const index = () => {
     const getAllPostFunction = async () => {
         try {
             dispatch(setLoader(true));
-            const data = await getAllPost();
+            const data = await getPostAdminApi();
             console.log(data.data);
             dispatch(setLoader(false));
             setPosts(data.data);
@@ -96,7 +95,27 @@ const index = () => {
             navigate('/OthersProfile');
         }
     }
+    const handleApprovePost = async (id) => {
+        try {
+            console.log(id)
+            const result = await approvePostApi({ postId: id });
+            window.location.reload();
+            // message.success("userAprroved")
+            console.log(result);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const handleBlockPost = async (id) => {
+        try {
 
+            await blockPostApi({ postId: id });
+            // message.success("userAprroved")
+            window.location.reload();
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         getCurrentUsersFun();
@@ -112,9 +131,8 @@ const index = () => {
         <div className=''>
             <Row className=''>
                 {/* this is for showing post of currentUser */}
-                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-orange-100'>
-                    <div className='bg-slate-400 m-3'>
-                    </div>
+                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-orange-200'>
+
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                     <div className='h-screen '>
@@ -144,6 +162,31 @@ const index = () => {
                                             <Comment userId={currentUser._id} postId={post._id} comment={post.comment} ></Comment>
                                             <i className=" mr-7 text-5xl ri-share-fill"></i>
                                         </div>
+                                        <div className="flex flex-row justify-center mt-2 min-w-full">
+                                            {
+                                                post.status === "approve" ?
+                                                    <div className='ml-2 w-1/2'><Button type="primary" danger
+                                                        style={{
+                                                            width: '100%',
+                                                        }}
+                                                        onClick={() => handleBlockPost(post._id)}
+                                                    >
+                                                        Bolck
+                                                    </Button>
+                                                    </div>
+                                                    : <div className='mr-4 w-1/2'>
+                                                        <Button type="primary" success
+                                                            style={{
+                                                                width: '100%',
+                                                            }}
+                                                            onClick={() => handleApprovePost(post._id)}
+                                                        >
+                                                            approve
+                                                        </Button>
+                                                    </div>
+
+                                            }
+                                        </div>
                                     </div>
                                 ))
                             }
@@ -151,7 +194,7 @@ const index = () => {
                     </div>
                 </Col>
                 {/* this is for showing post comments */}
-                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-orange-100'>
+                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-orange-200'>
 
                 </Col>
 
@@ -160,4 +203,4 @@ const index = () => {
     )
 }
 
-export default index;
+export default AdminHome;

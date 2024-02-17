@@ -9,7 +9,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const Notification = require('../models/noficationModel');
-const socketManager = require('../socket/socketManager');
+// const socketManager = require('../socket/socketManager');
 
 // get image form pc to local storage
 const storage = multer.diskStorage({
@@ -17,63 +17,80 @@ const storage = multer.diskStorage({
     filename: (req, file, callback) => {
         callback(null, Date.now() + file.originalname);
     }
-})
+});
 
-exports.AddNewPost = multer({ storage: storage }).single("file"), async (req, res) => {
+const upload = multer({ storage: storage }).single("file");
+
+exports.AddNewPost = async (req, res) => {
     try {
-        const userId = req.userId;
-        // console.log(userId);
-        const file = req.file;
-        if (!file) {
-            return res.send({
-                success: false,
-                message: 'No file provided'
+        upload(req, res, async (err) => {
+            if (err) {
+                return res.send({
+                    success: false,
+                    message: 'Error uploading file'
+                });
+            }
+
+            const userId = req.userId;
+            console.log(userId);
+            const file = req.file;
+            if (!file) {
+                return res.send({
+                    success: false,
+                    message: 'No file provided'
+                });
+            }
+
+            const result = await cloudinary.uploader.upload(file.path, {
+                folder: "connectMe",
             });
-        }
-        const result = await cloudinary.uploader.upload(file.path, {
-            folder: "connectMe",
+
+            // Remove the uploaded file from local storage
+            fs.unlinkSync(file.path);
+
+            const newPost = new Post({
+                title: req.body.postTitle,
+                content: result.secure_url,
+                user: userId
+            });
+
+            const post = await newPost.save();
+
+            // Successfully saved the post, now associate it with the user
+            const updatedUser = await User.findByIdAndUpdate(
+                userId,
+                { $push: { posts: post._id } },
+                { new: true }
+            );
+
+            res.send({
+                success: true,
+                message: "Post updated"
+            });
         });
-
-        // Remove the uploaded file from local storage
-        fs.unlinkSync(file.path); // This deletes the file from the local directory
-
-        const newPost = new Post({
-            title: req.body.postTitle,
-            content: result.secure_url,
-            user: userId
-        });
-
-
-        const post = await newPost.save();
-
-        // Successfully saved the post, now associate it with the user
-        const updatedUser = await User.findByIdAndUpdate(
-            userId,
-            { $push: { posts: post._id } }, // Add the new post's ID to the user's "posts" array
-            { new: true }
-        );
-        res.send({
-            success: true,
-            message: "post Updated"
-        })
     } catch (error) {
         res.send({
             success: false,
             message: error.message
-        })
+        });
     }
-}
+};
 
 exports.GetAllPost = async (req, res) => {
     try {
+        const pageNo = 1;
+        const postLimit = 5;
         const posts = await Post.find().populate('user').populate('likes').populate({
             path: 'comment',
             populate: {
                 path: 'user'
             }
-        });
+        }).sort({ createdAt: 'desc' });
+        const post = posts.filter((p) => {
+            return p.status === "approve"
+        })
         res.json({
-            data: posts,
+            data: post,
             success: true
         })
     } catch (error) {
@@ -145,11 +162,11 @@ exports.Likes = async (req, res) => {
                 read: false,
             });
             await notification.save();
-            const userSocket = socketManager.getUserSocket(postOwner);
-            if (userSocket) {
-                console.log('Sending notification...');
-                userSocket.emit('notification', `${currentUser[0].username} has liked you post ${postId}`);
-            }
+            // const userSocket = socketManager.getUserSocket(postOwner);
+            // if (userSocket) {
+            //     console.log('Sending notification...');
+            //     userSocket.emit('notification', `${currentUser[0].username} has liked you post ${postId}`);
+            // }
         } else {
             await Post.findByIdAndUpdate(
                 postId,
@@ -247,11 +264,11 @@ exports.Comment = async (req, res) => {
             read: false,
         });
         await notification.save();
-        const userSocket = socketManager.getUserSocket(postOwner);
-        if (userSocket) {
-            console.log('Sending notification...');
-            userSocket.emit('notification', `${user.username} has commented you post ${postId}`);
-        }
+        // const userSocket = socketManager.getUserSocket(postOwner);
+        // if (userSocket) {
+        //     console.log('Sending notification...');
+        //     userSocket.emit('notification', `${user.username} has commented you post ${postId}`);
+        // }
         /*--------------------------------------------------------*/
         res.send({
             message: "commented successfully",

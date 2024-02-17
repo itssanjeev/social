@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const cloudinary = require('../config/cloudinary')
 const multer = require('multer');
 const path = require('path');
-const socketManager = require('../socket/socketManager');
+// const socketManager = require('../socket/socketManager');
 
 exports.Register = async (req, res) => {
     try {
@@ -37,7 +37,7 @@ exports.Register = async (req, res) => {
 exports.Login = async (req, res) => {
     try {
         const user = await User.findOne({ username: req.body.username });
-        console.log(user._id);
+        // console.log(user._id);
         if (!user) {
             throw new Error('user is not found');
         }
@@ -45,8 +45,7 @@ exports.Login = async (req, res) => {
         if (!validPassword) {
             throw new Error('wrong password');
         }
-        const token = jwt.sign({ userid: user._id }, process.env.SECRET_TOKEN, { expiresIn: "30d" });
-        socketManager.setUserSocket(user._id, null);
+        const token = jwt.sign({ userid: user._id }, process.env.SECRET_TOKEN);
         // socketManager.getUserSocket(user._id, 'login socket route');
         res.send({
             success: true,
