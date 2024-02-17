@@ -7,6 +7,7 @@ import { setUser } from '../redux/userSlice';
 // import socket from '../socket/Socket';
 import { getNotificationApi } from '../apicall/notificationApi';
 import { setNotification } from '../redux/notificationSlice';
+import image from '../assets/logo1.ico'
 
 
 const ProtectedPage = ({ children }) => {
@@ -89,7 +90,7 @@ const ProtectedPage = ({ children }) => {
                     <Col span={6}>
                         <Row>
                             <Col span={12}>
-                                <div className='text-2xl border-gray-400 text-red-600'>{currentUser.username}</div>
+                                <div className='text-2xl border-gray-400 text-red-600'><img src={image} className='w-12 h-12'></img></div>
                             </Col>
                             <Col span={12}>
                                 <div className='text-2xl cursor-pointer'><i className="ri-gallery-upload-line" onClick={() => {
