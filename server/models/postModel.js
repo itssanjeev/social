@@ -32,6 +32,9 @@ const postSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    category: {
+        type: String,
+    },
     status: {
         type: String,
         default: 'pending'

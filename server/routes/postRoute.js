@@ -9,5 +9,6 @@ const postRoute = router.post('/addNewPost', authMiddleware, postController.AddN
     .post('/likes', authMiddleware, postController.Likes)
     .post('/dislikes', authMiddleware, postController.Dislikes)
     .post('/comment', authMiddleware, postController.Comment)
+    .post('/category', authMiddleware, postController.CatgoeryByPost)
 
 module.exports = postRoute;

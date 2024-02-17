@@ -11,6 +11,7 @@ import Likes from '../Interaction/Likes/Likes';
 import DisLikes from '../Interaction/DisLikes/DisLikes';
 import Comment from '../Interaction/Comments/index';
 import { Space, Tag } from 'antd';
+import FilterByTopics from '../Filter/FilterByTopics';
 const { CheckableTag } = Tag;
 const tagsData = ['Movies', 'Books', 'Music', 'Sports'];
 
@@ -77,14 +78,11 @@ const index = () => {
                 flag = true;
             }
         }
-
         if (flag) {
             return false;
         } else {
             return true;
         }
-
-
     }
 
     const handleVisitProfile = (id) => {
@@ -112,8 +110,9 @@ const index = () => {
         <div className=''>
             <Row className=''>
                 {/* this is for showing post of currentUser */}
-                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-orange-100'>
-                    <div className='bg-slate-400 m-3'>
+                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-slate-50'>
+                    <div className='bg-slate-200 m-3'>
+                        <FilterByTopics setPosts={setPosts}></FilterByTopics>
                     </div>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
@@ -151,7 +150,7 @@ const index = () => {
                     </div>
                 </Col>
                 {/* this is for showing post comments */}
-                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-orange-100'>
+                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-slate-50'>
 
                 </Col>
 

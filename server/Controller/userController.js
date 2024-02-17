@@ -60,13 +60,7 @@ exports.Login = async (req, res) => {
     }
 }
 
-//get image form pc to local storage 
-const storage = multer.diskStorage({
-    destination: path.join(__dirname, '../uploadImage'),
-    filename: (req, file, callback) => {
-        callback(null, Date.now() + file.originalname);
-    }
-})
+
 
 exports.GetCurrentUser = async (req, res) => {
     try {
@@ -85,42 +79,63 @@ exports.GetCurrentUser = async (req, res) => {
     }
 }
 
-exports.EditUserProfile = multer({ storage: storage }).single("file"), async (req, res) => {
+// get image form pc to local storage
+const storage = multer.diskStorage({
+    destination: path.join(__dirname, '../uploadImage'),
+    filename: (req, file, callback) => {
+        callback(null, Date.now() + file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage }).single("file");
+
+exports.EditUserProfile = async (req, res) => {
     try {
         // console.log('userRoute', req.userId);
-        const file = req.file;
-        // console.log(req.body.name);
-        if (req.body.username) {
-            const existingUsername = await User.findOne({ username: req.body.username });
-            // console.log(req.body);
-            if (existingUsername) {
-                throw new Error('user name already exist. please choose new ');
+        upload(req, res, async (err) => {
+            if (err) {
+                return res.send({
+                    success: false,
+                    message: 'Error uploading file'
+                });
             }
-        }
 
-        if (!file) {
-            return res.send({
-                success: false,
-                message: 'No file provided'
+            const file = req.file;
+
+
+            // console.log(req.body.name);
+            if (req.body.username) {
+                const existingUsername = await User.findOne({ username: req.body.username });
+                // console.log(req.body);
+                if (existingUsername) {
+                    throw new Error('user name already exist. please choose new ');
+                }
+            }
+
+            if (!file) {
+                return res.send({
+                    success: false,
+                    message: 'No file provided'
+                });
+            }
+            const result = await cloudinary.uploader.upload(file.path, {
+                folder: "connectMe",
             });
-        }
-        const result = await cloudinary.uploader.upload(file.path, {
-            folder: "connectMe",
-        });
-        const updatedData = {};
-        updatedData.profilePicture = result.secure_url;
-        updatedData.name = req.body.name;
-        updatedData.username = req.body.username;
-        updatedData.bio = req.body.bio;
-        // console.log(updatedData);
-        const updatedUser = await User.findOneAndUpdate(
-            { _id: req.userId }, // Find user by userId
-            { $set: updatedData }, // Update the specified properties
-            { new: true } // Return the updated user in the response
-        );
-        res.send({
-            success: true,
-            message: "profile updated!"
+            const updatedData = {};
+            updatedData.profilePicture = result.secure_url;
+            updatedData.name = req.body.name;
+            updatedData.username = req.body.username;
+            updatedData.bio = req.body.bio;
+            // console.log(updatedData);
+            const updatedUser = await User.findOneAndUpdate(
+                { _id: req.userId }, // Find user by userId
+                { $set: updatedData }, // Update the specified properties
+                { new: true } // Return the updated user in the response
+            );
+            res.send({
+                success: true,
+                message: "profile updated!"
+            })
         })
     } catch (error) {
         res.send({

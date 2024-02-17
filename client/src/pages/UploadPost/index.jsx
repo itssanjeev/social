@@ -6,12 +6,19 @@ import { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { uploadPost } from '../../apicall/postApi';
 import { setLoader } from '../../redux/loaderSlice';
-
+import { Radio } from 'antd'
 
 const UploadPost = () => {
     const [uploadedFile, setUploadedFile] = useState(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const [categoryValue, setCategoryValue] = useState(4);
+    const onChange = (e) => {
+        console.log('radio checked', e.target.value);
+        setCategoryValue(e.target.value);
+    };
+
     const handleDrop = (acceptedFiles) => {
         // Assuming only a single file is allowed to be uploaded
         const file = acceptedFiles[0];
@@ -27,6 +34,8 @@ const UploadPost = () => {
             if (values.postTitle) {
                 formData.append("postTitle", values.postTitle);
             }
+            console.log(categoryValue);
+            formData.append("category", categoryValue);
             console.log(formData);
             dispatch(setLoader(true));
             const response = await uploadPost(formData);
@@ -62,6 +71,14 @@ const UploadPost = () => {
                             >
                                 <Input className='w-[300px] ' />
                             </Form.Item>
+                            <div className='mb-2'>
+                                <Radio.Group onChange={onChange} value={categoryValue}>
+                                    <Radio value={1}>Sports</Radio>
+                                    <Radio value={2}>Politics</Radio>
+                                    <Radio value={3}>Religion</Radio>
+                                    <Radio value={4}>General</Radio>
+                                </Radio.Group>
+                            </div>
                             <Dropzone onDrop={handleDrop} accept="image/*">
                                 {({ getRootProps, getInputProps }) => (
                                     <div {...getRootProps()} className="dropzone">

@@ -11,6 +11,12 @@ const fs = require('fs');
 const Notification = require('../models/noficationModel');
 // const socketManager = require('../socket/socketManager');
 
+
+/**
+ * @description 
+ * @param1
+ * @param2 {category} -[1.sports,2.politics,3.religion,4.general]
+ */
 // get image form pc to local storage
 const storage = multer.diskStorage({
     destination: path.join(__dirname, '../uploadImage'),
@@ -30,8 +36,8 @@ exports.AddNewPost = async (req, res) => {
                     message: 'Error uploading file'
                 });
             }
-
             const userId = req.userId;
+            const category = req.body.category;
             console.log(userId);
             const file = req.file;
             if (!file) {
@@ -51,7 +57,8 @@ exports.AddNewPost = async (req, res) => {
             const newPost = new Post({
                 title: req.body.postTitle,
                 content: result.secure_url,
-                user: userId
+                user: userId,
+                category: category
             });
 
             const post = await newPost.save();
@@ -276,6 +283,40 @@ exports.Comment = async (req, res) => {
             // newdata: newdata
         })
 
+    } catch (error) {
+        res.send(error.message);
+    }
+}
+
+exports.CatgoeryByPost = async (req, res) => {
+    try {
+        const pageNo = 1;
+        const postLimit = 5;
+        console.log(req.body);
+        let category = req.body.category;
+        console.log(category);
+
+        const posts = await (category === 4 ? Post.find().populate('user').populate('likes').populate({
+            path: 'comment',
+            populate: {
+                path: 'user'
+            }
+        }).sort({ createdAt: 'desc' })
+            : Post.find({
+                category: category
+            }).populate('user').populate('likes').populate({
+                path: 'comment',
+                populate: {
+                    path: 'user'
+                }
+            }).sort({ createdAt: 'desc' }));
+        const post = posts.filter((p) => {
+            return p.status === "approve"
+        })
+        res.json({
+            data: post,
+            success: true
+        })
     } catch (error) {
         res.send(error.message);
     }

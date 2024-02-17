@@ -65,3 +65,11 @@ export const commentOnPost = async (payload) => {
         return error.message;
     }
 }
+export const categoryPost = async (payload) => {
+    try {
+        const response = await axiosInstances.post('/api/posts/category', payload);
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
