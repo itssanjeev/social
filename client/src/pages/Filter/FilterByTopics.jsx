@@ -26,7 +26,7 @@ const FilterByTopics = ({ setPosts }) => {
                         <Radio value={1}><div className='text-xl'>Sports</div></Radio>
                         <Radio value={2}><div className='text-xl'>Politics</div></Radio>
                         <Radio value={3}><div className='text-xl'>Religion</div></Radio>
-                        <Radio value={4}><div className='text-xl'>Home</div></Radio>
+                        <Radio value={4}><div className='text-xl'>All</div></Radio>
                     </Space>
                 </Radio.Group>
             </div>

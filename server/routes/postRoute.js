@@ -10,5 +10,7 @@ const postRoute = router.post('/addNewPost', authMiddleware, postController.AddN
     .post('/dislikes', authMiddleware, postController.Dislikes)
     .post('/comment', authMiddleware, postController.Comment)
     .post('/category', authMiddleware, postController.CatgoeryByPost)
+    .get('/getPostLikeByCurrentUser', authMiddleware, postController.GetPostLikeByCurrentUser)
+    .get('/visitPostById', authMiddleware, postController.VisitPostById)
 
 module.exports = postRoute;

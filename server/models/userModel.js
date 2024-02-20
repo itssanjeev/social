@@ -47,7 +47,13 @@ const userSchema = new mongoose.Schema(
         bio: {
             type: String,
             default: ""
-        }
+        },
+        postsLikedByCurrentUser: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Post'
+            }
+        ]
     },
     {
         timestamps: true

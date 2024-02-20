@@ -73,3 +73,12 @@ export const categoryPost = async (payload) => {
         return error;
     }
 }
+
+export const postsLikedByCurrentUserApi = async () => {
+    try {
+        const response = await axiosInstances.get('/api/posts/getPostLikeByCurrentUser');
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
