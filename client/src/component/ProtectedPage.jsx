@@ -71,7 +71,6 @@ const ProtectedPage = ({ children }) => {
                 };
                 dispatch(setNotification(result.data));
             }
-
         } catch (error) {
             console.log(error);
         }
