@@ -12,8 +12,6 @@ import DisLikes from '../Interaction/DisLikes/DisLikes';
 import Comment from '../Interaction/Comments/index';
 import { Space, Tag } from 'antd';
 import FilterByTopics from '../Filter/FilterByTopics';
-const { CheckableTag } = Tag;
-const tagsData = ['Movies', 'Books', 'Music', 'Sports'];
 
 
 
@@ -125,9 +123,9 @@ const index = () => {
                                         <div className='w-full h-14 border-2 border-black bg-slate-200 flex flex-row  '>
                                             <div className='flex flex-col'>
                                                 <div className='flex flex-row'>
-                                                    <p className='font-mono text-2xl ml-1 font-bold cursor-pointer ' onClick={() => handleVisitProfile(post.user._id)}>{post.user.username}</p>
+                                                    <p className='font-mono text-2xl ml-1 font-bold cursor-pointer ' onClick={() => handleVisitProfile(post.user._id)}>{post.user?.username}</p>
                                                     {
-                                                        showFollowButton(post.user._id) ? <p className='cursor-pointer ml-2 text- flex items-center'
+                                                        showFollowButton(post.user?._id) ? <p className='cursor-pointer ml-2 text- flex items-center'
                                                             onClick={() => followUserFun(post.user._id)}
                                                         >follow</p> : null
                                                     }

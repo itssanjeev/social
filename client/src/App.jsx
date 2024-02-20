@@ -16,6 +16,7 @@ import ProtectedPage from './component/ProtectedPage';
 import Message from './pages/Message/Message';
 import Notificaton from './pages/Notification/Notificaton';
 import AdminHome from './pages/Admin/AdminHome';
+import VisitPostById from './pages/VisitPost/VisitPostById';
 
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
           <Route path='/message' element={<ProtectedPage><Message></Message></ProtectedPage>}></Route>
           <Route path='/notification' element={<ProtectedPage><Notificaton></Notificaton></ProtectedPage>}></Route>
           <Route path='/admin' element={<ProtectedPage><AdminHome></AdminHome></ProtectedPage>}></Route>
+          <Route path='/post/:id' element={<ProtectedPage><VisitPostById></VisitPostById></ProtectedPage>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

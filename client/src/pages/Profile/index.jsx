@@ -6,10 +6,11 @@ import { setLoader } from '../../redux/loaderSlice';
 import Devider from '../../component/Devider';
 import { getCurrentUser } from '../../apicall/userApi';
 import { setUser } from '../../redux/userSlice';
-import { getUserPost } from '../../apicall/postApi';
+import { getUserPost, postsLikedByCurrentUserApi } from '../../apicall/postApi';
 
 const index = () => {
     const [userPost, setUserPost] = useState([]);
+    const [postLikedByUser, setPostLikedByuser] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const getCurrentUserFun = async () => {
@@ -32,6 +33,8 @@ const index = () => {
         }
     }
 
+
+
     useEffect(() => {
         const fetchData = async () => {
             await getUserPostFun();
@@ -50,7 +53,24 @@ const index = () => {
         navigate('/following');
     }
 
-
+    const postsLikedByCurrentUser = async () => {
+        try {
+            dispatch(setLoader(true));
+            const data = await postsLikedByCurrentUserApi();
+            console.log(data.data.data);
+            setPostLikedByuser(data.data.data);
+            dispatch(setLoader(false));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const handleVisitPost = (id) => {
+        navigate(`/post/${id}`);
+        // console.log(id);
+    }
+    useEffect(() => {
+        postsLikedByCurrentUser();
+    }, [])
 
     useEffect(() => {
         getCurrentUserFun();
@@ -97,17 +117,31 @@ const index = () => {
                             <Devider className='mt-8'></Devider>
                             <div>
                                 <div className='flex flex-col space-y-1 justify-center items-center '>
-                                    <div className='text-xl'>Post Liked &nbsp;({currentUser.postLiked?.length})</div>
+                                    <div className='text-2xl font-semibold flex justify-center'>Post Liked &nbsp;({postLikedByUser.length})
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-4 m-2 overflow-y-auto">
+                                        {
+                                            postLikedByUser?.map((post) => (
+                                                <div className="flex items-center justify-center min-w-50 min-h-50 max-w-100 max-h-100 bg-blue-900 cursor-pointer" key={post._id}
+                                                    onClick={() => handleVisitPost(post._id)}
+                                                >
+                                                    <img src={post.content} alt="" className='w-full h-full' />
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </Col>
                     <Col offset={0} xs={0} sm={0} md={0} lg={10} xl={14}>
                         <div className=' mr-1 border-solid border-black h-screen'>
-                            <div className="grid grid-cols-4 gap-4">
+                            <div className="grid grid-cols-4 gap-4 m-2 overflow-y-auto">
                                 {
                                     userPost?.map((post) => (
-                                        <div className="flex items-center justify-center min-w-50 min-h-50 max-w-100 max-h-100 bg-blue-900" key={post._id}>
+                                        <div className="flex items-center justify-center min-w-50 min-h-50 max-w-100 max-h-100 bg-blue-900 cursor-pointer " key={post._id}
+                                            onClick={() => handleVisitPost(post._id)}
+                                        >
                                             <img src={post.content} alt="" className='w-full h-full' />
                                         </div>
                                     ))
