@@ -82,3 +82,17 @@ export const postsLikedByCurrentUserApi = async () => {
         return error;
     }
 }
+
+export const visitPostByIdApi = async (payload) => {
+    try {
+        console.log(payload);
+        const response = await axiosInstances.get('/api/posts/visitPostById',
+            {
+                params: payload
+            });
+        // console.log(response);
+        return response.data.data;
+    } catch (error) {
+        return error;
+    }
+}

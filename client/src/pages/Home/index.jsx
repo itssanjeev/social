@@ -12,8 +12,6 @@ import DisLikes from '../Interaction/DisLikes/DisLikes';
 import Comment from '../Interaction/Comments/index';
 import { Space, Tag } from 'antd';
 import FilterByTopics from '../Filter/FilterByTopics';
-const { CheckableTag } = Tag;
-const tagsData = ['Movies', 'Books', 'Music', 'Sports'];
 
 
 

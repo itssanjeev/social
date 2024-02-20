@@ -2,8 +2,7 @@ const Notificaiton = require('../models/noficationModel');
 
 exports.GetNotificationRoute = async (req, res) => {
     try {
-        const userId = req.body.currentUserId;
-        // console.log(userId, 'notification 10')
+        const userId = req.userId;
         const notification = await Notificaiton.find({ receiver: userId }).populate('sender').sort({ createdAt: -1 });
         res.send({
             success: true,
@@ -18,8 +17,9 @@ exports.GetNotificationRoute = async (req, res) => {
 exports.MarkReadNofication = async (req, res) => {
     try {
         const currentUserId = req.body.currentUserId;
-        const notification = await Notificaiton.updateMany({ receiver: currentUserId, read: false }, { read: true });
-        // console.log(notification);
+        const notification = await Notificaiton.updateMany(
+            { receiver: currentUserId, read: false },
+            { read: true });
         res.send({
             success: true,
             data: notification,

@@ -38,7 +38,7 @@ exports.AddNewPost = async (req, res) => {
             }
             const userId = req.userId;
             const category = req.body.category;
-            console.log(userId);
+            // console.log(userId);
             const file = req.file;
             if (!file) {
                 return res.send({
@@ -144,7 +144,7 @@ exports.Likes = async (req, res) => {
         const beforeLikePost = await Post.findOne({ _id: postId }).session(session);
         const liked = beforeLikePost.likes;
         const postOwner = beforeLikePost.user.toString();
-        console.log(postOwner, 'post like 128');
+        // console.log(postOwner, 'post like 128');
         const currentUser = await User.find({ _id: userId });
 
         //if user id present in liked array it return true else false 
@@ -195,7 +195,7 @@ exports.Likes = async (req, res) => {
             data: posts
         })
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         await session.abortTransaction();
         session.endSession();
 
@@ -331,7 +331,7 @@ exports.CatgoeryByPost = async (req, res) => {
 exports.GetPostLikeByCurrentUser = async (req, res) => {
     try {
         const userId = req.userId;
-        console.log(userId);
+        // console.log(userId);
         const post = await User.findById(userId).populate('postsLikedByCurrentUser');
         res.send({
             data: post.postsLikedByCurrentUser,
@@ -344,7 +344,7 @@ exports.GetPostLikeByCurrentUser = async (req, res) => {
 exports.VisitPostById = async (req, res) => {
     try {
         const postId = req.query.postId;
-        // console.log(postId);
+        console.log(postId);
         //when using findById it return the object not array 
         const posts = await Post.findById(postId).populate('user').populate('likes').populate({
             path: 'comment',

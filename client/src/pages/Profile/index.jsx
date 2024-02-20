@@ -64,7 +64,10 @@ const index = () => {
             console.log(error);
         }
     }
-
+    const handleVisitPost = (id) => {
+        navigate(`/post/${id}`);
+        // console.log(id);
+    }
     useEffect(() => {
         postsLikedByCurrentUser();
     }, [])
@@ -119,7 +122,9 @@ const index = () => {
                                     <div className="grid grid-cols-3 gap-4 m-2 overflow-y-auto">
                                         {
                                             postLikedByUser?.map((post) => (
-                                                <div className="flex items-center justify-center min-w-50 min-h-50 max-w-100 max-h-100 bg-blue-900 cursor-pointer" key={post._id}>
+                                                <div className="flex items-center justify-center min-w-50 min-h-50 max-w-100 max-h-100 bg-blue-900 cursor-pointer" key={post._id}
+                                                    onClick={() => handleVisitPost(post._id)}
+                                                >
                                                     <img src={post.content} alt="" className='w-full h-full' />
                                                 </div>
                                             ))
@@ -131,10 +136,12 @@ const index = () => {
                     </Col>
                     <Col offset={0} xs={0} sm={0} md={0} lg={10} xl={14}>
                         <div className=' mr-1 border-solid border-black h-screen'>
-                            <div className="grid grid-cols-4 gap-4">
+                            <div className="grid grid-cols-4 gap-4 m-2 overflow-y-auto">
                                 {
                                     userPost?.map((post) => (
-                                        <div className="flex items-center justify-center min-w-50 min-h-50 max-w-100 max-h-100 bg-blue-900" key={post._id}>
+                                        <div className="flex items-center justify-center min-w-50 min-h-50 max-w-100 max-h-100 bg-blue-900 cursor-pointer " key={post._id}
+                                            onClick={() => handleVisitPost(post._id)}
+                                        >
                                             <img src={post.content} alt="" className='w-full h-full' />
                                         </div>
                                     ))
