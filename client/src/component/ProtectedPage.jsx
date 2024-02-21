@@ -7,8 +7,8 @@ import { setUser } from '../redux/userSlice';
 // import socket from '../socket/Socket';
 import { getNotificationApi } from '../apicall/notificationApi';
 import { setNotification } from '../redux/notificationSlice';
-import image from '../assets/logo1.ico'
-
+import image from '../assets/logo1.ico';
+import ToolTips from './ToolTips';
 
 const ProtectedPage = ({ children }) => {
     let currentUserId = localStorage.getItem('currentUserId');
@@ -36,26 +36,6 @@ const ProtectedPage = ({ children }) => {
 
     /*------------------------------------notification part from here----------------------------*/
     const [countNotification, setCountNotification] = useState(0);
-    // useEffect(() => {
-    //     socket.emit('joinRoom', currentUserId);
-    // }, []);
-    // useEffect(() => {
-    //     // Set up the event listener when the component mounts
-    //     const handleNotification = message => {
-    //         if (message) {
-    //             getNotificationFun();
-    //         }
-    //     };
-
-    //     socket.on('notification', handleNotification);
-
-    //     // Clean up the event listener when the component unmounts
-    //     return () => {
-    //         socket.off('notification', handleNotification);
-    //     };
-    // }, []);
-
-
     const getNotificationFun = async () => {
 
         try {
@@ -92,9 +72,14 @@ const ProtectedPage = ({ children }) => {
                                 <div className='text-2xl border-gray-400 text-red-600'><img src={image} className='w-12 h-12'></img></div>
                             </Col>
                             <Col span={12}>
-                                <div className='text-2xl cursor-pointer'><i className="ri-gallery-upload-line" onClick={() => {
-                                    navigate('/uploadPost');
-                                }}></i></div>
+                                <div className='text-2xl cursor-pointer hover:text-red-400 ' data-tooltip-id="my-tooltip" data-tooltip-content="Hello world!">
+                                    <i className="ri-gallery-upload-line"
+                                        onClick={() => {
+                                            navigate('/uploadPost');
+                                        }}>
+                                    </i>
+
+                                </div>
                             </Col>
                         </Row>
 
