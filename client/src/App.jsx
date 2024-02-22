@@ -38,7 +38,7 @@ const App = () => {
           <Route path='/following' element={<ProtectedPage><Following></Following></ProtectedPage>}></Route>
           <Route path='/OthersProfile' element={<ProtectedPage><OthersProfile></OthersProfile></ProtectedPage>}></Route>
           <Route path='/search' element={<ProtectedPage><Search></Search></ProtectedPage>}></Route>
-          <Route path='/message' element={<ProtectedPage><Message></Message></ProtectedPage>}></Route>
+          <Route path='/message/' element={<ProtectedPage><Message></Message></ProtectedPage>}></Route>
           <Route path='/notification' element={<ProtectedPage><Notificaton></Notificaton></ProtectedPage>}></Route>
           <Route path='/admin' element={<ProtectedPage><AdminHome></AdminHome></ProtectedPage>}></Route>
           <Route path='/post/:id' element={<ProtectedPage><VisitPostById></VisitPostById></ProtectedPage>}></Route>

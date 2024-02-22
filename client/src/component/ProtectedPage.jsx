@@ -63,7 +63,7 @@ const ProtectedPage = ({ children }) => {
     }, [location]);
     return (
         currentUser &&
-        <div className=''>
+        <div className='h-screen overflow-hidden'>
             <header className=' bg-sky-200   w-full '>
                 <Row style={{ height: "50px", border: "2px solid gray" }}>
                     <Col span={6}>

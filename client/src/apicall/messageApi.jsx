@@ -11,9 +11,9 @@ export const sentMessage = async (payload) => {
     }
 }
 
-export const getAllMessage = async (payload) => {
+export const getAllUserMessage = async (payload) => {
     try {
-        const response = await axiosInstances.post('/api/message/getMessage', payload);
+        const response = await axiosInstances.post('/api/message/getMessagesOfUser', payload);
         // console.log(response.data);
         return response.data;
     } catch (error) {
@@ -21,9 +21,9 @@ export const getAllMessage = async (payload) => {
     }
 }
 
-export const messageUserList = async (payload) => {
+export const messageUserList = async () => {
     try {
-        const response = await axiosInstances.post('/api/message/messageUserList', payload);
+        const response = await axiosInstances.get('/api/message/getMessageUserList');
         console.log(response.data);
         return response.data;
     } catch (error) {

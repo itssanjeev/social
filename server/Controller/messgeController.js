@@ -1,20 +1,39 @@
 const router = require('express').Router();
 const User = require('../models/userModel');
 const Message = require('../models/messageModel');
-const MessageUserList = require('../models/messageUserListModel');
+const Chat = require('../models/chatModels');
 
+
+
+
+exports.CreateNewChat = async (req, res) => {
+    try {
+        const senderId = req.userId;
+        const receiverId = req.body.receiverId;
+        const chatId = senderId + receiverId;
+        const message = new Message({
+            chatId: chatId,
+            receiverId: receiverId,
+            userId: senderId
+        })
+        await message.save();
+        res.send({
+            data: message,
+        })
+    } catch (error) {
+        res.send(error.message)
+    }
+}
 
 exports.SentMessage = async (req, res) => {
-    const senderId = req.body.currentUserId;
-    const receiverId = req.body.otherUserId;
-    // console.log(senderId, 'se');
-    // console.log(receiverId, 're');
-    const message = req.body.msg;
+    const text = req.body.text;
+    const chatId = req.body.chatId;
+    const receiverId = req.body.receiverId;
     try {
-        const newMessage = new Message({
-            sender: senderId,
-            receiver: receiverId,
-            messages: [{ content: message }]
+        const newMessage = new Chat({
+            chatId: chatId,
+            receiverId: receiverId,
+            text: text
         })
         await newMessage.save();
         res.send({
@@ -26,62 +45,43 @@ exports.SentMessage = async (req, res) => {
     }
 }
 
-exports.GetMessage = async (req, res) => {
-    const senderId = req.body.currentUserId;
-    const receiverId = req.body.otherUserId;
-    // console.log(senderId === receiverId);
+exports.GetMessageUserList = async (req, res) => {
     try {
-        const message = await Message.find({
-            $or: [
-                {
-                    $and: [
-                        { sender: senderId },
-                        { receiver: receiverId }
-                    ]
-                },
-                {
-                    $and: [
-                        { sender: receiverId },
-                        { receiver: senderId }
-                    ]
-                }
-            ]
-        }
-        ).sort({ createdAt: 1 })
-        // console.log(message);
+        const userId = req.userId;
+        const userList = await Message.find({ userId: userId }).populate('receiverId');
+        const transformedData = userList.map((message) => {
+            const chatId = message.chatId;
+            const receiverName = message.receiverId.name;
+            const receiverUsername = message.receiverId.username;
+            const receiverId = message.receiverId._id;
+            const profilePicture = message.receiverId.profilePicture;
+            return {
+                chatId,
+                receiverId,
+                receiverName,
+                receiverUsername,
+                profilePicture
+            }
+        })
         res.send({
-            data: message,
-            message: "message retrived successfully",
+            data: transformedData,
             success: true
         })
     } catch (error) {
         res.send(error.message);
     }
 }
-
-exports.MessaageUserList = async (req, res) => {
-
-    const receiverId = req.body.otherUserId;
-    const senderId = req.body.currentUserId;
+exports.GetMessage = async (req, res) => {
     try {
-        let senderDocument = await MessageUserList.findOne({ sender: senderId });
-        if (!senderDocument) {
-            senderDocument = new MessageUserList({
-                sender: senderId,
-                receiver: []
-            });
-        }
-        if (!senderDocument.receiver.includes(receiverId)) {
-            senderDocument.receiver.push(receiverId);
-            await senderDocument.save();
-        }
-        await senderDocument.populate('receiver');
+        const chatId = req.body.chatId;
+        const chat = await Chat.find({ chatId: chatId });
         res.send({
+            data: chat,
+            message: "chat retrived successfully",
             success: true,
-            message: "list of user Message",
-            recievers: senderDocument.receiver
         })
     } catch (error) {
         res.send(error.message);
     }
 }
+

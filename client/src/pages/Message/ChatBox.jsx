@@ -1,98 +1,50 @@
-import { Button, Input } from 'antd';
-import React from 'react'
-import { useState, useEffect } from 'react';
-// import socket from '../../socket/Socket';
-import { sentMessage } from '../../apicall/messageApi';
-import { getAllMessage } from '../../apicall/messageApi';
+import React, { useEffect, useState } from 'react';
+import { getAllUserMessage } from '../../apicall/messageApi';
 
-const { TextArea } = Input;
-
-const ChatBox = ({ otherUser }) => {
-    const [text, setText] = useState('');
-    const [message, setMessage] = useState([]);
-
-    /* useEffect(() => {
-           socket.on('connect', () => {
-               console.log('Connected to the server');
-           });
-   
-           socket.on('disconnect', () => {
-               console.log('Disconnected from the server');
-           });
-   
-           socket.on('chatMessage', (message) => {
-               // console.log(message);
-               setReceivedMessages((prevMessages) => [...prevMessages, message]);
-           });
-       }, [])
-      
-       const handleSendMessage = () => {
-           if (message.trim() !== '') {
-               socket.emit('chatMessage', message);
-               setMessage('');
-           }
-       };
-        */
-
-    const currentUserId = localStorage.getItem('currentUserId');
-    const messageUserListId = localStorage.getItem('messageUserListId');
-    // const otherUserId = localStorage.getItem('otheruserId');
-    const getAllMessageFun = async () => {
+const ChatBox = ({ chatId, receiverId }) => {
+    const [data, setData] = useState([]);
+    const getUserMessage = async () => {
         try {
-            const response = await getAllMessage({ otherUserId: messageUserListId, currentUserId: currentUserId });
-            console.log(response);
-            setMessage(response.data);
+            const data = await getAllUserMessage({ chatId: chatId });
+            setData(data.data);
+            console.log(data.data);
         } catch (error) {
             console.log(error);
         }
-
     }
-    const handleSendMessage = async () => {
-        const result = await sentMessage({ msg: text, currentUserId: currentUserId, otherUserId: messageUserListId });
-        console.log(result);
-        setText('');
-        getAllMessageFun();
-    }
-    const handleChange = (e) => {
-        setText(e.target.value)
-    }
+    const userid = localStorage.getItem('currentUserId');
     useEffect(() => {
-        getAllMessageFun();
-    }, [messageUserListId])
+        getUserMessage();
+    }, [chatId, receiverId]);
     return (
-        <div>
-            <div className='text-2xl h-10 bg-slate-300 flex  justify-center'>{otherUser?.name} </div>
-            <div className="h-screen mb-8 overflow-y-scroll flex flex-col-reverse">
-                <div className="p-4">
-                    {
-                        message.map((m) => (
-                            <>
-                                <div key={m._id} className={`mb-2 font-semibold text-xl ${m.sender == currentUserId ? 'bg-red-200 text-right mr-1' : 'bg-blue-200 text-left ml-1'}`}>
-                                    <div className='m-1'>{m.messages[0].content}</div>
-                                </div>
-                            </>
-                        ))
-                    }
-                </div>
-            </div>
+        <>
+            {
+                chatId &&
+                <div className="h-screen overflow-hidden border border-y-4 border-black">
+                    <div className="flex flex-col justify-between flex-grow">
+                        <div className="h-12 bg-gray-200 flex flex-row justify-center items-center">
+                            <div>profile picture</div>
+                            <div>username</div>
+                        </div>
+                        <div className='overflow-y-auto m-2 p-2'>
+                            {
+                                data?.map((d) => (
+                                    <div className='flex flex-col  mt-4'>
+                                        <div className={`flex text-xl ${d.receiverId === userid ? 'justify-end' : 'justify-start'}`}>{d.text}</div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                        <div className="mt-auto  p-2 absolute bottom-14 left-0 right-0  flex flex-row">
+                            <input type="text" placeholder="type something" className=' h-14 text-xl w-full rounded-xl' />
+                            <i className="ri-send-plane-2-fill text-6xl"></i>
+                        </div>
 
-            <div className='flex flex-row absolute bottom-1 w-full ml-2 mr-3'>
-                <Input.TextArea
-                    type="text"
-                    size='small'
-                    placeholder='write something'
-                    className='text-black flex-grow bg-slate-100 border border-black'
-                    onChange={handleChange} value={text}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                            e.preventDefault();
-                            handleSendMessage();
-                        }
-                    }}
-                />
-                <Button size='large' className='bg-gray-400 ' onClick={handleSendMessage}>send</Button>
-            </div>
-        </div>
+                    </div>
+                </div>
+            }
+        </>
+
     )
 }
 
