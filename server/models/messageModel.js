@@ -12,7 +12,9 @@ const messageSchema = new mongoose.Schema({
         ref: 'User'
     },
     userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
     }
 }, {
     timestamps: true

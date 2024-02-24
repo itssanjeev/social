@@ -2,7 +2,7 @@ import { axiosInstances } from "./apiInstance";
 
 export const sentMessage = async (payload) => {
     try {
-        const response = await axiosInstances.post('/api/message/sentMessage', payload);
+        const response = await axiosInstances.post('/api/message/SentMessage', payload);
         // console.log(response);
         return response.data;
     } catch (error) {
@@ -24,6 +24,15 @@ export const getAllUserMessage = async (payload) => {
 export const messageUserList = async () => {
     try {
         const response = await axiosInstances.get('/api/message/getMessageUserList');
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+}
+export const createNewMessage = async (payload) => {
+    try {
+        const response = await axiosInstances.post('/api/message/CreateNewChat', payload);
         console.log(response.data);
         return response.data;
     } catch (error) {

@@ -8,6 +8,7 @@ import { getOtherUser } from '../../apicall/otherUserApi';
 import { setOtherUser } from '../../redux/otherUserSlice';
 import { getOtherUserPost } from '../../apicall/otherPost';
 import { followUser } from '../../apicall/userApi';
+import { createNewMessage } from '../../apicall/messageApi';
 const index = () => {
     const [userPost, setUserPost] = useState([]);
 
@@ -76,8 +77,14 @@ const index = () => {
     }
 
     const handleMessage = async (otherid) => {
-        localStorage.setItem('messageUserListId', otherid);
-        navigate('/message');
+        try {
+            const result = await createNewMessage({ receiverId: otherid });
+            console.log(result);
+            navigate('/message');
+        } catch (error) {
+            console.log(error);
+        }
+
     }
     useEffect(() => {
         const fetchData = async () => {

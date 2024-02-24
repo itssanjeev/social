@@ -48,21 +48,44 @@ exports.SentMessage = async (req, res) => {
 exports.GetMessageUserList = async (req, res) => {
     try {
         const userId = req.userId;
-        const userList = await Message.find({ userId: userId }).populate('receiverId');
-        const transformedData = userList.map((message) => {
-            const chatId = message.chatId;
-            const receiverName = message.receiverId.name;
-            const receiverUsername = message.receiverId.username;
-            const receiverId = message.receiverId._id;
-            const profilePicture = message.receiverId.profilePicture;
-            return {
-                chatId,
-                receiverId,
-                receiverName,
-                receiverUsername,
-                profilePicture
-            }
-        })
+        let transformedData;
+        // console.log(userId);
+        let userList = await Message.find({ userId: userId }).populate('receiverId');
+        if (userList.length > 0) {
+            transformedData = userList.map((message) => {
+                const chatId = message.chatId;
+                const receiverName = message.receiverId.name;
+                const receiverUsername = message.receiverId.username;
+                const receiverId = message.receiverId._id;
+                const profilePicture = message.receiverId.profilePicture;
+                return {
+                    chatId,
+                    receiverId,
+                    receiverName,
+                    receiverUsername,
+                    profilePicture
+                }
+            })
+        } else {
+            // console.log('!user')
+            userList = await Message.find({ receiverId: userId }).populate('userId');
+            transformedData = userList.map((message) => {
+                const chatId = message.chatId;
+                const receiverName = message.userId.name;
+                const receiverUsername = message.userId.username;
+                const receiverId = message.userId._id;
+                const profilePicture = message.userId.profilePicture;
+                return {
+                    chatId,
+                    receiverId,
+                    receiverName,
+                    receiverUsername,
+                    profilePicture
+                }
+            })
+        }
+        // console.log(userList);
+
         res.send({
             data: transformedData,
             success: true

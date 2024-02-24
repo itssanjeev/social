@@ -206,7 +206,6 @@ exports.GetFollower = async (req, res) => {
 exports.GetOhterUser = async (req, res) => {
     try {
         const userId = req.body.otherUserId;
-        // console.log(userId);
         const user = await User.findById(userId);
         res.json({
             success: true,
