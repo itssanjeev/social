@@ -12,6 +12,7 @@ import DisLikes from '../Interaction/DisLikes/DisLikes';
 import Comment from '../Interaction/Comments/index';
 import { Space, Tag } from 'antd';
 import FilterByTopics from '../Filter/FilterByTopics';
+import Share from '../Interaction/Share/Share';
 
 
 
@@ -139,7 +140,7 @@ const index = () => {
                                             <Likes userId={currentUser._id} postId={post._id} initialLike={post.likes} getAllPostFunction={getAllPostFunction}></Likes>
                                             <DisLikes userId={currentUser._id} postId={post._id} initialDisLike={post.dislikes} getAllPostFunction={getAllPostFunction}></DisLikes>
                                             <Comment userId={currentUser._id} postId={post._id} comment={post.comment} ></Comment>
-                                            <i className=" mr-7 text-5xl ri-share-fill"></i>
+                                            {/* <Share></Share> */}
                                         </div>
                                     </div>
                                 ))

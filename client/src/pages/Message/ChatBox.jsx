@@ -40,7 +40,7 @@ const ChatBox = ({ chatId, receiverId }) => {
 
     const formattedDate = (currentDate) => {
         const parsedDate = parseISO(currentDate);
-        return format(parsedDate, 'HH:mm:ss yyyy-MM-dd');
+        return format(parsedDate, 'HH:mm:ss dd-MM-yyyy');
     }
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' || e.keyCode === 13) {
@@ -85,8 +85,12 @@ const ChatBox = ({ chatId, receiverId }) => {
                                 {
                                     data?.map((d) => (
                                         <div className='flex flex-col  mt-4' key={d._id}>
-                                            <p className={`flex text-xl    ${d.receiverId === userid ? 'justify-start' : 'justify-end'}  p-2 rounded-lg`} >{d.text}</p>
-                                            <p>{formattedDate(d?.createdAt)}</p>
+                                            <p className={`flex text-xl    ${d.receiverId === userid ? 'justify-start' : 'justify-end'}  p-2 rounded-lg`} >
+                                                <div className='flex flex-col'>
+                                                    <div>{d.text}</div>
+                                                    <div className='text-slate-600'>{formattedDate(d?.createdAt)}</div>
+                                                </div>
+                                            </p>
                                             <hr />
                                         </div>
                                     ))

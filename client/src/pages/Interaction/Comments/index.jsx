@@ -6,9 +6,16 @@ import { Avatar, Divider, List, Skeleton } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 
+
+/**
+ * @param {string} -[]
+ * @descripton {userId} -[]
+ *                                  
+ */
 const Comment = ({ userId, postId, comment }) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+
     const [userComment, setUserComments] = useState();
     const [existingComment, setExistingComment] = useState()
     const handleClick = () => {
