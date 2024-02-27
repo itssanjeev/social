@@ -17,6 +17,9 @@ import Message from './pages/Message/Message';
 import Notificaton from './pages/Notification/Notificaton';
 import AdminHome from './pages/Admin/AdminHome';
 import VisitPostById from './pages/VisitPost/VisitPostById';
+import TopPostInLastWeek from './pages/PostRatingWise/TopPostInLastWeek';
+import MostLikedPost from './pages/PostRatingWise/MostLikedPost';
+import MostEngagingPost from './pages/PostRatingWise/MostEngagingPost';
 
 
 const App = () => {
@@ -42,6 +45,9 @@ const App = () => {
           <Route path='/notification' element={<ProtectedPage><Notificaton></Notificaton></ProtectedPage>}></Route>
           <Route path='/admin' element={<ProtectedPage><AdminHome></AdminHome></ProtectedPage>}></Route>
           <Route path='/post/:id' element={<ProtectedPage><VisitPostById></VisitPostById></ProtectedPage>}></Route>
+          <Route path='/topPostInLastWeek' element={<ProtectedPage><TopPostInLastWeek></TopPostInLastWeek></ProtectedPage>}></Route>
+          <Route path='/allTimeHighestRatedPost' element={<ProtectedPage><MostLikedPost></MostLikedPost></ProtectedPage>}></Route>
+          <Route path='/LeadingInComments' element={<ProtectedPage><MostEngagingPost b></MostEngagingPost></ProtectedPage>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

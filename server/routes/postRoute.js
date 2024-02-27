@@ -12,5 +12,8 @@ const postRoute = router.post('/addNewPost', authMiddleware, postController.AddN
     .post('/category', authMiddleware, postController.CatgoeryByPost)
     .get('/getPostLikeByCurrentUser', authMiddleware, postController.GetPostLikeByCurrentUser)
     .get('/visitPostById', authMiddleware, postController.VisitPostById)
+    .get('/mostLikedPostIn7Days', authMiddleware, postController.MostPostLikedIn7Days)
+    .get('/mostLikedPost', authMiddleware, postController.MostLikedPost)
+    .get('/mostCommentedPost', authMiddleware, postController.MostCommentedPost)
 
 module.exports = postRoute;

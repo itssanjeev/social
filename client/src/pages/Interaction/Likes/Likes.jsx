@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 const Likes = ({ userId, postId, initialLike, getAllPostFunction }) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
-
     const handleClick = async () => {
         console.log('click on like');
         const result = await postLike({ userId: userId, postId: postId })

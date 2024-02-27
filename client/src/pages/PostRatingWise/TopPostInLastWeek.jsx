@@ -5,18 +5,13 @@ import { setLoader } from '../../redux/loaderSlice';
 import { getCurrentUser } from '../../apicall/userApi';
 import { setUser } from '../../redux/userSlice';
 import { Row, Col } from 'antd';
-import { getAllPost } from '../../apicall/postApi';
+import { getAllPost, postLikedInLast7Days } from '../../apicall/postApi';
 import { followUser } from '../../apicall/userApi';
 import Likes from '../Interaction/Likes/Likes';
 import DisLikes from '../Interaction/DisLikes/DisLikes';
 import Comment from '../Interaction/Comments/index';
-import FilterByTopics from '../Filter/FilterByTopics';
-import Share from '../Interaction/Share/Share';
-import { Card } from 'antd';
 
-
-
-const index = () => {
+const TopPostInLastWeek = () => {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -28,9 +23,6 @@ const index = () => {
             if (currentUser.success === false) {
                 navigate("/login");
             }
-            if (currentUser.data.role === 'admin') {
-                navigate('/admin');
-            }
             dispatch(setUser(currentUser.data));
             dispatch(setLoader(false));
         } catch (error) {
@@ -41,10 +33,10 @@ const index = () => {
     const getAllPostFunction = async () => {
         try {
             dispatch(setLoader(true));
-            const data = await getAllPost();
-            console.log(data.data);
+            const data = await postLikedInLast7Days();
+            console.log(data);
+            setPosts(data);
             dispatch(setLoader(false));
-            setPosts(data.data);
         } catch (error) {
             console.log(error.message);
         }
@@ -93,15 +85,6 @@ const index = () => {
             navigate('/OthersProfile');
         }
     }
-    const handleTopLikesIn7Day = () => {
-        navigate('/topPostInLastWeek')
-    }
-    const handleMostLikedPost = () => {
-        navigate('/allTimeHighestRatedPost')
-    }
-    const handleMostEngagingPost = () => {
-        navigate('/LeadingInComments')
-    }
     useEffect(() => {
         getCurrentUsersFun();
     }, [])
@@ -111,15 +94,10 @@ const index = () => {
         };
         fetchData();
     }, []);
-
     return (
-        <div className=''>
+        <div>
             <Row className=''>
-                {/* this is for showing filter post */}
                 <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-slate-50'>
-                    <div className='bg-slate-200 m-3'>
-                        <FilterByTopics setPosts={setPosts}></FilterByTopics>
-                    </div>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                     <div className='h-screen '>
@@ -155,59 +133,11 @@ const index = () => {
                         </div>
                     </div>
                 </Col>
-                {/* this is for showing most recent post */}
-                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-slate-50 flex justify-center'>
-                    <div className='flex flex-col space-y-5 '>
-                        <div className='mt-2 cursor-pointer'
-                            onClick={handleTopLikesIn7Day}
-                        >
-                            <Card
-                                title="Last week's top post"
-                                bordered={false}
-                                style={{
-                                    width: 250,
-                                }}
-                            >
-                                <p className='cursor-pointer'
-
-                                >#TopPost#WeekInReview</p>
-
-                            </Card>
-                        </div>
-                        <div className='cursor-pointer'
-                            onClick={handleMostLikedPost}
-                        >
-                            <Card
-                                title="The all-time highest-rated post"
-                                bordered={false}
-                                style={{
-                                    width: 250,
-                                }}
-                            >
-                                <p className='cursor-pointer '>#TopPostLikePost</p>
-
-                            </Card>
-                        </div>
-                        <div className='cursor-pointer'
-                            onClick={handleMostEngagingPost}
-                        >
-                            <Card
-                                title="Leading in comments"
-                                bordered={false}
-                                style={{
-                                    width: 250,
-                                }}
-                            >
-                                <p className='cursor-pointer '>#TopEngagingPost</p>
-                            </Card>
-                        </div>
-                    </div>
-
+                <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-slate-50'>
                 </Col>
-
             </Row>
         </div>
     )
 }
 
-export default index;
+export default TopPostInLastWeek;

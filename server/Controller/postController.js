@@ -9,6 +9,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const Notification = require('../models/noficationModel');
+const moment = require('moment');
 // const socketManager = require('../socket/socketManager');
 
 
@@ -359,5 +360,110 @@ exports.VisitPostById = async (req, res) => {
         })
     } catch (error) {
         res.send(error.message);
+    }
+}
+
+exports.MostPostLikedIn7Days = async (req, res) => {
+    try {
+        const sevenDaysAgo = moment().subtract(7, 'days').toDate();
+        const posts = await Post.aggregate([
+            {
+                $match: {
+                    createdAt: { $gte: sevenDaysAgo },
+                },
+            },
+            {
+                $addFields: {
+                    likesCount: { $size: '$likes' },
+                }
+            },
+            {
+                $sort: { likesCount: -1 }
+            },
+            {
+                $limit: 10
+            }
+        ])
+        // Assuming 'user', 'likes', and 'comment.user' are references, populate them separately
+        await Post.populate(posts, { path: 'user' });
+        await Post.populate(posts, { path: 'likes' });
+        await Post.populate(posts, { path: 'comment' });
+
+        // Then, populate the 'user' field inside each comment
+        for (const post of posts) {
+            await Post.populate(post.comment, { path: 'user' });
+        }
+        const approvedPosts = posts.filter((p) => p.status === "approve");
+        res.send({
+            data: approvedPosts
+        })
+    } catch (error) {
+        res.send(error.message);
+    }
+}
+
+exports.MostLikedPost = async (req, res) => {
+    try {
+        const posts = await Post.aggregate([
+            {
+                $addFields: {
+                    likeCount: { $size: '$likes' }
+                }
+            },
+            {
+                $sort: { likeCount: -1 }
+            },
+            {
+                $limit: 10
+            }
+        ]);
+        // Assuming 'user', 'likes', and 'comment.user' are references, populate them separately
+        await Post.populate(posts, { path: 'user' });
+        await Post.populate(posts, { path: 'likes' });
+        await Post.populate(posts, { path: 'comment' });
+
+        // Then, populate the 'user' field inside each comment
+        for (const post of posts) {
+            await Post.populate(post.comment, { path: 'user' });
+        }
+        const approvedPosts = posts.filter((p) => p.status === "approve");
+        res.send({
+            data: approvedPosts
+        })
+    } catch (error) {
+        res.send(error.message);
+    }
+}
+exports.MostCommentedPost = async (req, res) => {
+    try {
+        const posts = await Post.aggregate([
+            {
+                $addFields: {
+                    commentCount: { $size: '$comment' }
+                }
+            },
+            {
+                $sort: { commentCount: -1 }
+            },
+            {
+                $limit: 10
+            }
+        ])
+        // Assuming 'user', 'likes', and 'comment.user' are references, populate them separately
+        await Post.populate(posts, { path: 'user' });
+        await Post.populate(posts, { path: 'likes' });
+        await Post.populate(posts, { path: 'comment' });
+
+        // Then, populate the 'user' field inside each comment
+        for (const post of posts) {
+            await Post.populate(post.comment, { path: 'user' });
+        }
+        const approvedPosts = posts.filter((p) => p.status === "approve");
+
+        res.send({
+            data: approvedPosts
+        })
+    } catch (error) {
+        res.send(error.message)
     }
 }

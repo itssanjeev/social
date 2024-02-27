@@ -96,3 +96,28 @@ export const visitPostByIdApi = async (payload) => {
         return error;
     }
 }
+
+export const postLikedInLast7Days = async (payload) => {
+    try {
+        const response = await axiosInstances.get('/api/posts/mostLikedPostIn7Days');
+        return response.data.data;
+    } catch (error) {
+        return error;
+    }
+}
+export const mostLikedPost = async (payload) => {
+    try {
+        const response = await axiosInstances.get('/api/posts/mostLikedPost');
+        return response.data.data;
+    } catch (error) {
+        return error;
+    }
+}
+export const mostCommentedPost = async (payload) => {
+    try {
+        const response = await axiosInstances.get('/api/posts/mostCommentedPost');
+        return response.data.data;
+    } catch (error) {
+        return error;
+    }
+}

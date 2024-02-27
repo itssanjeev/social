@@ -44,30 +44,6 @@ const postSchema = new mongoose.Schema({
         timestamps: true
     }
 )
-// console.log('going to enter in pre');
-
-// postSchema.post('save', async function (doc, next) {
-//     console.log('notification model called before post modified', doc._id);
-//     const originalPost = await Post.findById(doc._id).lean();
-//     if (this.isModified('likes') && this.likes.length > originalPost.likes.length) {
-//         console.log('inside isModeified likes');
-//         const userWhoLikes = this.likes[this.likes.length - 1];
-//         try {
-//             const notification = new Notification({
-//                 user: userWhoLikes,
-//                 action: 'like',
-//                 post: this._id,
-//             });
-//             await notification.save();
-//             next();
-//         } catch (error) {
-//             next(error);
-//         }
-//     } else {
-//         next();
-//     }
-//     next();
-// })
 
 const Post = mongoose.model("Post", postSchema);
 module.exports = Post;
