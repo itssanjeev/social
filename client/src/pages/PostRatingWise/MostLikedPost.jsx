@@ -100,8 +100,8 @@ const MostLikedPost = () => {
                 <Col xs={0} sm={0} md={6} lg={6} xl={6} className='w-full bg-slate-50'>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                    <div className='h-screen '>
-                        <div className='w-full bg-slate-50 overflow-y-scroll h-full mb-2'>
+                    <div className=''>
+                        <div className='w-full bg-slate-50 overflow-y-scroll h-screen mb-2'>
                             {
                                 posts &&
                                 posts.map((post) => (
@@ -130,6 +130,7 @@ const MostLikedPost = () => {
                                     </div>
                                 ))
                             }
+                            <div className="h-[50px]"></div>
                         </div>
                     </div>
                 </Col>

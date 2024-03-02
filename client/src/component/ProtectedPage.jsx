@@ -13,6 +13,7 @@ import { Tooltip } from 'antd'
 const ProtectedPage = ({ children }) => {
     let currentUserId = localStorage.getItem('currentUserId');
     const [currentUser, setCurrentUser] = useState();
+    const [toggleMenu, setToggleMenu] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
@@ -63,80 +64,144 @@ const ProtectedPage = ({ children }) => {
     }, [location]);
     return (
         currentUser &&
-        <div className='h-screen overflow-hidden'>
-            <header className=' bg-sky-100   w-full '>
-                <Row style={{ height: "50px", border: "2px solid gray" }}>
-                    <Col span={6}>
-                        <Row>
-                            <Col span={12}>
-                                <div className='text-2xl border-gray-400 text-red-600'><img src={image} className='w-12 h-12'></img></div>
+        <div className="h-screen overflow-hidden">
+            <div className=''>
+                {/* -------------------------------------for pc -----------------------------------------------*/}
+                <div className="hidden sm:flex">
+                    <header className=' bg-sky-100   w-full '>
+                        <Row style={{ height: "50px", border: "2px solid gray" }}>
+                            <Col span={6}>
+                                <Row>
+                                    <Col span={12}>
+                                        <div className='text-2xl border-gray-400 text-red-600'><img src={image} className='w-12 h-12'></img></div>
+                                    </Col>
+                                    <Col span={12}>
+                                        <div className='text-2xl cursor-pointer hover:text-red-400 '>
+                                            <Tooltip title="upload post">
+                                                <i className="ri-gallery-upload-line"
+                                                    onClick={() => {
+                                                        navigate('/uploadPost');
+                                                    }}>
+                                                </i>
+                                            </Tooltip>
+                                        </div>
+                                    </Col>
+                                </Row>
+
                             </Col>
-                            <Col span={12}>
-                                <div className='text-2xl cursor-pointer hover:text-red-400 '>
-                                    <Tooltip title="upload post">
+
+
+                            <Col span={8} offset={2}>
+                                <Row className='flex justify-between'>
+                                    <Col span={6} className='flex items-center justify-center '>
+                                        <Tooltip title="home">
+                                            <i className="ri-home-4-line text-4xl cursor-pointer"
+                                                onClick={() => {
+                                                    navigate('/')
+                                                }}
+                                            ></i>
+                                        </Tooltip>
+                                    </Col>
+                                    <Col span={6} className='flex items-center justify-center'>
+                                        <Tooltip title="notification">
+
+                                            <i className={`ri-notification-2-line text-4xl cursor-pointer ${countNotification > 0 ? 'text-red-700 animate-pulse' : ''}`} onClick={() => { navigate('/notification') }} ></i>
+                                        </Tooltip>
+                                    </Col>
+
+                                    <Col span={6} className='flex items-center justify-center cursor-pointer'
+                                        onClick={() => { navigate('/search') }}>
+                                        <Tooltip title="search">
+                                            <i className="ri-search-line text-4xl"></i>
+                                        </Tooltip>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col span={6} offset={2}>
+                                <Row className='flex items-end justify-between'>
+                                    <Col span={5} className='flex items-center justify-center '>
+                                        <Tooltip title="message">
+                                            <i className="ri-mail-line text-4xl cursor-pointer" onClick={() => {
+                                                navigate('/message');
+                                            }}></i>
+                                        </Tooltip>
+                                    </Col>
+                                    <Col span={4} className=' flex items-center justify-center mr-8'>
+                                        <Tooltip title="profile">
+
+                                            <i className="ri-account-circle-fill text-4xl cursor-pointer"
+                                                onClick={() => {
+                                                    navigate("/profile")
+                                                }}
+                                            ></i>
+                                        </Tooltip>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </header>
+                </div>
+                {/*--------------------------------------for mobile ------------------------------------------- */}
+                <div className="sm:hidden">
+                    <header className=' bg-sky-100   '>
+                        <div className="flex ">
+                            <div className="flex">
+                                <div className='text-2xl border-gray-400 text-red-600'><img src={image} className='w-12 h-12'>
+                                </img>
+                                </div>
+                                <div className='flex justify-end ml-10 space-x-9 items-center'>
+                                    <div className='text-2xl cursor-pointer hover:text-red-400 '>
                                         <i className="ri-gallery-upload-line"
                                             onClick={() => {
                                                 navigate('/uploadPost');
                                             }}>
                                         </i>
-                                    </Tooltip>
+                                    </div>
+                                    <div>
+                                        <i className="ri-home-4-line text-4xl cursor-pointer"
+                                            onClick={() => {
+                                                navigate('/')
+                                            }}
+                                        ></i>
+                                    </div>
+                                    <div>
+                                        <i className={`ri-notification-2-line text-4xl cursor-pointer ${countNotification > 0 ? 'text-red-700 animate-pulse' : ''}`} onClick={() => { navigate('/notification') }} ></i>
+                                    </div>
                                 </div>
-                            </Col>
-                        </Row>
-
-                    </Col>
-
-
-                    <Col span={8} offset={2}>
-                        <Row className='flex justify-between'>
-                            <Col span={6} className='flex items-center justify-center '>
-                                <Tooltip title="home">
-                                    <i className="ri-home-4-line text-4xl cursor-pointer"
-                                        onClick={() => {
-                                            navigate('/')
-                                        }}
-                                    ></i>
-                                </Tooltip>
-                            </Col>
-                            <Col span={6} className='flex items-center justify-center'>
-                                <Tooltip title="notification">
-
-                                    <i className={`ri-notification-2-line text-4xl cursor-pointer ${countNotification > 0 ? 'text-red-700 animate-pulse' : ''}`} onClick={() => { navigate('/notification') }} ></i>
-                                </Tooltip>
-                            </Col>
-
-                            <Col span={6} className='flex items-center justify-center cursor-pointer'
-                                onClick={() => { navigate('/search') }}>
-                                <Tooltip title="search">
-                                    <i className="ri-search-line text-4xl"></i>
-                                </Tooltip>
-                            </Col>
-                        </Row>
-                    </Col>
-                    <Col span={6} offset={2}>
-                        <Row className='flex items-end justify-between'>
-                            <Col span={5} className='flex items-center justify-center '>
-                                <Tooltip title="message">
-                                    <i className="ri-mail-line text-4xl cursor-pointer" onClick={() => {
+                            </div>
+                            <div className=" w-64"></div>
+                            <div className='flex justify-end  items-center cursor-pointer'>
+                                <i className="ri-menu-2-line text-5xl" onClick={() => setToggleMenu(!toggleMenu)}></i>
+                            </div>
+                        </div>
+                        <div>
+                            {
+                                toggleMenu &&
+                                <div className='flex flex-col space-y-1 '>
+                                    <div className='flex items-center justify-center cursor-pointer'
+                                        onClick={() => { navigate('/search') }}>
+                                        <i className="ri-search-line text-5xl"></i>
+                                        <div className='text-2xl'>Search User</div>
+                                    </div>
+                                    <div className='flex items-center justify-center ' onClick={() => {
                                         navigate('/message');
-                                    }}></i>
-                                </Tooltip>
-                            </Col>
-                            <Col span={4} className=' flex items-center justify-center mr-8'>
-                                <Tooltip title="profile">
-
-                                    <i className="ri-account-circle-fill text-4xl cursor-pointer"
-                                        onClick={() => {
-                                            navigate("/profile")
-                                        }}
-                                    ></i>
-                                </Tooltip>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-            </header>
-            <div className=''>{children}</div>
+                                    }}>
+                                        <i className="ri-mail-line text-4xl cursor-pointer" ></i>
+                                        <div className='text-2xl'>Message</div>
+                                    </div>
+                                    <div className=' flex items-center justify-center mr-8' onClick={() => {
+                                        navigate("/profile")
+                                    }}>
+                                        <i className="ri-account-circle-fill text-4xl cursor-pointer"></i>
+                                        <div className='text-2xl'>Profile</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </header>
+                </div>
+                <div className=''>{children}</div>
+            </div>
         </div>
     )
 }

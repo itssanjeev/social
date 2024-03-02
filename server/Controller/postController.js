@@ -86,14 +86,16 @@ exports.AddNewPost = async (req, res) => {
 
 exports.GetAllPost = async (req, res) => {
     try {
-        const pageNo = 1;
+        // console.log(req.query);
+        const pageNo = req.query.pageno;
         const postLimit = 5;
+        const skipCount = (pageNo - 1) * postLimit;
         const posts = await Post.find().populate('user').populate('likes').populate({
             path: 'comment',
             populate: {
                 path: 'user'
             }
-        }).sort({ createdAt: 'desc' });
+        }).sort({ createdAt: 'desc' }).skip(skipCount).limit(postLimit);
         const post = posts.filter((p) => {
             return p.status === "approve"
         })
@@ -459,7 +461,6 @@ exports.MostCommentedPost = async (req, res) => {
             await Post.populate(post.comment, { path: 'user' });
         }
         const approvedPosts = posts.filter((p) => p.status === "approve");
-
         res.send({
             data: approvedPosts
         })

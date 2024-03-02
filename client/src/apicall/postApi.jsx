@@ -11,9 +11,13 @@ export const uploadPost = async (payload) => {
 }
 
 // get all post at once
-export const getAllPost = async () => {
+export const getAllPost = async (page) => {
     try {
-        const response = await axiosInstances.get('/api/posts/getAllPost');
+        const response = await axiosInstances.get('/api/posts/getAllPost', {
+            params: {
+                pageno: page
+            }
+        });
         return response.data;
     } catch (error) {
         return error.message;
