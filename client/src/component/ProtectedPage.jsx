@@ -147,13 +147,6 @@ const ProtectedPage = ({ children }) => {
                                 </img>
                                 </div>
                                 <div className='flex justify-end ml-10 space-x-9 items-center'>
-                                    <div className='text-2xl cursor-pointer hover:text-red-400 '>
-                                        <i className="ri-gallery-upload-line"
-                                            onClick={() => {
-                                                navigate('/uploadPost');
-                                            }}>
-                                        </i>
-                                    </div>
                                     <div>
                                         <i className="ri-home-4-line text-4xl cursor-pointer"
                                             onClick={() => {
@@ -163,6 +156,11 @@ const ProtectedPage = ({ children }) => {
                                     </div>
                                     <div>
                                         <i className={`ri-notification-2-line text-4xl cursor-pointer ${countNotification > 0 ? 'text-red-700 animate-pulse' : ''}`} onClick={() => { navigate('/notification') }} ></i>
+                                    </div>
+                                    <div className='flex items-center justify-center ' onClick={() => {
+                                        navigate('/message');
+                                    }}>
+                                        <i className="ri-mail-line text-4xl cursor-pointer" ></i>
                                     </div>
                                 </div>
                             </div>
@@ -174,17 +172,21 @@ const ProtectedPage = ({ children }) => {
                         <div>
                             {
                                 toggleMenu &&
-                                <div className='flex flex-col space-y-1 '>
+                                <div className='flex flex-col space-y-2 '>
+                                    <div className='flex items-center justify-center cursor-pointer' onClick={() => {
+                                        navigate('/uploadPost');
+                                    }}>
+
+                                        <i className="ri-gallery-upload-line text-5xl">
+                                        </i>
+
+                                        <div className='text-2xl'>Upload post</div>
+                                    </div>
+
                                     <div className='flex items-center justify-center cursor-pointer'
                                         onClick={() => { navigate('/search') }}>
                                         <i className="ri-search-line text-5xl"></i>
                                         <div className='text-2xl'>Search User</div>
-                                    </div>
-                                    <div className='flex items-center justify-center ' onClick={() => {
-                                        navigate('/message');
-                                    }}>
-                                        <i className="ri-mail-line text-4xl cursor-pointer" ></i>
-                                        <div className='text-2xl'>Message</div>
                                     </div>
                                     <div className=' flex items-center justify-center mr-8' onClick={() => {
                                         navigate("/profile")
