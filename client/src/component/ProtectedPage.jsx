@@ -68,7 +68,7 @@ const ProtectedPage = ({ children }) => {
             <div className=''>
                 {/* -------------------------------------for pc -----------------------------------------------*/}
                 <div className="hidden sm:flex">
-                    <header className=' bg-sky-100   w-full '>
+                    <header className=' bg-gray-200   w-full '>
                         <Row style={{ height: "50px", border: "2px solid gray" }}>
                             <Col span={6}>
                                 <Row>
@@ -143,7 +143,7 @@ const ProtectedPage = ({ children }) => {
                 </div>
                 {/*--------------------------------------for mobile ------------------------------------------- */}
                 <div className="sm:hidden">
-                    <header className=' bg-sky-100   '>
+                    <header className=' bg-gray-200   '>
                         <div className="flex ">
                             <div className="flex">
                                 <div className='text-2xl border-gray-400 text-red-600'><img src={image} className='w-12 h-12'>
