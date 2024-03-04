@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { List } from 'antd';
-import { useSelector } from 'react-redux';
-import { readNotificationApi } from '../../apicall/notificationApi';
+import { getNotificationApi, readNotificationApi } from '../../apicall/notificationApi';
+import { useNavigate } from 'react-router-dom';
 
 
 function formatCustomRelativeTime(date) {
@@ -28,22 +28,35 @@ function formatCustomRelativeTime(date) {
 }
 
 const Notificaton = () => {
+    const navigate = useNavigate();
     const currentUserId = localStorage.getItem('currentUserId');
-    const result = useSelector((state) => state.notification.notification)
+    const [result, setResult] = useState([]);
+    const getNotification = async () => {
+        const data = await getNotificationApi({ currentUserId: currentUserId });
+        console.log(data);
+        setResult(data.data);
+    }
     if (!result) {
         return <div>Loading...</div>;
     }
     const readNotificationFun = async () => {
         try {
-            const result = await readNotificationApi({ currentUserId: currentUserId });
-            console.log(result);
+            await readNotificationApi({ currentUserId: currentUserId });
+            // console.log(result);
         } catch (error) {
             console.log(error);
         }
     }
+    const handleClick = (id) => {
+        navigate(`/post/${id}`);
+    }
+    useEffect(() => {
+        getNotification();
+    }, [])
     useEffect(() => {
         readNotificationFun();
     }, []);
+
     return (
         <div className='notification h-screen overflow-y-scroll mt-0 bg-sky-50'>
             <List
@@ -51,7 +64,9 @@ const Notificaton = () => {
                 bordered
                 dataSource={result}
                 renderItem={(item) =>
-                    <List.Item className={`font-semibold flex flex-row ${item.read === false ? 'bg-gray-100' : ''}`}>
+                    <List.Item className={`font-semibold flex flex-row cursor-pointer  ${item.read === false ? 'bg-gray-100' : ''}`}
+                        onClick={() => handleClick(item?.post)}
+                    >
                         <div>{item.sender.name} has {item.action} your post</div>
                         <div>{formatCustomRelativeTime(item.createdAt)} item</div>
                     </List.Item>}

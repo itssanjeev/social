@@ -14,7 +14,7 @@ export const getNotificationApi = async (payload) => {
 export const readNotificationApi = async (payload) => {
     try {
         const response = await axiosInstances.post('/api/notification/markNotificationAsRead', payload);
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(error);

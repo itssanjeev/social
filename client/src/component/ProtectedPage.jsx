@@ -41,7 +41,6 @@ const ProtectedPage = ({ children }) => {
 
         try {
             const result = await getNotificationApi({ currentUserId: currentUserId });
-            //console.log(location, 'protectedpage location 56');
             if (result && Array.isArray(result.data)) {
                 for (const element of result?.data) {
                     if (element.read === false) {
@@ -89,8 +88,6 @@ const ProtectedPage = ({ children }) => {
                                 </Row>
 
                             </Col>
-
-
                             <Col span={8} offset={2}>
                                 <Row className='flex justify-between'>
                                     <Col span={6} className='flex items-center justify-center '>
