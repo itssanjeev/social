@@ -5,7 +5,7 @@ import { parseISO, format } from 'date-fns';
 // import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 // import { Card } from "@/components/ui/card"
 
-const ChatBox = ({ chatId, receiverId }) => {
+const ChatBox = ({ chatId, receiverId, handleToggle }) => {
     const [data, setData] = useState([]);
     const [text, setText] = useState('');
     const [receiver, setReceiver] = useState();
@@ -68,18 +68,24 @@ const ChatBox = ({ chatId, receiverId }) => {
                 chatId &&
                 <div>
                     <div className="h-screen overflow-hidden border border-y-4 border-black">
-                        <div className="flex flex-col justify-between flex-grow">
-                            <div className="h-12 bg-gray-200 flex flex-row justify-center items-center">
-                                <div>
-                                    {
-                                        receiver?.profilePicture.length > 0 &&
-                                        <img src={`${receiver?.profilePicture}`} className='w-10 h-10 rounded-full' alt="img"></img>
-                                    }
+                        <div className="flex flex-col justify-between ">
+                            <div className="h-12 bg-gray-200 flex justify-center">
+                                <div onClick={handleToggle} className='absolute top-0 left-0 cursor-pointer sm:hidden'>
+                                    <i className="ri-arrow-left-line text-4xl "></i>
                                 </div>
-                                <div className='m-2'>
-                                    {
-                                        receiver && receiver.username
-                                    }</div>
+                                <div className="flex justify-center items-center">
+                                    <div className="">
+                                        {
+                                            receiver?.profilePicture.length > 0 &&
+                                            <img src={`${receiver?.profilePicture}`} className='w-10 h-10 rounded-full' alt="img"></img>
+                                        }
+                                    </div>
+                                    <div className='m-2'>
+                                        {
+                                            receiver && receiver.username
+                                        }
+                                    </div>
+                                </div>
                             </div>
                             <div className='overflow-y-auto m-2 p-2 h-[550px]'>
                                 {
@@ -88,7 +94,7 @@ const ChatBox = ({ chatId, receiverId }) => {
                                             <p className={`flex text-xl    ${d.receiverId === userid ? 'justify-start' : 'justify-end'}  p-2 rounded-lg`} >
                                                 <div className='flex flex-col'>
                                                     <div>{d.text}</div>
-                                                    <div className='text-slate-600'>{formattedDate(d?.createdAt)}</div>
+                                                    <sdiv className='text-slate-600'>{formattedDate(d?.createdAt)}</sdiv>
                                                 </div>
                                             </p>
                                             <hr />

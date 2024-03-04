@@ -9,6 +9,8 @@ const Message = () => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [chatId, setChatId] = useState();
+    const [toggleList, setToggleList] = useState(true);
+    const [toggleChat, setToggleChat] = useState(false);
     const navigate = useNavigate();
     const loadMoreData = async () => {
         try {
@@ -25,6 +27,10 @@ const Message = () => {
             setLoading(false);
         }
     };
+    const handleToggle = () => {
+        setToggleList(!toggleList);
+        setToggleChat(!toggleChat);
+    }
     const handleClick = (value) => {
         console.log(value);
         setChatId(value)
@@ -33,57 +39,125 @@ const Message = () => {
         loadMoreData();
     }, []);
     return (
-        <div className='flex flex-row h-screen'>
-            <div className='w-2/6 overflow-y-auto h-full'>
-                <div
-                    id="scrollableDiv"
-                    style={{
-                        overflow: 'auto',
-                        padding: '0 16px',
-                        border: '1px solid rgba(140, 140, 140, 0.35)',
-                    }}
-                >
-                    <InfiniteScroll
-                        dataLength={data.length}
-                        next={loadMoreData}
-                        hasMore={data.length > 40 ? data.length < 40 : data.length < data.length}
-                        loader={
-                            <Skeleton
-                                avatar
-                                paragraph={{
-                                    rows: 1,
+        <div>
+            {/*---------------------------------- for pc------------------------ */}
+            <div className="hidden sm:flex flex-col">
+                <div>
+                    <div className='flex flex-row h-screen '>
+                        <div className='w-2/6 overflow-y-auto h-full'>
+                            <div
+                                id="scrollableDiv"
+                                style={{
+                                    overflow: 'auto',
+                                    padding: '0 16px',
+                                    border: '1px solid rgba(140, 140, 140, 0.35)',
                                 }}
-                                active
-                            />
-                        }
-                        endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-                        scrollableTarget="scrollableDiv"
-                    >
-                        <List
-                            dataSource={data}
-                            renderItem={(item) => (
-                                <List.Item key={item.receiverId} className='hover:bg-slate-400 cursor-pointer'
-                                    onClick={() => handleClick(item)}
+                            >
+                                <InfiniteScroll
+                                    dataLength={data.length}
+                                    next={loadMoreData}
+                                    hasMore={data.length > 40 ? data.length < 40 : data.length < data.length}
+                                    loader={
+                                        <Skeleton
+                                            avatar
+                                            paragraph={{
+                                                rows: 1,
+                                            }}
+                                            active
+                                        />
+                                    }
+                                    endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+                                    scrollableTarget="scrollableDiv"
                                 >
-                                    <List.Item.Meta
-                                        avatar={<Avatar src={item.profilePicture} />}
-                                        title={item.receiverName}
-                                        description={item.receiverUsername}
+                                    <List
+                                        dataSource={data}
+                                        renderItem={(item) => (
+                                            <List.Item key={item.receiverId} className='hover:bg-slate-400 cursor-pointer'
+                                                onClick={() => handleClick(item)}
+                                            >
+                                                <List.Item.Meta
+                                                    avatar={<Avatar src={item.profilePicture} />}
+                                                    title={item.receiverName}
+                                                    description={item.receiverUsername}
+                                                />
+                                            </List.Item>
+                                        )}
                                     />
-                                </List.Item>
-                            )}
-                        />
-                    </InfiniteScroll>
+                                </InfiniteScroll>
+                            </div>
+                        </div>
+                        <div className='w-4/6 border-solid'>
+                            <div className='flex-grow relative'>
+                                <ChatBox chatId={chatId?.chatId} receiverId={chatId?.receiverId}>
+                                </ChatBox>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div className='w-4/6 '>
-                <div className='flex-grow relative'>
-                    <ChatBox chatId={chatId?.chatId} receiverId={chatId?.receiverId}>
-                    </ChatBox>
-                </div>
+            {/* ----------------------------for mobile----------------------- */}
+            <div className='sm:hidden'>
+                <div>
+                    <div className='flex flex-row h-screen '>
+                        {toggleList &&
+                            <div className='w-full overflow-y-auto h-full' onClick={handleToggle}>
+                                <div
+                                    id="scrollableDiv"
+                                    style={{
+                                        overflow: 'auto',
+                                        padding: '0 16px',
+                                        border: '1px solid rgba(140, 140, 140, 0.35)',
+                                    }}
+                                >
+                                    <InfiniteScroll
+                                        dataLength={data.length}
+                                        next={loadMoreData}
+                                        hasMore={data.length > 40 ? data.length < 40 : data.length < data.length}
+                                        loader={
+                                            <Skeleton
+                                                avatar
+                                                paragraph={{
+                                                    rows: 1,
+                                                }}
+                                                active
+                                            />
+                                        }
+                                        endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+                                        scrollableTarget="scrollableDiv"
+                                    >
+                                        <List
+                                            dataSource={data}
+                                            renderItem={(item) => (
+                                                <List.Item key={item.receiverId} className='hover:bg-slate-400 cursor-pointer'
+                                                    onClick={() => handleClick(item)}
+                                                >
+                                                    <List.Item.Meta
+                                                        avatar={<Avatar src={item.profilePicture} />}
+                                                        title={item.receiverName}
+                                                        description={item.receiverUsername}
+                                                    />
+                                                </List.Item>
+                                            )}
+                                        />
+                                    </InfiniteScroll>
+                                </div>
+                            </div>
+                        }
+                        {
+                            toggleChat &&
+                            <div className='w-full border-solid' >
+                                <div className='flex-grow relative'>
+                                    <ChatBox chatId={chatId?.chatId} receiverId={chatId?.receiverId} handleToggle={handleToggle}>
+                                    </ChatBox>
+                                </div>
 
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
+
     )
 }
 
