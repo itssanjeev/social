@@ -8,6 +8,7 @@ const chatSchema = new mongoose.Schema(
         receiverId: {
             type: String,
         },
+
         text: {
             type: String
         },

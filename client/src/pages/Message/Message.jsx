@@ -4,6 +4,7 @@ import { messageUserList } from '../../apicall/messageApi';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Avatar, Divider, List, Skeleton } from 'antd';
 import { useNavigate } from 'react-router-dom'
+// import { readMessageNotificationApi } from '../../apicall/notificationApi';
 
 const Message = () => {
     const [loading, setLoading] = useState(false);
@@ -27,6 +28,7 @@ const Message = () => {
             setLoading(false);
         }
     };
+
     const handleToggle = () => {
         setToggleList(!toggleList);
         setToggleChat(!toggleChat);
@@ -34,7 +36,9 @@ const Message = () => {
     const handleClick = (value) => {
         console.log(value);
         setChatId(value)
+        value.notificationsCount = 0;
     }
+
     useEffect(() => {
         loadMoreData();
     }, []);
@@ -80,6 +84,7 @@ const Message = () => {
                                                     title={item.receiverName}
                                                     description={item.receiverUsername}
                                                 />
+                                                <div className={`${item.notificationsCount > 0 ? "bg-red-400 rounded-full w-6 h-6 text-center font-semibold" : ''}`}>{item.notificationsCount > 0 ? item.notificationsCount : ''}</div>
                                             </List.Item>
                                         )}
                                     />

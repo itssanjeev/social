@@ -14,17 +14,24 @@ const notificationSchema = new mongoose.Schema({
     },
     action: {
         type: String,
-        enum: ['like', 'comment'], // You can expand this for other actions (comment, etc.)
+        enum: ['like', 'comment', 'message'], // You can expand this for other actions (comment, etc.)
         required: true,
     },
     post: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
     },
+    chatId: {
+        type: String,
+    },
     read: {
         type: Boolean,
         default: false,
     },
+    readMessage: {
+        type: Boolean,
+        default: false
+    }
 }, {
     timestamps: true,
 });

@@ -42,7 +42,6 @@ const Notificaton = () => {
     const readNotificationFun = async () => {
         try {
             await readNotificationApi({ currentUserId: currentUserId });
-            // console.log(result);
         } catch (error) {
             console.log(error);
         }

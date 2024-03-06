@@ -5,10 +5,9 @@ import { getCurrentUser } from '../apicall/userApi';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/userSlice';
 // import socket from '../socket/Socket';
-import { getNotificationApi } from '../apicall/notificationApi';
-import { setNotification } from '../redux/notificationSlice';
 import image from '../assets/logo1.ico';
 import { Tooltip } from 'antd'
+import { countMessageNotificationApi, notificationCountApi, readMessageNotificationApi } from '../apicall/notificationApi';
 
 const ProtectedPage = ({ children }) => {
     let currentUserId = localStorage.getItem('currentUserId');
@@ -37,28 +36,47 @@ const ProtectedPage = ({ children }) => {
 
     /*------------------------------------notification part from here----------------------------*/
     const [countNotification, setCountNotification] = useState(0);
-    const getNotificationFun = async () => {
-
+    const [countMessage, setCountMessage] = useState(0);
+    const getNotificationCountFun = async () => {
         try {
-            const result = await getNotificationApi({ currentUserId: currentUserId });
-            if (result && Array.isArray(result.data)) {
-                for (const element of result?.data) {
-                    if (element.read === false) {
-                        setCountNotification(countNotification + 1);
-                        break;
-                    } else {
-                        setCountNotification(0);
-                    }
-                };
-                dispatch(setNotification(result.data));
+            const result = await notificationCountApi();
+            // console.log(result);
+            setCountNotification(result.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const getMessageNotification = async () => {
+        try {
+            const result = await countMessageNotificationApi();
+            console.log(result.data);
+            setCountMessage(result.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const readMessageNotification = async () => {
+        try {
+            const result = await readMessageNotificationApi();
+            if (result.count > 0) {
+                setCountMessage(0);
             }
         } catch (error) {
             console.log(error);
         }
     }
+    const handleMessageClick = () => {
+        readMessageNotification();
+        navigate('/message');
+    }
     useEffect(() => {
         if (location.pathname !== '/notification') {
-            getNotificationFun();
+            getNotificationCountFun();
+        }
+    }, [location]);
+    useEffect(() => {
+        if (location.pathname !== '/message') {
+            getMessageNotification();
         }
     }, [location]);
     return (
@@ -118,9 +136,9 @@ const ProtectedPage = ({ children }) => {
                                 <Row className='flex items-end justify-between'>
                                     <Col span={5} className='flex items-center justify-center '>
                                         <Tooltip title="message">
-                                            <i className="ri-mail-line text-4xl cursor-pointer" onClick={() => {
-                                                navigate('/message');
-                                            }}></i>
+                                            <div>
+                                                <i className={`ri-mail-line text-4xl cursor-pointer ${countMessage > 0 ? 'text-red-700 animate-pulse' : ''}`} onClick={handleMessageClick}></i>
+                                            </div>
                                         </Tooltip>
                                     </Col>
                                     <Col span={4} className=' flex items-center justify-center mr-8'>

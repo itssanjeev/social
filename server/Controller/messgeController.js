@@ -1,7 +1,7 @@
-const router = require('express').Router();
-const User = require('../models/userModel');
+// const User = require('../models/userModel');
 const Message = require('../models/messageModel');
 const Chat = require('../models/chatModels');
+const Notification = require('../models/noficationModel');
 
 
 
@@ -16,6 +16,7 @@ exports.CreateNewChat = async (req, res) => {
             receiverId: receiverId,
             userId: senderId
         })
+
         await message.save();
         res.send({
             data: message,
@@ -29,6 +30,8 @@ exports.SentMessage = async (req, res) => {
     const text = req.body.text;
     const chatId = req.body.chatId;
     const receiverId = req.body.receiverId;
+    const userid = req.userId;
+    // console.log(userid)
     try {
         const newMessage = new Chat({
             chatId: chatId,
@@ -36,59 +39,99 @@ exports.SentMessage = async (req, res) => {
             text: text
         })
         await newMessage.save();
+        const notification = new Notification({
+            sender: userid,
+            receiver: receiverId,
+            action: 'message',
+            chatId: chatId,
+            read: false,
+            readMessage: false
+        })
+        // console.log(notification);
+        // await notification.save({ writeConcern: { w: 0 } }); //this only for devlopment purpose when not trhowing error even though there is as error 
+        await notification.save();
+        // console.log('notification saved');
         res.send({
             success: true,
             message: "sent successfully"
         });
     } catch (error) {
-        res.send(error.message);
+        console.error("Error while saving notification:", error.message);
+        console.error("Stack trace:", error.stack);
+        res.status(500).send({
+            success: false,
+            message: "Error while saving the notification",
+            error: error.message
+        });
     }
 }
-
+/**
+ * @param1 {userId} -[userid of current user]
+ * @description1 {} -[]
+ * @description2 {} -[]
+ * @returntype {userList} -[other userid,chatId,profile_picture,otherUsername]
+ */
 exports.GetMessageUserList = async (req, res) => {
     try {
         const userId = req.userId;
-        let transformedData;
+        let transformedData1, transformedData2;
         // console.log(userId);
-        let userList = await Message.find({ userId: userId }).populate('receiverId');
-        if (userList.length > 0) {
-            transformedData = userList.map((message) => {
-                const chatId = message.chatId;
-                const receiverName = message.receiverId.name;
-                const receiverUsername = message.receiverId.username;
-                const receiverId = message.receiverId._id;
-                const profilePicture = message.receiverId.profilePicture;
-                return {
-                    chatId,
-                    receiverId,
-                    receiverName,
-                    receiverUsername,
-                    profilePicture
-                }
-            })
-        } else {
-            // console.log('!user')
-            userList = await Message.find({ receiverId: userId }).populate('userId');
-            transformedData = userList.map((message) => {
-                const chatId = message.chatId;
-                const receiverName = message.userId.name;
-                const receiverUsername = message.userId.username;
-                const receiverId = message.userId._id;
-                const profilePicture = message.userId.profilePicture;
-                return {
-                    chatId,
-                    receiverId,
-                    receiverName,
-                    receiverUsername,
-                    profilePicture
-                }
-            })
-        }
-        // console.log(userList);
 
+        //this is when current user is sender 
+        let userListMadeByCurrentUser = await Message.find({ userId: userId }).populate('receiverId');
+        transformedData1 = userListMadeByCurrentUser.map(async (message) => {
+            const chatId = message.chatId;
+            const receiverName = message.receiverId.name;
+            const receiverUsername = message.receiverId.username;
+            const receiverId = message.receiverId._id;
+            const profilePicture = message.receiverId.profilePicture;
+            const notificationsCount = await Notification.countDocuments({
+                receiver: userId,
+                sender: receiverId,
+                action: 'message',
+                read: false,
+            });
+            return {
+                chatId,
+                receiverId,
+                receiverName,
+                receiverUsername,
+                profilePicture,
+                notificationsCount,
+            }
+        })
+        //this is when current user is receiver 
+        let userListMadeByOtherUser = await Message.find({ receiverId: userId }).populate('userId');
+        transformedData2 = userListMadeByOtherUser.map(async (message) => {
+            const chatId = message.chatId;
+            const receiverName = message.userId.name;
+            const receiverUsername = message.userId.username;
+            const receiverId = message.userId._id;
+            const profilePicture = message.userId.profilePicture;
+            const notificationsCount = await Notification.countDocuments({
+                receiver: userId,
+                sender: receiverId,
+                action: 'message',
+                read: false,
+            });
+            return {
+                chatId,
+                receiverId,
+                receiverName,
+                receiverUsername,
+                profilePicture,
+                notificationsCount
+            }
+        })
+
+        // Resolve promises and concatenate the transformed data
+        transformedData1 = await Promise.all(transformedData1);
+        transformedData2 = await Promise.all(transformedData2);
+        let transformedData = transformedData1.concat(transformedData2);
+        // console.log(transformedData);
         res.send({
-            data: transformedData,
-            success: true
+            data: transformedData || [],
+            success: true,
         })
     } catch (error) {
         res.send(error.message);
@@ -97,7 +140,20 @@ exports.GetMessageUserList = async (req, res) => {
 exports.GetMessage = async (req, res) => {
     try {
         const chatId = req.body.chatId;
+        const receiverId = req.body.receiverId;
         const chat = await Chat.find({ chatId: chatId });
+        const userid = req.userId;
+        await Notification.updateMany(
+            {
+                receiver: userid,
+                sender: receiverId,
+                read: false,
+                action: 'message'
+            },
+            {
+                read: true
+            }
+        );
         res.send({
             data: chat,
             message: "chat retrived successfully",

@@ -11,7 +11,7 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
     const [receiver, setReceiver] = useState();
     const getUserMessage = async () => {
         try {
-            const data = await getAllUserMessage({ chatId: chatId });
+            const data = await getAllUserMessage({ chatId: chatId, receiverId: receiverId });
             setData(data.data);
             console.log(data.data);
         } catch (error) {
@@ -56,7 +56,9 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
         }
     }
     useEffect(() => {
-        getUserMessage();
+        if (chatId && receiverId) {
+            getUserMessage();
+        }
     }, [chatId, receiverId]);
     useEffect(() => {
         handleReceiver()
