@@ -3,7 +3,6 @@ const app = express();
 app.use(express.json());
 require('dotenv').config();
 const cors = require('cors');
-// const socketManager = require('../server/socket/socketManager');
 app.use(cors({ origin: '*' }));
 
 const port = process.env.PORT || 8080;
@@ -13,13 +12,7 @@ const server = app.listen(port, () => {
 });
 
 
-// const io = require('socket.io')(server, {
-//     cors: {
-//         origin: '*',
-//         methods: ['GET', 'POST'],
-//         credentials: true
-//     }
-// });
+
 
 
 
@@ -37,16 +30,4 @@ app.use('/api/message', messageRoute)
 app.use('/api/notification', notificationRoute);
 app.use('/api/admin', adminRoute);
 
-
-// io.on('connection', (socket) => {
-//     socket.on('joinRoom', currentUserId => {
-//         console.log('A user connected:', socket.id);
-//         console.log('user', currentUserId);
-//         socket.join(currentUserId);
-//         socketManager.setUserSocket(currentUserId, socket);
-//     })
-//     socket.on('disconnect', () => {
-//         console.log('user disconnected', socket.id);
-//     })
-// });
 
