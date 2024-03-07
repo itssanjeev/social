@@ -12,11 +12,7 @@ const server = app.listen(port, () => {
 });
 
 
-
-
-
-
-const dbConfig = require('./config/dbConfig');
+require('./config/dbConfig');
 const userRoute = require('../server/routes/userRoute');
 const postRoute = require('../server/routes/postRoute')
 const messageRoute = require('../server/routes/messageRoute')
