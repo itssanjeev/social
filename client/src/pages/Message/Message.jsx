@@ -5,6 +5,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { Avatar, Divider, List, Skeleton } from 'antd';
 import { useNavigate } from 'react-router-dom'
 // import { readMessageNotificationApi } from '../../apicall/notificationApi';
+import { socket } from '../../component/socket';
 
 const Message = () => {
     const [loading, setLoading] = useState(false);
@@ -12,6 +13,7 @@ const Message = () => {
     const [chatId, setChatId] = useState();
     const [toggleList, setToggleList] = useState(true);
     const [toggleChat, setToggleChat] = useState(false);
+    const userid = localStorage.getItem('currentUserId');
     const navigate = useNavigate();
     const loadMoreData = async () => {
         try {
@@ -42,6 +44,9 @@ const Message = () => {
     useEffect(() => {
         loadMoreData();
     }, []);
+    useEffect(() => {
+        socket.emit("new-user-add", userid)
+    }, [])
     return (
         <div>
             {/*---------------------------------- for pc------------------------ */}

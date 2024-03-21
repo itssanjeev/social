@@ -13,6 +13,7 @@ const server = app.listen(port, () => {
 
 
 require('./config/dbConfig');
+require('./socket/socketManager')
 const userRoute = require('../server/routes/userRoute');
 const postRoute = require('../server/routes/postRoute')
 const messageRoute = require('../server/routes/messageRoute')
