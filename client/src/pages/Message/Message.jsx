@@ -44,8 +44,12 @@ const Message = () => {
     useEffect(() => {
         loadMoreData();
     }, []);
+
     useEffect(() => {
         socket.emit("new-user-add", userid)
+        socket.on("get-users", (activeUser) => {
+            console.log(activeUser);
+        })
     }, [])
     return (
         <div>
