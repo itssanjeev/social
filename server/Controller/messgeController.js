@@ -16,7 +16,6 @@ exports.CreateNewChat = async (req, res) => {
             receiverId: receiverId,
             userId: senderId
         })
-
         await message.save();
         res.send({
             data: message,
