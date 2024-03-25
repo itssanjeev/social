@@ -7,5 +7,6 @@ const notificationRoute = router.post('/getAllNotification', authMiddleware, not
     .get('/countNotication', authMiddleware, notificationController.CountNotication)
     .get('/countMessage', authMiddleware, notificationController.CountMessage)
     .get('/markMessageAsRead', authMiddleware, notificationController.MarkMessageAsRead)
+    .post('/markMessageAsReadFromSocket', notificationController.readNotificationOFMessageFromSocket)
 
 module.exports = notificationRoute;

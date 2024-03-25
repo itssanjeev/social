@@ -8,6 +8,7 @@ import { setUser } from '../redux/userSlice';
 import image from '../assets/logo1.ico';
 import { Tooltip } from 'antd'
 import { countMessageNotificationApi, notificationCountApi, readMessageNotificationApi } from '../apicall/notificationApi';
+import { socket } from './socket';
 
 const ProtectedPage = ({ children }) => {
     let currentUserId = localStorage.getItem('currentUserId');
@@ -79,6 +80,10 @@ const ProtectedPage = ({ children }) => {
             getMessageNotification();
         }
     }, [location]);
+    const userid = localStorage.getItem('currentUserId');
+    useEffect(() => {
+        socket.emit("new-user-add", userid)
+    }, [])
     return (
         currentUser &&
         <div className="h-screen overflow-hidden">

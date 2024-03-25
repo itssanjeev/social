@@ -36,7 +36,7 @@ const Message = () => {
         setToggleChat(!toggleChat);
     }
     const handleClick = (value) => {
-        console.log(value);
+        console.log(value.receiverId, 'userid', userid);
         setChatId(value)
         value.notificationsCount = 0;
     }
@@ -44,13 +44,12 @@ const Message = () => {
     useEffect(() => {
         loadMoreData();
     }, []);
-
     useEffect(() => {
-        socket.emit("new-user-add", userid)
         socket.on("get-users", (activeUser) => {
             console.log(activeUser);
         })
-    }, [])
+    })
+
     return (
         <div>
             {/*---------------------------------- for pc------------------------ */}

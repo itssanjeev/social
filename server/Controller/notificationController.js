@@ -103,6 +103,30 @@ exports.MarkMessageAsRead = async (req, res) => {
             message: "notification mark as read"
         })
     } catch (error) {
-        res.send(error.message);
+        res.status(500).send(error.message);
+    }
+}
+
+exports.readNotificationOFMessageFromSocket = async (req, res) => {
+    try {
+        // const userid = req.userId;
+        const { receiverId, userid } = req.body;
+        // console.log('hi');
+        await Notificaiton.updateMany(
+            {
+                receiver: userid,
+                sender: receiverId,
+                read: false,
+                action: 'message'
+            },
+            {
+                read: true
+            }
+        );
+        // console.log(data);
+        res.send("message read successfully");
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send(error.message);
     }
 }

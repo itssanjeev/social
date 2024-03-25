@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { getAllUserMessage, sentMessage } from '../../apicall/messageApi';
 import { getOtherUser } from '../../apicall/otherUserApi';
 import { parseISO, format } from 'date-fns';
-// import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
-// import { Card } from "@/components/ui/card"
+import { socket } from '../../component/socket';
+import { readMessageNotificationChatBoxOpen } from '../../apicall/notificationApi';
 
 const ChatBox = ({ chatId, receiverId, handleToggle }) => {
     const [data, setData] = useState([]);
@@ -31,6 +31,11 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
         try {
             if (text.length === 0) throw new Error("size is 0");
             await sentMessage({ chatId: chatId, receiverId: receiverId, text: text });
+            let currentDate = new Date();
+            // Format date and time
+            let formattedDateTime = currentDate.toISOString();
+            console.log("Current Date and Time:", formattedDateTime);
+            socket.emit("send-message", { receiverId, userid, text, createdAt: formattedDateTime });
             setText('');
             getUserMessage();
         } catch (error) {
@@ -55,10 +60,37 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
             console.log(error);
         }
     }
+    const handleSocket = () => {
+        // Add socket event listener when component mounts
+        socket.on("recieve-message", async (newData) => {
+            const socketSenderId = newData.userid;
+            console.log(socketSenderId, 'sam', receiverId);
+            if (receiverId) {
+                if (socketSenderId === receiverId) {
+                    console.log('inside the if before compresion')
+                    setData(prevstate => [...prevstate, newData]);
+                    if (chatId && receiverId) {
+                        try {
+                            const data = await readMessageNotificationChatBoxOpen({ receiverId, userid });
+                            console.log(data);
+                        } catch (error) {
+                            console.log('error:', error);
+                        }
+                    }
+                }
+            }
+            // console.log(newData);
+        });
+        // Clean up function to remove socket event listener when component unmounts
+        return () => {
+            socket.off("recieve-message");
+        };
+    }
     useEffect(() => {
         if (chatId && receiverId) {
             getUserMessage();
         }
+        handleSocket();
     }, [chatId, receiverId]);
     useEffect(() => {
         handleReceiver()
@@ -96,7 +128,7 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
                                             <p className={`flex text-xl    ${d.receiverId === userid ? 'justify-start' : 'justify-end'}  p-2 rounded-lg`} >
                                                 <div className='flex flex-col'>
                                                     <div>{d.text}</div>
-                                                    <sdiv className='text-slate-600'>{formattedDate(d?.createdAt)}</sdiv>
+                                                    <div className='text-slate-600'>{formattedDate(d?.createdAt)}</div>
                                                 </div>
                                             </p>
                                             <hr />

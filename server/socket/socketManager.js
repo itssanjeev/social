@@ -1,5 +1,4 @@
 const axios = require('axios');
-const readMessageNotification = require('../routes/notificationRoute/markMessageAsRead');
 
 const io = require("socket.io")(3000, {
     cors: {
@@ -31,17 +30,22 @@ io.on("connection", (socket) => {
 
     // send message to a specific user
     socket.on("send-message", (data) => {
-        // const { receiverId, text } = data;
+        const { receiverId } = data;
         const user = activeUsers.find((user) => user.userId === receiverId);
-        console.log("Sending from socket to :", receiverId)
+        // console.log("Sending from socket to :", receiverId)
         // console.log("Data: ", data);
         if (user) {
             io.to(user.socketId).emit("recieve-message", data);
             try {
-                axios.
+                axios.post(`http://localhost:8080/api/notification/markMessageAsReadFromSocket `, { receiverId: receiverId }).then(response => {
+                    console.log(response.data)
+                })
             } catch (error) {
-
+                console.log(error.message);
+                return;
             }
+        } else {
+            return;
         }
     });
 });

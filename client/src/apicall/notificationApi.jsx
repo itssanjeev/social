@@ -41,3 +41,13 @@ export const readMessageNotificationApi = async () => {
         console.log(error);
     }
 }
+export const readMessageNotificationChatBoxOpen = async (payload) => {
+    try {
+        const response = await axiosInstances.post('/api/notification/markMessageAsReadFromSocket', payload);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+
+}
