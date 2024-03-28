@@ -36,14 +36,14 @@ io.on("connection", (socket) => {
         // console.log("Data: ", data);
         if (user) {
             io.to(user.socketId).emit("recieve-message", data);
-            try {
-                axios.post(`http://localhost:8080/api/notification/markMessageAsReadFromSocket `, { receiverId: receiverId }).then(response => {
-                    console.log(response.data)
-                })
-            } catch (error) {
-                console.log(error.message);
-                return;
-            }
+            // try {
+            //     axios.post(`http://localhost:8080/api/notification/markMessageAsReadFromSocket `, { receiverId: receiverId }).then(response => {
+            //         console.log(response.data)
+            //     })
+            // } catch (error) {
+            //     console.log(error.message);
+            //     return;
+            // }
         } else {
             return;
         }

@@ -36,9 +36,13 @@ const Message = () => {
         setToggleChat(!toggleChat);
     }
     const handleClick = (value) => {
-        console.log(value.receiverId, 'userid', userid);
-        setChatId(value)
-        value.notificationsCount = 0;
+        // console.log(value.receiverId, 'userid', userid);
+        console.log(value);
+        if (chatId?.chatId != value.chatId) {
+            setChatId('');
+            setChatId(value)
+            value.notificationsCount = 0;
+        }
     }
 
     useEffect(() => {

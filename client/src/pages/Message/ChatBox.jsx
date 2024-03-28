@@ -11,6 +11,7 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
     const [receiver, setReceiver] = useState();
     const getUserMessage = async () => {
         try {
+            console.log('receiverid', receiverId, 'chatid', chatId)
             const data = await getAllUserMessage({ chatId: chatId, receiverId: receiverId });
             setData(data.data);
             console.log(data.data);
@@ -35,7 +36,7 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
             // Format date and time
             let formattedDateTime = currentDate.toISOString();
             console.log("Current Date and Time:", formattedDateTime);
-            socket.emit("send-message", { receiverId, userid, text, createdAt: formattedDateTime });
+            socket.emit("send-message", { receiverId, userid, text, createdAt: formattedDateTime, chatId });
             setText('');
             getUserMessage();
         } catch (error) {
@@ -60,41 +61,75 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
             console.log(error);
         }
     }
-    const handleSocket = () => {
-        // Add socket event listener when component mounts
-        socket.on("recieve-message", async (newData) => {
-            const socketSenderId = newData.userid;
-            console.log(socketSenderId, 'sam', receiverId);
-            if (receiverId) {
-                if (socketSenderId === receiverId) {
-                    console.log('inside the if before compresion')
-                    setData(prevstate => [...prevstate, newData]);
-                    if (chatId && receiverId) {
-                        try {
-                            const data = await readMessageNotificationChatBoxOpen({ receiverId, userid });
-                            console.log(data);
-                        } catch (error) {
-                            console.log('error:', error);
-                        }
-                    }
-                }
-            }
-            // console.log(newData);
-        });
-        // Clean up function to remove socket event listener when component unmounts
-        return () => {
-            socket.off("recieve-message");
-        };
-    }
+    // const handleSocket = () => {
+    //     // Add socket event listener when component mounts
+    //     socket.on("recieve-message", async (newData) => {
+    //         const socketSenderId = newData.userid;
+    //         const chatIds = newData.chatId;
+
+    //         // Log state values for debugging
+    //         console.log('Receiver ID:', receiverId);
+    //         console.log('Chat ID:', chatId);
+    //         // if (receiverId && chatId && chatIds !== chatId) socket.off("recieve-message");
+    //         // Check if the received message belongs to the current chat
+    //         console.log('socketSenderId:', socketSenderId)
+    //         if (receiverId && chatId && socketSenderId === receiverId && chatIds === chatId) {
+    //             setData(prevState => [...prevState, newData]);
+    //             // socket.off("recieve-message");
+
+    //             // If the chat ID and receiver ID are available, mark the message as read
+    // try {
+    //     const data = await readMessageNotificationChatBoxOpen({ receiverId, userid });
+    //     console.log(data);
+    // } catch (error) {
+    //     console.log('error:', error);
+    // }
+    //             // getUserMessage();
+    //         }
+    //     });
+
+    //     return () => {
+    //         // Remove the event listener when the component unmounts
+    //         socket.off("recieve-message");
+    //     };
+    // }
+
     useEffect(() => {
         if (chatId && receiverId) {
             getUserMessage();
         }
-        handleSocket();
     }, [chatId, receiverId]);
     useEffect(() => {
         handleReceiver()
-    }, [receiverId])
+    }, [receiverId, chatId])
+    useEffect(() => {
+        const handleSocket = async (newData) => {
+            const socketSenderId = newData.userid;
+            const chatIds = newData.chatId;
+
+            // Check if the received message belongs to the current chat
+            if (receiverId && chatId && socketSenderId === receiverId && chatIds === chatId) {
+                setData(prevData => [...prevData, newData]);
+
+                // Mark the message as read if necessary
+                try {
+                    const data = await readMessageNotificationChatBoxOpen({ receiverId, userid });
+                    console.log(data);
+                } catch (error) {
+                    console.log('error:', error);
+                }
+
+            }
+        };
+
+        // Add event listener for receiving messages
+        socket.on("recieve-message", handleSocket);
+
+        return () => {
+            // Remove event listener when component unmounts
+            socket.off("recieve-message", handleSocket);
+        };
+    }, [chatId, receiverId]);
 
     return (
         <>
