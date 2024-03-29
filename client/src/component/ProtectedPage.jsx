@@ -83,6 +83,11 @@ const ProtectedPage = ({ children }) => {
     const userid = localStorage.getItem('currentUserId');
     useEffect(() => {
         socket.emit("new-user-add", userid)
+        socket.on("recieve-message", getMessageNotification);
+        // console.log('inside protected route in socket');
+        return () => {
+            socket.off("recieve-message");
+        }
     }, [])
     return (
         currentUser &&
@@ -227,8 +232,4 @@ const ProtectedPage = ({ children }) => {
         </div>
     )
 }
-
 export default ProtectedPage;
-
-
-

@@ -13,6 +13,7 @@ const Message = () => {
     const [chatId, setChatId] = useState();
     const [toggleList, setToggleList] = useState(true);
     const [toggleChat, setToggleChat] = useState(false);
+    const [activeUserMaps, setActiveUserMaps] = useState({});
     const userid = localStorage.getItem('currentUserId');
     const navigate = useNavigate();
     const loadMoreData = async () => {
@@ -49,10 +50,25 @@ const Message = () => {
         loadMoreData();
     }, []);
     useEffect(() => {
+        socket.emit("new-user-add", userid)
         socket.on("get-users", (activeUser) => {
             console.log(activeUser);
+            // console.log('inside socket', data);
+            const activeUserMap = {};
+            activeUser.forEach(d => {
+                activeUserMap[d.userId] = true;
+            });
+            setActiveUserMaps(activeUserMap);
         })
-    })
+        socket.on("recieve-message", loadMoreData)
+        console.log('inside useEffect');
+
+        return () => {
+            // Remove event listener when component unmounts
+            socket.off("get-users");
+            socket.off("recieve-message");
+        };
+    }, [])
 
     return (
         <div>
@@ -97,6 +113,8 @@ const Message = () => {
                                                     description={item.receiverUsername}
                                                 />
                                                 <div className={`${item.notificationsCount > 0 ? "bg-red-400 rounded-full w-6 h-6 text-center font-semibold" : ''}`}>{item.notificationsCount > 0 ? item.notificationsCount : ''}</div>
+                                                <div className={`${activeUserMaps[item.receiverId] && 'bg-green-600 rounded-full w-3 h-3'}`} ></div>
+
                                             </List.Item>
                                         )}
                                     />

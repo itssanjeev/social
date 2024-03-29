@@ -32,18 +32,8 @@ io.on("connection", (socket) => {
     socket.on("send-message", (data) => {
         const { receiverId } = data;
         const user = activeUsers.find((user) => user.userId === receiverId);
-        // console.log("Sending from socket to :", receiverId)
-        // console.log("Data: ", data);
         if (user) {
             io.to(user.socketId).emit("recieve-message", data);
-            // try {
-            //     axios.post(`http://localhost:8080/api/notification/markMessageAsReadFromSocket `, { receiverId: receiverId }).then(response => {
-            //         console.log(response.data)
-            //     })
-            // } catch (error) {
-            //     console.log(error.message);
-            //     return;
-            // }
         } else {
             return;
         }
