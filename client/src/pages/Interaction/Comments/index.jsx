@@ -21,21 +21,21 @@ const Comment = ({ userId, postId, comment }) => {
     const handleClick = () => {
         setExistingComment(comment);
         setOpen(true)
-        console.log(comment);
+        // console.log(comment);
     }
     const handleComment = (e) => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setUserComments(e.target.value)
     }
     const commentFun = async () => {
         try {
             // console.log(comments.data);
             const result = await commentOnPost({ comment: userComment, userId: userId, postId: postId });
-            console.log(result.data.comment);
+            // console.log(result.data.comment);
             setUserComments('');
             setExistingComment(result.data.comment);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 

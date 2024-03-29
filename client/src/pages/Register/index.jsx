@@ -4,6 +4,7 @@ import { registerUser } from '../../apicall/userApi';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLoader } from '../../redux/loaderSlice';
+import image from '../../assets/logo1.png'
 
 
 const index = () => {
@@ -26,13 +27,20 @@ const index = () => {
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        // console.log('Failed:', errorInfo);
     };
 
     return (
-        <div className='  bg-slate-500  h-screen w-full  flex items-center justify-center '>
-            <div className=' flex items-center justify-center flex-col pr-10 bg-slate-400 rounded-lg'>
-                <div className='text-3xl mb-4'>Connect Me</div>
+        <div className='   bg-black  h-screen w-full  flex items-center justify-center  flex-col'>
+            <div className='text-3xl mb-2 text-white'>
+                <div className='text-2xl border-gray-400 text-red-600 flex flex-row items-center'>
+                    <img src={image} className='w-12 h-12 mr-2'></img>
+                    <div>Ghost Chat</div>
+                </div>
+            </div>
+
+            <div className=' flex items-center justify-center flex-col pr-10 bg-slate-400 rounded-lg mt-2'>
+                <div className='mb-4 '></div>
                 <div className=''>
                     <Form
                         name="register"

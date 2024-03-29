@@ -32,7 +32,7 @@ const index = () => {
         try {
             dispatch(setLoader(true));
             const currentUser = await getCurrentUser();
-            console.log(currentUser.data);
+            // console.log(currentUser.data);
             setCurrentUsers(currentUser.data);
             if (currentUser.success === false) {
                 navigate("/login");
@@ -43,18 +43,18 @@ const index = () => {
             dispatch(setUser(currentUser.data));
             dispatch(setLoader(false));
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
 
         }
     }
     const getAllPostFunction = async () => {
-        console.log(page);
+        // console.log(page);
         try {
             dispatch(setLoader(true));
-            console.log(page);
+            // console.log(page);
             let data = await getAllPost(page);
             data = data.data;
-            console.log(data);
+            // console.log(data);
             if (data.length > 0) {
                 setPosts([...posts, ...data]);
                 setPage(page + 1);
@@ -63,7 +63,7 @@ const index = () => {
             }
             dispatch(setLoader(false));
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
         }
     }
 
@@ -73,12 +73,12 @@ const index = () => {
         try {
             dispatch(setLoader(true));
             const response = await followUser({ userIdToFollow: values });
-            console.log(response);
+            // console.log(response);
             dispatch(setLoader(false));
             // console.log(response.data);
             dispatch(setUser(response.data));
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
@@ -102,33 +102,33 @@ const index = () => {
     }
 
     const handleClickLike = async (userId, postId, index) => {
-        console.log('click on like');
+        // console.log('click on like');
         const result = await postLike({ userId: userId, postId: postId })
         if (result.success) {
-            console.log(posts);
-            console.log(index);
+            // console.log(posts);
+            // console.log(index);
             const postLiked = [...posts];
             postLiked[index].likes.push(currentUsers);
             setPosts(postLiked);
-            console.log(postLiked);
+            // console.log(postLiked);
         }
     }
     const handleClickDisLike = async (userId, postId, index) => {
         try {
             const result = await postDistLike({ userId: userId, postId: postId })
             // console.log(result.data);
-            console.log(userId, 'user');
+            // console.log(userId, 'user');
             // console.log(initialDisLike);
             if (result.success) {
-                console.log(posts);
-                console.log(index);
+                // console.log(posts);
+                // console.log(index);
                 const postLiked = [...posts];
                 postLiked[index].dislikes.push(currentUsers);
-                console.log(postLiked);
+                // console.log(postLiked);
                 setPosts(postLiked);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 

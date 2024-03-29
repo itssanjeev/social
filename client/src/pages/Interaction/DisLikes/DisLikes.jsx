@@ -11,7 +11,7 @@ const DisLikes = ({ userId, postId, initialDisLike, getAllPostFunction, index, h
         initialDisLike.forEach(dli => {
             if (dli === userId) {
                 flag = true;
-                console.log(flag);
+                // console.log(flag);
             }
         })
         if (flag) {

@@ -16,10 +16,10 @@ const index = () => {
         try {
             const result = await searchUser(inputData);
             setData(result.data);
-            console.log(result.data);
+            // console.log(result.data);
         } catch (error) {
             setLoading(false);
-            console.log(error);
+            // console.log(error);
         }
     }
 

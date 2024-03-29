@@ -18,7 +18,7 @@ import FilterByTopics from '../Filter/FilterByTopics';
 const VisitPostById = () => {
   const param = useParams();
   const postId = param.id;
-  console.log(postId)
+  // console.log(postId)
 
   const [posts, setPosts] = useState([]);
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const VisitPostById = () => {
       dispatch(setUser(currentUser.data));
       dispatch(setLoader(false));
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
 
     }
   }
@@ -42,14 +42,14 @@ const VisitPostById = () => {
 
       let data = await getAllPost();
       data = data.data
-      console.log(data);
+      // console.log(data);
       // console.log(data[0]);
       data.splice(0, 1, postById)
-      console.log(data)
+      // console.log(data)
       dispatch(setLoader(false));
       setPosts(data);
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   }
 
@@ -59,12 +59,12 @@ const VisitPostById = () => {
     try {
       dispatch(setLoader(true));
       const response = await followUser({ userIdToFollow: values });
-      console.log(response);
+      // console.log(response);
       dispatch(setLoader(false));
       // console.log(response.data);
       dispatch(setUser(response.data));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 

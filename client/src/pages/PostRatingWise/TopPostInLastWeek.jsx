@@ -26,7 +26,7 @@ const TopPostInLastWeek = () => {
             dispatch(setUser(currentUser.data));
             dispatch(setLoader(false));
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
 
         }
     }
@@ -34,11 +34,11 @@ const TopPostInLastWeek = () => {
         try {
             dispatch(setLoader(true));
             const data = await postLikedInLast7Days();
-            console.log(data);
+            // console.log(data);
             setPosts(data);
             dispatch(setLoader(false));
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
         }
     }
 
@@ -48,12 +48,12 @@ const TopPostInLastWeek = () => {
         try {
             dispatch(setLoader(true));
             const response = await followUser({ userIdToFollow: values });
-            console.log(response);
+            // console.log(response);
             dispatch(setLoader(false));
             // console.log(response.data);
             dispatch(setUser(response.data));
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 

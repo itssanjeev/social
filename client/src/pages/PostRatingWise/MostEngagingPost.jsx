@@ -26,7 +26,7 @@ const MostEngagingPost = () => {
             dispatch(setUser(currentUser.data));
             dispatch(setLoader(false));
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
 
         }
     }
@@ -34,11 +34,11 @@ const MostEngagingPost = () => {
         try {
             dispatch(setLoader(true));
             const data = await mostCommentedPost();
-            console.log(data);
+            // console.log(data);
             dispatch(setLoader(false));
             setPosts(data);
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
         }
     }
 
@@ -48,12 +48,12 @@ const MostEngagingPost = () => {
         try {
             dispatch(setLoader(true));
             const response = await followUser({ userIdToFollow: values });
-            console.log(response);
+            // console.log(response);
             dispatch(setLoader(false));
             // console.log(response.data);
             dispatch(setUser(response.data));
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 

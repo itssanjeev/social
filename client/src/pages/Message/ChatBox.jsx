@@ -11,12 +11,12 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
     const [receiver, setReceiver] = useState();
     const getUserMessage = async () => {
         try {
-            console.log('receiverid', receiverId, 'chatid', chatId)
+            // console.log('receiverid', receiverId, 'chatid', chatId)
             const data = await getAllUserMessage({ chatId: chatId, receiverId: receiverId });
             setData(data.data);
-            console.log(data.data);
+            // console.log(data.data);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const userid = localStorage.getItem('currentUserId');
@@ -25,7 +25,7 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
             e.preventDefault();
             setText(e.target.value);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const sentText = async () => {
@@ -35,12 +35,12 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
             let currentDate = new Date();
             // Format date and time
             let formattedDateTime = currentDate.toISOString();
-            console.log("Current Date and Time:", formattedDateTime);
+            // console.log("Current Date and Time:", formattedDateTime);
             socket.emit("send-message", { receiverId, userid, text, createdAt: formattedDateTime, chatId });
             setText('');
             getUserMessage();
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
@@ -58,7 +58,7 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
             const result = await getOtherUser({ otherUserId: receiverId });
             setReceiver(result.data);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     // const handleSocket = () => {
@@ -114,9 +114,9 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
                 // Mark the message as read if necessary
                 try {
                     const data = await readMessageNotificationChatBoxOpen({ receiverId, userid });
-                    console.log(data);
+                    // console.log(data);
                 } catch (error) {
-                    console.log('error:', error);
+                    // console.log('error:', error);
                 }
 
             }

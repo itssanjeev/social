@@ -13,16 +13,16 @@ const Followers = () => {
         try {
             //followersId is a id of user on which we click user 
             const id = localStorage.getItem('followerId')
-            console.log(id);
+            // console.log(id);
             dispatch(setLoader(true));
             const result = await followersApi({ followerId: id });
-            console.log(result.data);
+            // console.log(result.data);
             dispatch(setLoader(false));
 
             setData(result.data.followers)
             // console.log(result);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const handleVisitProfile = (id) => {

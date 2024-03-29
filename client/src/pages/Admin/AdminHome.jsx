@@ -23,7 +23,7 @@ const AdminHome = () => {
         try {
             dispatch(setLoader(true));
             const currentUser = await getCurrentUser();
-            console.log(currentUser.data);
+            // console.log(currentUser.data);
             if (currentUser.success === false) {
                 navigate("/login");
             }
@@ -33,7 +33,7 @@ const AdminHome = () => {
             dispatch(setUser(currentUser.data));
             dispatch(setLoader(false));
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
 
         }
     }
@@ -41,11 +41,11 @@ const AdminHome = () => {
         try {
             dispatch(setLoader(true));
             const data = await getPostAdminApi();
-            console.log(data.data);
+            // console.log(data.data);
             dispatch(setLoader(false));
             setPosts(data.data);
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
         }
     }
 
@@ -55,12 +55,12 @@ const AdminHome = () => {
         try {
             dispatch(setLoader(true));
             const response = await followUser({ userIdToFollow: values });
-            console.log(response);
+            // console.log(response);
             dispatch(setLoader(false));
             // console.log(response.data);
             dispatch(setUser(response.data));
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
@@ -97,13 +97,13 @@ const AdminHome = () => {
     }
     const handleApprovePost = async (id) => {
         try {
-            console.log(id)
+            // console.log(id)
             const result = await approvePostApi({ postId: id });
             window.location.reload();
             // message.success("userAprroved")
-            console.log(result);
+            // console.log(result);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const handleBlockPost = async (id) => {
@@ -113,7 +113,7 @@ const AdminHome = () => {
             // message.success("userAprroved")
             window.location.reload();
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 

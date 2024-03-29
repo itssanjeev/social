@@ -9,7 +9,7 @@ import { getCurrentUser } from '../../apicall/userApi';
 //component main function
 const EditProfile = () => {
     const currentUser = useSelector((state) => state.users.user);
-    console.log(currentUser);
+    // console.log(currentUser);
     const profilePic = currentUser.profilePicture;
     // console.log(profilePic);
     const [uploadedFile, setUploadedFile] = useState(null);
@@ -20,7 +20,7 @@ const EditProfile = () => {
         // Assuming only a single file is allowed to be uploaded
         const file = acceptedFiles[0];
         setUploadedFile(file);
-        console.log(file);
+        // console.log(file);
         // console.log(file);
     };
 
@@ -49,11 +49,11 @@ const EditProfile = () => {
                 message.error(response.message);
             }
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
         }
     }
     function onFinishFailed(value) {
-        console.log(value);
+        // console.log(value);
     }
 
 

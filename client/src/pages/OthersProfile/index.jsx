@@ -28,11 +28,11 @@ const index = () => {
             dispatch(setLoader(true));
             const id = localStorage.getItem('otherUserId');
             const data = await getOtherUserPost({ otherUserId: id });
-            console.log(data.data);
+            // console.log(data.data);
             dispatch(setLoader(false));
             setUserPost(data.data);
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
         }
     }
     const vistFollowers = (id) => {
@@ -47,26 +47,26 @@ const index = () => {
     const followUserFun = async () => {
         try {
             const values = localStorage.getItem('otherUserId')
-            console.log(values);
+            // console.log(values);
             dispatch(setLoader(true));
             const response = await followUser({ userIdToFollow: values });
-            console.log(response);
+            // console.log(response);
             getOtherUserFun();
             dispatch(setLoader(false));
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
     const showFollowButton = () => {
-        console.log('hello hemant how are you');
+        // console.log('hello hemant how are you');
         let flag = false;
         const currentUserId = localStorage.getItem('currentUserId')
         //ye yah check karne ke liye hai agar currentUser already follow karta hai kya
         for (let i = 0; i < otherUser.followers.length; i++) {
             if (otherUser.followers[i] === currentUserId) {
                 flag = true;
-                console.log(flag);
+                // console.log(flag);
             }
         }
         if (flag) {
@@ -79,10 +79,10 @@ const index = () => {
     const handleMessage = async (otherid) => {
         try {
             const result = await createNewMessage({ receiverId: otherid });
-            console.log(result);
+            // console.log(result);
             navigate('/message');
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
 
     }

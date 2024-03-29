@@ -32,7 +32,7 @@ const index = () => {
             setUserPost(data.data);
             // console.log(data);
         } catch (error) {
-            console.log(error.message);
+            // console.log(error.message);
         }
     }
 
@@ -46,7 +46,7 @@ const index = () => {
     }, []);
 
     const vistFollowers = (id) => {
-        console.log(id);
+        // console.log(id);
         localStorage.setItem('followerId', id);
         navigate('/followers');
     }
@@ -60,11 +60,11 @@ const index = () => {
         try {
             dispatch(setLoader(true));
             const data = await postsLikedByCurrentUserApi();
-            console.log(data.data.data);
+            // console.log(data.data.data);
             setPostLikedByuser(data.data.data);
             dispatch(setLoader(false));
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const handleVisitPost = (id) => {
@@ -72,7 +72,7 @@ const index = () => {
         // console.log(id);
     }
     const onChange = (key) => {
-        console.log(key);
+        // console.log(key);
     };
     useEffect(() => {
         postsLikedByCurrentUser();

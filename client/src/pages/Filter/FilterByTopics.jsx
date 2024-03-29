@@ -7,13 +7,13 @@ const FilterByTopics = ({ setPosts }) => {
     const [value, setValue] = useState(4);
     const onChange = async (e) => {
         try {
-            console.log('radio checked', e.target.value);
+            // console.log('radio checked', e.target.value);
             setValue(e.target.value);
             const response = await categoryPost({ category: e.target.value });
             setPosts(response.data.data);
-            console.log(response.data.data);
+            // console.log(response.data.data);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
 

@@ -33,7 +33,7 @@ const Notificaton = () => {
     const [result, setResult] = useState([]);
     const getNotification = async () => {
         const data = await getNotificationApi({ currentUserId: currentUserId });
-        console.log(data);
+        // console.log(data);
         setResult(data.data);
     }
     if (!result) {
@@ -43,7 +43,7 @@ const Notificaton = () => {
         try {
             await readNotificationApi({ currentUserId: currentUserId });
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const handleClick = (id) => {

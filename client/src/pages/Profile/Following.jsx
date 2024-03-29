@@ -21,7 +21,7 @@ const Following = () => {
             setData(result.data.following)
             // console.log(result);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const handleVisitProfile = (id) => {

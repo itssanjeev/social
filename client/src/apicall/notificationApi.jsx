@@ -7,7 +7,7 @@ export const getNotificationApi = async (payload) => {
         return response.data;
         // console.log(response.data);
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 }
 
@@ -17,7 +17,7 @@ export const readNotificationApi = async (payload) => {
         // console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 }
 export const notificationCountApi = async () => {
@@ -38,13 +38,13 @@ export const readMessageNotificationApi = async () => {
         // console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 }
 export const readMessageNotificationChatBoxOpen = async (payload) => {
     try {
         const response = await axiosInstances.post('/api/notification/markMessageAsReadFromSocket', payload);
-        console.log(response);
+        // console.log(response);
         return response.data;
     } catch (error) {
         return error;

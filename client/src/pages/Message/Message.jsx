@@ -52,7 +52,7 @@ const Message = () => {
     useEffect(() => {
         socket.emit("new-user-add", userid)
         socket.on("get-users", (activeUser) => {
-            console.log(activeUser);
+            // console.log(activeUser);
             // console.log('inside socket', data);
             const activeUserMap = {};
             activeUser.forEach(d => {
@@ -61,7 +61,7 @@ const Message = () => {
             setActiveUserMaps(activeUserMap);
         })
         socket.on("recieve-message", loadMoreData)
-        console.log('inside useEffect');
+        // console.log('inside useEffect');
 
         return () => {
             // Remove event listener when component unmounts

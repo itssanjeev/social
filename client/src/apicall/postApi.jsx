@@ -42,7 +42,7 @@ export const postLike = async (payload) => {
         // console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         return error.message;
     }
 }
@@ -51,10 +51,10 @@ export const postLike = async (payload) => {
 export const postDistLike = async (payload) => {
     try {
         const response = await axiosInstances.post('./api/posts/disLikes', payload);
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         return error.message;
     }
 }
@@ -89,7 +89,7 @@ export const postsLikedByCurrentUserApi = async () => {
 
 export const visitPostByIdApi = async (payload) => {
     try {
-        console.log(payload);
+        // console.log(payload);
         const response = await axiosInstances.get('/api/posts/visitPostById',
             {
                 params: payload

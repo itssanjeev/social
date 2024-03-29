@@ -28,19 +28,19 @@ const UploadPost = () => {
 
     async function onFinish(values) {
         try {
-            console.log(values);
+            // console.log(values);
             const formData = new FormData();
             formData.append("file", uploadedFile);
             if (values.postTitle) {
                 formData.append("postTitle", values.postTitle);
             }
-            console.log(categoryValue);
+            // console.log(categoryValue);
             formData.append("category", categoryValue);
-            console.log(formData);
+            // console.log(formData);
             dispatch(setLoader(true));
             const response = await uploadPost(formData);
             dispatch(setLoader(false));
-            console.log(response);
+            // console.log(response);
             if (response.success) {
                 message.success(response.message);
                 navigate("/");
@@ -48,12 +48,12 @@ const UploadPost = () => {
                 message.error(response.message);
             }
         } catch (error) {
-            console.log('upload post', error.message);
+            // console.log('upload post', error.message);
         }
     }
 
     function onFinishFailed(value) {
-        console.log(value);
+        // console.log(value);
     }
 
     return (

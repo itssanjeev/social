@@ -5,7 +5,7 @@ import { getCurrentUser } from '../apicall/userApi';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/userSlice';
 // import socket from '../socket/Socket';
-import image from '../assets/logo1.ico';
+import image from '../assets/logo1.png';
 import { Tooltip } from 'antd'
 import { countMessageNotificationApi, notificationCountApi, readMessageNotificationApi } from '../apicall/notificationApi';
 import { socket } from './socket';
@@ -44,26 +44,27 @@ const ProtectedPage = ({ children }) => {
             // console.log(result);
             setCountNotification(result.data);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const getMessageNotification = async () => {
         try {
             const result = await countMessageNotificationApi();
-            console.log(result.data);
+            // console.log(result.data);
             setCountMessage(result.data);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const readMessageNotification = async () => {
         try {
-            const result = await readMessageNotificationApi();
+            const result = await readMessageNotificationApi(
+            );
             if (result.count > 0) {
                 setCountMessage(0);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const handleMessageClick = () => {

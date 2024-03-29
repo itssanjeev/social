@@ -45,9 +45,9 @@ export const updateUserProfile = async (payload) => {
 //this api is called to follow other user 
 export const followUser = async (payload) => {
     try {
-        console.log(payload);
+        // console.log(payload);
         const response = await axiosInstances.post('/api/users/followUser', payload);
-        console.log(response);
+        // console.log(response);
         return response.data;
     } catch (error) {
         return error.message;
@@ -83,7 +83,7 @@ export const followingApi = async (payload) => {
 //search user 
 export const searchUser = async (payload) => {
     try {
-        console.log(payload);
+        // console.log(payload);
         const response = await axiosInstances.post('/api/users/searchUser', payload);
         return response.data;
     } catch (error) {
