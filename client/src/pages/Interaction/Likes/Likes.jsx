@@ -5,16 +5,9 @@ import { Avatar, Divider, List, Skeleton } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
 
-const Likes = ({ userId, postId, initialLike, getAllPostFunction }) => {
+const Likes = ({ userId, postId, initialLike, getAllPostFunction, handleClickLike, index }) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
-    const handleClick = async () => {
-        console.log('click on like');
-        const result = await postLike({ userId: userId, postId: postId })
-        if (result.success) {
-            getAllPostFunction();
-        }
-    }
 
     const handleVisitProfile = (id) => {
         localStorage.setItem('otherUserId', id);
@@ -87,12 +80,12 @@ const Likes = ({ userId, postId, initialLike, getAllPostFunction }) => {
             </div>
         );
     }
+
     return (
-        <div className='flex flex-col' onClick={handleClick}>
+        <div className='flex flex-col' onClick={() => handleClickLike(userId, postId, index)}>
             <div className='ml-7 mr-7 text-5xl cursor-pointer'>
                 {
                     alreadyLike() ? <i className='ri-thumb-up-fill' ></i> : <i className='ri-thumb-up-line'></i>
-
                 }
             </div>
             <div className='flex justify-center font-bold cursor-pointer mt-2' onClick={() => setOpen(true)}>{initialLike ? initialLike.length : 0} likes</div>

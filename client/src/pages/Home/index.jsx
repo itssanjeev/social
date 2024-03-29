@@ -15,13 +15,16 @@ import Share from '../Interaction/Share/Share';
 import { Card } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Spinner from '../../component/Spinner';
-
+import { postLike } from '../../apicall/postApi';
+import { postDistLike } from '../../apicall/postApi';
 
 
 const index = () => {
     const [posts, setPosts] = useState([]);
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
+    const [currentUsers, setCurrentUsers] = useState();
+
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -29,7 +32,8 @@ const index = () => {
         try {
             dispatch(setLoader(true));
             const currentUser = await getCurrentUser();
-            // console.log(currentUser);
+            console.log(currentUser.data);
+            setCurrentUsers(currentUser.data);
             if (currentUser.success === false) {
                 navigate("/login");
             }
@@ -47,6 +51,7 @@ const index = () => {
         console.log(page);
         try {
             dispatch(setLoader(true));
+            console.log(page);
             let data = await getAllPost(page);
             data = data.data;
             console.log(data);
@@ -96,6 +101,37 @@ const index = () => {
         }
     }
 
+    const handleClickLike = async (userId, postId, index) => {
+        console.log('click on like');
+        const result = await postLike({ userId: userId, postId: postId })
+        if (result.success) {
+            console.log(posts);
+            console.log(index);
+            const postLiked = [...posts];
+            postLiked[index].likes.push(currentUsers);
+            setPosts(postLiked);
+            console.log(postLiked);
+        }
+    }
+    const handleClickDisLike = async (userId, postId, index) => {
+        try {
+            const result = await postDistLike({ userId: userId, postId: postId })
+            // console.log(result.data);
+            console.log(userId, 'user');
+            // console.log(initialDisLike);
+            if (result.success) {
+                console.log(posts);
+                console.log(index);
+                const postLiked = [...posts];
+                postLiked[index].dislikes.push(currentUsers);
+                console.log(postLiked);
+                setPosts(postLiked);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const handleVisitProfile = (id) => {
         localStorage.setItem('otherUserId', id);
         const currentUserId = localStorage.getItem('currentUserId');
@@ -142,7 +178,7 @@ const index = () => {
                             >
                                 {
                                     posts &&
-                                    posts.map((post) => (
+                                    posts.map((post, index) => (
                                         <div className=' border-spacing-2 border-black flex items-center justify-center flex-col mb-5' key={post._id}>
                                             <div className='w-full h-14 border-2 border-black bg-slate-200 flex flex-row  '>
                                                 <div className='flex flex-col'>
@@ -160,8 +196,8 @@ const index = () => {
                                             </div>
                                             <img className='w-full h-[600px] sm:min-h[400px]' src={post.content} alt="" />
                                             <div className='w-full h-20 border-2 border-black bg-slate-200 flex flex-row justify-between items-center'>
-                                                <Likes userId={currentUser._id} postId={post._id} initialLike={post.likes} getAllPostFunction={getAllPostFunction}></Likes>
-                                                <DisLikes userId={currentUser._id} postId={post._id} initialDisLike={post.dislikes} getAllPostFunction={getAllPostFunction}></DisLikes>
+                                                <Likes userId={currentUser._id} postId={post._id} initialLike={post.likes} getAllPostFunction={getAllPostFunction} handleClickLike={handleClickLike} index={index}></Likes>
+                                                <DisLikes userId={currentUser._id} postId={post._id} initialDisLike={post.dislikes} getAllPostFunction={getAllPostFunction} handleClickDisLike={handleClickDisLike} index={index}></DisLikes>
                                                 <Comment userId={currentUser._id} postId={post._id} comment={post.comment} ></Comment>
                                                 {/* <Share></Share> */}
                                             </div>

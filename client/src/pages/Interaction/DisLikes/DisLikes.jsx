@@ -2,21 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { postDistLike } from '../../../apicall/postApi';
 
 
-const DisLikes = ({ userId, postId, initialDisLike, getAllPostFunction }) => {
+const DisLikes = ({ userId, postId, initialDisLike, getAllPostFunction, index, handleClickDisLike }) => {
 
-    const handleClick = async () => {
-        try {
-            const result = await postDistLike({ userId: userId, postId: postId })
-            // console.log(result.data);
-            console.log(userId, 'user');
-            console.log(initialDisLike);
-            if (result.success) {
-                getAllPostFunction();
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     const alreadyDisLike = () => {
         let flag = false;
@@ -34,10 +21,10 @@ const DisLikes = ({ userId, postId, initialDisLike, getAllPostFunction }) => {
         }
     }
     return (
-        <div className='flex flex-col ' onClick={handleClick}>{
-            alreadyDisLike() ? <i className='ri-thumb-down-fill ml-7 mr-7 cursor-pointer text-5xl' ></i> : <i className="  ri-thumb-down-line  ml-7 mr-7 cursor-pointer text-5xl"></i>
+        <div className='flex flex-col ' onClick={() => handleClickDisLike(userId, postId, index)}>{
+            alreadyDisLike() ? <i className='ri-thumb-down-line ml-7 mr-7 cursor-pointer text-5xl' ></i> : <i className="  ri-thumb-down-line  ml-7 mr-7 cursor-pointer text-5xl"></i>
         }
-            <div className='flex justify-center font-bold cursor-pointer' >{initialDisLike ? initialDisLike.length : 0} likes</div>
+            <div className='flex justify-center font-bold cursor-pointer' >{initialDisLike ? initialDisLike.length : 0} dislikes</div>
             <div>
             </div>
         </div>
