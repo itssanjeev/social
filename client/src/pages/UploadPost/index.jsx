@@ -19,6 +19,9 @@ const UploadPost = () => {
         setCategoryValue(e.target.value);
     };
 
+    /**
+     * The handleDrop function sets the uploaded file to the first file in the acceptedFiles array.
+     */
     const handleDrop = (acceptedFiles) => {
         // Assuming only a single file is allowed to be uploaded
         const file = acceptedFiles[0];
@@ -26,6 +29,10 @@ const UploadPost = () => {
     };
 
 
+    /**
+     * The function `onFinish` handles the submission of form data, including file uploads, post title,
+     * and category, and displays success or error messages based on the response.
+     */
     async function onFinish(values) {
         try {
             // console.log(values);

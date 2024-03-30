@@ -15,6 +15,10 @@ const MostEngagingPost = () => {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    /**
+     * The function getCurrentUsersFun is an asynchronous function that retrieves the current user, checks
+     * if the user is logged in, and updates the user state accordingly.
+     */
     const getCurrentUsersFun = async () => {
         try {
             dispatch(setLoader(true));
@@ -30,6 +34,14 @@ const MostEngagingPost = () => {
 
         }
     }
+    /**
+     * The function `getAllPostFunction` fetches the most commented post data asynchronously and
+     * updates the state with the fetched data while handling errors.
+     */
+    /**
+     * The function `getAllPostFunction` fetches the most commented post data asynchronously and updates
+     * the state with the fetched data while handling errors.
+     */
     const getAllPostFunction = async () => {
         try {
             dispatch(setLoader(true));
@@ -44,6 +56,13 @@ const MostEngagingPost = () => {
 
     const currentUser = useSelector((state) => state.users.user);
     // console.log(currentUser);
+    /**
+     * The function `followUserFun` asynchronously follows a user and updates the state accordingly.
+     */
+    /**
+     * The `followUserFun` function is an asynchronous function that dispatches actions to follow a user
+     * and update the user state based on the response.
+     */
     const followUserFun = async (values) => {
         try {
             dispatch(setLoader(true));

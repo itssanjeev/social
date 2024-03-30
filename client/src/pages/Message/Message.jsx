@@ -16,6 +16,12 @@ const Message = () => {
     const [activeUserMaps, setActiveUserMaps] = useState({});
     const userid = localStorage.getItem('currentUserId');
     const navigate = useNavigate();
+    /**
+     * The function `loadMoreData` asynchronously loads more data for a user list in a React
+     * application.
+     * @returns If the `loading` variable is true, the function will return early and not execute the
+     * rest of the code block.
+     */
     const loadMoreData = async () => {
         try {
             if (loading) {
@@ -32,10 +38,18 @@ const Message = () => {
         }
     };
 
+    /**
+     * The handleToggle function toggles the values of toggleList and toggleChat states in a React
+     * component.
+     */
     const handleToggle = () => {
         setToggleList(!toggleList);
         setToggleChat(!toggleChat);
     }
+    /**
+     * The handleClick function in JavaScript React updates the chatId state and resets the notifications
+     * count if the chatId is different from the value's chatId.
+     */
     const handleClick = (value) => {
         // console.log(value.receiverId, 'userid', userid);
         console.log(value);
@@ -46,9 +60,14 @@ const Message = () => {
         }
     }
 
+    /* The `useEffect hook in the provided code snippet is responsible for executing the `loadMoreData`
+    function when the `Message` component mounts for the first time. */
     useEffect(() => {
         loadMoreData();
     }, []);
+    /* The `useEffect` hook in the provided code snippet is responsible for setting up and managing side
+    effects in a functional component in React. Here's a breakdown of what the `useEffect` hook is
+    doing in this specific case: */
     useEffect(() => {
         socket.emit("new-user-add", userid)
         socket.on("get-users", (activeUser) => {

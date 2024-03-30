@@ -10,6 +10,10 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isLogin, setIsLogin] = useState(false);
+    /**
+     * The `onFinish` function is an asynchronous function that handles user login, sets user data in local
+     * storage, and navigates to the home page based on the response received.
+     */
     const onFinish = async (values) => {
         try {
             const response = await loginUser(values);
@@ -40,6 +44,9 @@ const Login = () => {
         // console.log('Failed:', errorInfo);
     };
     useEffect(() => {
+        /* The code snippet `if (isLogin && localStorage.getItem("token")) {
+            navigate("/");
+        }, [])` is a `useEffect` hook in React that runs when the component mounts. */
         if (isLogin && localStorage.getItem("token")) {
             navigate("/");
         }

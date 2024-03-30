@@ -12,6 +12,10 @@ const index = () => {
         // console.log(e.target.value);
         setInputData({ ...inputData, 'text': e.target.value });
     }
+    /**
+     * The function `searchUserFun` is an asynchronous function that searches for a user and sets the
+     * retrieved data to the state variable `data`, handling any errors that may occur.
+     */
     const searchUserFun = async () => {
         try {
             const result = await searchUser(inputData);

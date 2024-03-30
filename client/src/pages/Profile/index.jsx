@@ -24,6 +24,10 @@ const index = () => {
     // console.log(currentUser);
 
 
+    /**
+     * The function `getUserPostFun` is an asynchronous function that fetches user posts data and
+     * handles loading state and error messages.
+     */
     const getUserPostFun = async () => {
         try {
             dispatch(setLoader(true));
@@ -51,11 +55,19 @@ const index = () => {
         navigate('/followers');
     }
 
+    /**
+     * The `visitFollowing` function sets a value in the localStorage and navigates to the '/following'
+     * page.
+     */
     const visitFollowing = (id) => {
         localStorage.setItem('followingId', id);
         navigate('/following');
     }
 
+    /**
+     * The function `postsLikedByCurrentUser` fetches data about posts liked by the current user and
+     * updates the state accordingly.
+     */
     const postsLikedByCurrentUser = async () => {
         try {
             dispatch(setLoader(true));

@@ -28,6 +28,10 @@ const index = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    /**
+     * The function getCurrentUsersFun fetches the current user data, checks for admin role, and handles
+     * navigation based on the user's role.
+     */
     const getCurrentUsersFun = async () => {
         try {
             dispatch(setLoader(true));
@@ -47,6 +51,10 @@ const index = () => {
 
         }
     }
+    /**
+     * The function `getAllPostFunction` asynchronously fetches posts, updates state based on the
+     * response, and handles errors.
+     */
     const getAllPostFunction = async () => {
         // console.log(page);
         try {
@@ -67,8 +75,16 @@ const index = () => {
         }
     }
 
+    /* The above code is using the `useSelector` hook from the React-Redux library to access the `user`
+    property from the `users` slice of the Redux state. It is then assigning the value of
+    `state.users.user` to the `currentUser` variable. */
     const currentUser = useSelector((state) => state.users.user);
+
     // console.log(currentUser);
+    /**
+     * The `followUserFun` function is an asynchronous function that dispatches actions to follow a user
+     * and update the user state based on the response.
+     */
     const followUserFun = async (values) => {
         try {
             dispatch(setLoader(true));
@@ -82,6 +98,12 @@ const index = () => {
         }
     }
 
+    /**
+     * The function `showFollowButton` checks if the current user is the owner of a post or is already
+     * following the user with the given ID, and returns a boolean value accordingly.
+     * @returns The `showFollowButton` function returns a boolean value. If the conditions in the
+     * function are met, it returns `false`, otherwise it returns `true`.
+     */
     const showFollowButton = (id) => {
         let flag = false;
         //ye toh khud ka post id check karne ke liye hai
@@ -101,6 +123,10 @@ const index = () => {
         }
     }
 
+    /**
+     * The function `handleClickLike` asynchronously adds a user's like to a post and updates the posts
+     * state accordingly.
+     */
     const handleClickLike = async (userId, postId, index) => {
         // console.log('click on like');
         const result = await postLike({ userId: userId, postId: postId })
@@ -113,6 +139,11 @@ const index = () => {
             // console.log(postLiked);
         }
     }
+
+    /**
+     * The handleClickDisLike function asynchronously adds a user to the dislikes list of a post and
+     * updates the posts state if successful.
+     */
     const handleClickDisLike = async (userId, postId, index) => {
         try {
             const result = await postDistLike({ userId: userId, postId: postId })
@@ -132,6 +163,10 @@ const index = () => {
         }
     }
 
+    /**
+     * This function sets the other user's ID in local storage and navigates to either the current
+     * user's profile or the other user's profile based on the comparison of IDs.
+     */
     const handleVisitProfile = (id) => {
         localStorage.setItem('otherUserId', id);
         const currentUserId = localStorage.getItem('currentUserId');
@@ -141,15 +176,30 @@ const index = () => {
             navigate('/OthersProfile');
         }
     }
+    /**
+     * The function `handleTopLikesIn7Day` navigates to the '/topPostInLastWeek' page.
+     */
     const handleTopLikesIn7Day = () => {
         navigate('/topPostInLastWeek')
     }
+    /**
+     * The function `handleMostLikedPost` navigates to the page displaying the all-time highest rated
+     * post.
+     */
     const handleMostLikedPost = () => {
         navigate('/allTimeHighestRatedPost')
     }
+    /**
+     * The function `handleMostEngagingPost` navigates to the '/LeadingInComments' page.
+     */
     const handleMostEngagingPost = () => {
         navigate('/LeadingInComments')
     }
+    /* The above code is using the `useEffect` hook in a React component to call two different
+    functions when the component mounts. The first `useEffect` hook is calling the
+    `getCurrentUsersFun` function, and the second `useEffect` hook is calling the
+    `getAllPostFunction` function. Both functions are being called with an empty dependency array
+    `[]`, which means they will only be called once when the component mounts. */
     useEffect(() => {
         getCurrentUsersFun();
     }, [])

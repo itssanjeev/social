@@ -10,6 +10,11 @@ import image from '../../assets/logo1.png'
 const index = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    /**
+     * The `onFinish` function is an asynchronous function that registers a user, displays success
+     * message if registration is successful, navigates to the login page, and displays an error message
+     * if registration fails.
+     */
     const onFinish = async (values) => {
         try {
             dispatch(setLoader(true));

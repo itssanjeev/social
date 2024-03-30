@@ -1,3 +1,4 @@
+/* This code snippet defines a React functional component called `Likes`. */
 import React, { useEffect, useState } from 'react'
 import { postLike } from '../../../apicall/postApi';
 import { Modal } from 'antd';
@@ -9,6 +10,10 @@ const Likes = ({ userId, postId, initialLike, getAllPostFunction, handleClickLik
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
 
+    /**
+     * The function `handleVisitProfile` sets the `otherUserId` in localStorage and navigates to either
+     * the current user's profile or another user's profile based on the provided id.
+     */
     const handleVisitProfile = (id) => {
         localStorage.setItem('otherUserId', id);
         const currentUserId = localStorage.getItem('currentUserId');
@@ -19,6 +24,14 @@ const Likes = ({ userId, postId, initialLike, getAllPostFunction, handleClickLik
         }
     }
 
+    /**
+     * The function `alreadyLike` checks if a user with a specific ID is already in the `initialLike`
+     * array.
+     * @returns The `alreadyLike` function is checking if a user with a specific `userId` has already
+     * liked a post in the `initialLike` array. If the user is found in the array, the function returns
+     * `true`, indicating that the user has already liked the post. If the user is not found in the
+     * array, the function returns `false`, indicating that the user has not liked the post
+     */
     const alreadyLike = () => {
         let flag = false;
         initialLike.forEach(li => {
@@ -33,6 +46,8 @@ const Likes = ({ userId, postId, initialLike, getAllPostFunction, handleClickLik
         }
     }
 
+    /* The `renderLikedUsers` function is responsible for rendering a list of users who have liked a
+    particular post. Here's a breakdown of what it does: */
     const renderLikedUsers = () => {
         return (
             <div

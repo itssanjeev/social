@@ -4,6 +4,14 @@ import { getNotificationApi, readNotificationApi } from '../../apicall/notificat
 import { useNavigate } from 'react-router-dom';
 
 
+/**
+ * The function `formatCustomRelativeTime` takes a date as input and returns a formatted string
+ * representing the relative time difference between that date and the current date.
+ * @returns The function `formatCustomRelativeTime` takes a date as input, calculates the time
+ * difference between that date and the current date, and returns a formatted string indicating how
+ * long ago the input date was relative to the current date. The function returns a string with a
+ * custom relative time format, such as "Just now", "Xs ago", "Xm ago", "Xh ago", "Xd
+ */
 function formatCustomRelativeTime(date) {
     const inputDate = new Date(date);
     const newDate = new Date(Date.now());
@@ -31,6 +39,10 @@ const Notificaton = () => {
     const navigate = useNavigate();
     const currentUserId = localStorage.getItem('currentUserId');
     const [result, setResult] = useState([]);
+    /**
+     * The function `getNotification` asynchronously fetches notification data from an API based on the
+     * current user ID and sets the result to the retrieved data.
+     */
     const getNotification = async () => {
         const data = await getNotificationApi({ currentUserId: currentUserId });
         // console.log(data);
@@ -39,6 +51,10 @@ const Notificaton = () => {
     if (!result) {
         return <div>Loading...</div>;
     }
+    /**
+     * The function `readNotificationFun` is an asynchronous function that calls an API to mark a
+     * notification as read, handling any errors that may occur.
+     */
     const readNotificationFun = async () => {
         try {
             await readNotificationApi({ currentUserId: currentUserId });
@@ -46,6 +62,9 @@ const Notificaton = () => {
             // console.log(error);
         }
     }
+    /**
+     * The handleClick function navigates to a specific post page based on the provided id.
+     */
     const handleClick = (id) => {
         navigate(`/post/${id}`);
     }

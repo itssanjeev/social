@@ -9,6 +9,10 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
     const [data, setData] = useState([]);
     const [text, setText] = useState('');
     const [receiver, setReceiver] = useState();
+    /**
+     * The function `getUserMessage` is an asynchronous function that retrieves all user messages based
+     * on the provided chatId and receiverId.
+     */
     const getUserMessage = async () => {
         try {
             // console.log('receiverid', receiverId, 'chatid', chatId)
@@ -20,6 +24,10 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
         }
     }
     const userid = localStorage.getItem('currentUserId');
+    /**
+     * The function `getText` is an asynchronous function that prevents the default behavior of an
+     * event and sets the text value of the event target.
+     */
     const getText = async (e) => {
         try {
             e.preventDefault();
@@ -28,6 +36,10 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
             // console.log(error);
         }
     }
+    /**
+     * The function `sentText` sends a message with specified details and emits a socket event with the
+     * message data.
+     */
     const sentText = async () => {
         try {
             if (text.length === 0) throw new Error("size is 0");
@@ -44,15 +56,28 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
         }
     }
 
+    /**
+     * The function `formattedDate` takes a current date as input, parses it, and returns a formatted
+     * string in the format 'HH:mm:ss dd-MM-yyyy'.
+     * @returns The `formattedDate` function is returning the current date and time in the format
+     * "HH:mm:ss dd-MM-yyyy".
+     */
     const formattedDate = (currentDate) => {
         const parsedDate = parseISO(currentDate);
         return format(parsedDate, 'HH:mm:ss dd-MM-yyyy');
     }
+    /**
+     * The handleKeyPress function triggers the sentText function when the Enter key is pressed.
+     */
     const handleKeyPress = (e) => {
         if (e.key === 'Enter' || e.keyCode === 13) {
             sentText();
         }
     };
+    /**
+     * The function `handleReceiver` asynchronously fetches data for a receiver user and sets it in the
+     * component state.
+     */
     const handleReceiver = async () => {
         try {
             const result = await getOtherUser({ otherUserId: receiverId });
@@ -61,39 +86,9 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
             // console.log(error);
         }
     }
-    // const handleSocket = () => {
-    //     // Add socket event listener when component mounts
-    //     socket.on("recieve-message", async (newData) => {
-    //         const socketSenderId = newData.userid;
-    //         const chatIds = newData.chatId;
 
-    //         // Log state values for debugging
-    //         console.log('Receiver ID:', receiverId);
-    //         console.log('Chat ID:', chatId);
-    //         // if (receiverId && chatId && chatIds !== chatId) socket.off("recieve-message");
-    //         // Check if the received message belongs to the current chat
-    //         console.log('socketSenderId:', socketSenderId)
-    //         if (receiverId && chatId && socketSenderId === receiverId && chatIds === chatId) {
-    //             setData(prevState => [...prevState, newData]);
-    //             // socket.off("recieve-message");
-
-    //             // If the chat ID and receiver ID are available, mark the message as read
-    // try {
-    //     const data = await readMessageNotificationChatBoxOpen({ receiverId, userid });
-    //     console.log(data);
-    // } catch (error) {
-    //     console.log('error:', error);
-    // }
-    //             // getUserMessage();
-    //         }
-    //     });
-
-    //     return () => {
-    //         // Remove the event listener when the component unmounts
-    //         socket.off("recieve-message");
-    //     };
-    // }
-
+    /* These two `useEffect` hooks in the `ChatBox` component are responsible for fetching data when
+    certain dependencies change. */
     useEffect(() => {
         if (chatId && receiverId) {
             getUserMessage();
@@ -102,6 +97,8 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
     useEffect(() => {
         handleReceiver()
     }, [receiverId, chatId])
+    /* The `useEffect` hook you provided is responsible for setting up a socket event listener to
+    receive messages in the `ChatBox` component. Here's a breakdown of what it does: */
     useEffect(() => {
         const handleSocket = async (newData) => {
             const socketSenderId = newData.userid;

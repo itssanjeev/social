@@ -9,6 +9,10 @@ const Following = () => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    /**
+     * The function `followingFun` retrieves a user's following list from an API and sets the data in
+     * the component state.
+     */
     const followingFun = async () => {
         try {
             const id = localStorage.getItem('followingId')
@@ -24,6 +28,11 @@ const Following = () => {
             // console.log(error);
         }
     }
+    /**
+     * The function `handleVisitProfile` sets the `otherUserId` in localStorage and navigates to either
+     * the user's own profile or another user's profile based on the comparison of `currentUserId` and
+     * the provided `id`.
+     */
     const handleVisitProfile = (id) => {
         localStorage.setItem('otherUserId', id);
         // console.log(localStorage.getItem('otherUserId'));

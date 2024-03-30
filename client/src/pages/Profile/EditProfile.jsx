@@ -16,6 +16,9 @@ const EditProfile = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    /**
+     * The `handleDrop` function sets the uploaded file to the first accepted file in an array.
+     */
     const handleDrop = (acceptedFiles) => {
         // Assuming only a single file is allowed to be uploaded
         const file = acceptedFiles[0];
@@ -24,6 +27,10 @@ const EditProfile = () => {
         // console.log(file);
     };
 
+    /**
+     * The function `onFinish` handles form data submission for updating user profile with error
+     * handling and success message display.
+     */
     async function onFinish(values) {
         try {
             const formData = new FormData();

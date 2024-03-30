@@ -9,6 +9,10 @@ const Followers = () => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    /**
+     * The `followersFun` function retrieves a user's followers data using an API call and updates the
+     * state with the fetched data.
+     */
     const followersFun = async () => {
         try {
             //followersId is a id of user on which we click user 
@@ -25,6 +29,11 @@ const Followers = () => {
             // console.log(error);
         }
     }
+    /**
+     * The function `handleVisitProfile` sets the `otherUserId` in localStorage and navigates to either
+     * the user's own profile or another user's profile based on the comparison of `currentUserId` and
+     * the provided `id`.
+     */
     const handleVisitProfile = (id) => {
         localStorage.setItem('otherUserId', id);
         // console.log(localStorage.getItem('otherUserId'));
