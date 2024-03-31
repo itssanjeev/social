@@ -3,7 +3,7 @@ const app = express();
 app.use(express.json());
 require('dotenv').config();
 const cors = require('cors');
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "https://ghostchat-joeg.onrender.com" }));
 const port = process.env.PORT || 8080;
 
 const http = require('http').createServer(app);
