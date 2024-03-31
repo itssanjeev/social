@@ -55,8 +55,8 @@ exports.SentMessage = async (req, res) => {
             message: "sent successfully"
         });
     } catch (error) {
-        console.error("Error while saving notification:", error.message);
-        console.error("Stack trace:", error.stack);
+        // console.error("Error while saving notification:", error.message);
+        // console.error("Stack trace:", error.stack);
         res.status(500).send({
             success: false,
             message: "Error while saving the notification",
@@ -142,17 +142,8 @@ exports.GetMessage = async (req, res) => {
         const receiverId = req.body.receiverId;
         const chat = await Chat.find({ chatId: chatId });
         const userid = req.userId;
-        await Notification.updateMany(
-            {
-                receiver: userid,
-                sender: receiverId,
-                read: false,
-                action: 'message'
-            },
-            {
-                read: true
-            }
-        );
+
+
         res.send({
             data: chat,
             message: "chat retrived successfully",

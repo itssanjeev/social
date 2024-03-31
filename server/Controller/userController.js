@@ -161,7 +161,7 @@ exports.FollwUser = async (req, res) => {
         // console.log(userToFollow);
         const alreadyFollowing = false;
         userToFollow.followers.forEach(user => {
-            console.log(user.toString());
+            // console.log(user.toString());
             if (userId === user.toString()) {
                 alreadyFollowing = true;
             }
@@ -221,7 +221,7 @@ exports.GetFollowing = async (req, res) => {
         const userId = req.body.followingId;
         // console.log(userId);
         const userFollowing = await User.findById(userId).populate('following');
-        console.log(userFollowing);
+        // console.log(userFollowing);
         res.json({
             success: true,
             data: userFollowing

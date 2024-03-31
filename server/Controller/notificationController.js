@@ -126,7 +126,7 @@ exports.readNotificationOFMessageFromSocket = async (req, res) => {
         // console.log(data);
         res.send("message read successfully");
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         res.status(500).send(error.message);
     }
 }
