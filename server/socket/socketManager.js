@@ -3,7 +3,7 @@ const axios = require('axios');
 const io = require("socket.io")(process.env.SOCKET_PORT || 8080, {
     cors: {
         origin: "http://localhost:5173",
-        origins: "*:*",
+        // origins: "*:*",
         methods: ["GET", "POST"]
     },
 });
