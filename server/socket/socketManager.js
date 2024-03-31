@@ -1,15 +1,9 @@
 const axios = require('axios');
-
-const io = require("socket.io")(process.env.SOCKET_PORT || 8080, {
-    cors: {
-        origin: "http://localhost:5173",
-        // origins: "*:*",
-        methods: ["GET", "POST"]
-    },
-});
+const { io } = require('../server');
 
 let activeUsers = [];
-
+console.log('hi')
+// console.log('socketManager', io);
 io.on("connection", (socket) => {
     // add new User
     socket.on("new-user-add", (newUserId) => {
