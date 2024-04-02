@@ -131,8 +131,13 @@ const Message = () => {
                                                     title={item.receiverName}
                                                     description={item.receiverUsername}
                                                 />
-                                                <div className={`${item.notificationsCount > 0 ? "bg-red-400 rounded-full w-6 h-6 text-center font-semibold" : ''}`}>{item.notificationsCount > 0 ? item.notificationsCount : ''}</div>
-                                                <div className={`${activeUserMaps[item.receiverId] && 'bg-green-600 rounded-full w-3 h-3'}`} ></div>
+                                                <div
+                                                    className={`${item.notificationsCount > 0 ? "bg-red-400 rounded-full w-6 h-6 text-center font-semibold" : ''}`}>
+                                                    {item.notificationsCount > 0 ? item.notificationsCount : ''}
+                                                </div>
+                                                <div
+                                                    className={`${activeUserMaps[item.receiverId] && 'bg-green-600 rounded-full w-3 h-3'}`} >
+                                                </div>
 
                                             </List.Item>
                                         )}
@@ -190,6 +195,9 @@ const Message = () => {
                                                         title={item.receiverName}
                                                         description={item.receiverUsername}
                                                     />
+                                                    <div className={`${item.notificationsCount > 0 ? "bg-red-400 rounded-full w-6 h-6 text-center font-semibold" : ''}`}>{item.notificationsCount > 0 ? item.notificationsCount : ''}</div>
+                                                    <div className={`${activeUserMaps[item.receiverId] && 'bg-green-600 rounded-full w-3 h-3'}`} ></div>
+
                                                 </List.Item>
                                             )}
                                         />
