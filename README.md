@@ -52,11 +52,19 @@
   
   run following command 
   
-  cd client-> npm run dev
+  a)cd client
+  
+  b)npm i 
+  
+  d)npm run dev
   
   open another terminal 
   
-  cd server -> npm start 
+  a)cd server
+  
+  b) npm i 
+  
+  c) npm start 
   
   
 
