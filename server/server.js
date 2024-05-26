@@ -3,7 +3,7 @@ const app = express();
 app.use(express.json());
 require('dotenv').config();
 const cors = require('cors');
-app.use(cors({ origin: "https://ghosts-chat.onrender.com" }));
+app.use(cors({ origin: "*" }));
 const port = process.env.PORT || 8080;
 
 const http = require('http').createServer(app);
