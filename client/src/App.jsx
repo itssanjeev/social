@@ -1,57 +1,60 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Register from './pages/Register'
-import Login from './pages/Login';
-import Home from './pages/Home';
-import Profile from './pages/Profile'
-import EditProfile from './pages/Profile/EditProfile';
 import { useSelector } from 'react-redux';
-import UploadPost from './pages/UploadPost';
 import Spinner from './component/Spinner';
-import Followers from './pages/Profile/Followers';
-import OthersProfile from './pages/OthersProfile'
-import Following from './pages/Profile/Following';
-import Search from './pages/Search';
 import ProtectedPage from './component/ProtectedPage';
-import Message from './pages/Message/Message';
-import Notificaton from './pages/Notification/Notificaton';
-import AdminHome from './pages/Admin/AdminHome';
-import VisitPostById from './pages/VisitPost/VisitPostById';
-import TopPostInLastWeek from './pages/PostRatingWise/TopPostInLastWeek';
-import MostLikedPost from './pages/PostRatingWise/MostLikedPost';
-import MostEngagingPost from './pages/PostRatingWise/MostEngagingPost';
+import { Skeleton } from 'antd';
 
+// Lazy load pages
+const Register = lazy(() => import('./pages/Register'));
+const Login = lazy(() => import('./pages/Login'));
+const Home = lazy(() => import('./pages/Home'));
+const Profile = lazy(() => import('./pages/Profile'));
+const EditProfile = lazy(() => import('./pages/Profile/EditProfile'));
+const UploadPost = lazy(() => import('./pages/UploadPost'));
+const Followers = lazy(() => import('./pages/Profile/Followers'));
+const OthersProfile = lazy(() => import('./pages/OthersProfile'));
+const Following = lazy(() => import('./pages/Profile/Following'));
+const Search = lazy(() => import('./pages/Search'));
+const Message = lazy(() => import('./pages/Message/Message'));
+const Notification = lazy(() => import('./pages/Notification/Notificaton'));
+const AdminHome = lazy(() => import('./pages/Admin/AdminHome'));
+const VisitPostById = lazy(() => import('./pages/VisitPost/VisitPostById'));
+const TopPostInLastWeek = lazy(() => import('./pages/PostRatingWise/TopPostInLastWeek'));
+const MostLikedPost = lazy(() => import('./pages/PostRatingWise/MostLikedPost'));
+const MostEngagingPost = lazy(() => import('./pages/PostRatingWise/MostEngagingPost'));
 
 const App = () => {
-  const { loading } = useSelector(state => state.loaders);
+  const { loading } = useSelector((state) => state.loaders);
+
   return (
-    <div className=''>
-      {
-        loading && <Spinner></Spinner>
-      }
-      <BrowserRouter >
-        <Routes>
-          <Route path='/register' element={<Register></Register>}></Route>
-          <Route path='/login' element={<Login></Login>}></Route>
-          <Route path='/' element={<ProtectedPage><Home></Home></ProtectedPage>}></Route>
-          <Route path='/profile' element={<ProtectedPage><Profile></Profile></ProtectedPage>}></Route>
-          <Route path='/editProfile' element={<ProtectedPage><EditProfile></EditProfile></ProtectedPage>}></Route>
-          <Route path='/uploadPost' element={<ProtectedPage><UploadPost></UploadPost></ProtectedPage>}></Route>
-          <Route path='/followers' element={<ProtectedPage><Followers></Followers></ProtectedPage>}></Route>
-          <Route path='/following' element={<ProtectedPage><Following></Following></ProtectedPage>}></Route>
-          <Route path='/OthersProfile' element={<ProtectedPage><OthersProfile></OthersProfile></ProtectedPage>}></Route>
-          <Route path='/search' element={<ProtectedPage><Search></Search></ProtectedPage>}></Route>
-          <Route path='/message' element={<ProtectedPage><Message></Message></ProtectedPage>}></Route>
-          <Route path='/notification' element={<ProtectedPage><Notificaton></Notificaton></ProtectedPage>}></Route>
-          <Route path='/admin' element={<ProtectedPage><AdminHome></AdminHome></ProtectedPage>}></Route>
-          <Route path='/post/:id' element={<ProtectedPage><VisitPostById></VisitPostById></ProtectedPage>}></Route>
-          <Route path='/topPostInLastWeek' element={<ProtectedPage><TopPostInLastWeek></TopPostInLastWeek></ProtectedPage>}></Route>
-          <Route path='/allTimeHighestRatedPost' element={<ProtectedPage><MostLikedPost></MostLikedPost></ProtectedPage>}></Route>
-          <Route path='/LeadingInComments' element={<ProtectedPage><MostEngagingPost b></MostEngagingPost></ProtectedPage>}></Route>
-        </Routes>
+    <div>
+      {loading && <Spinner />}
+      <BrowserRouter>
+        <Suspense fallback={<Skeleton active />}>
+          <Routes>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<ProtectedPage><Home /></ProtectedPage>} />
+            <Route path="/profile" element={<ProtectedPage><Profile /></ProtectedPage>} />
+            <Route path="/editProfile" element={<ProtectedPage><EditProfile /></ProtectedPage>} />
+            <Route path="/uploadPost" element={<ProtectedPage><UploadPost /></ProtectedPage>} />
+            <Route path="/followers" element={<ProtectedPage><Followers /></ProtectedPage>} />
+            <Route path="/following" element={<ProtectedPage><Following /></ProtectedPage>} />
+            <Route path="/OthersProfile" element={<ProtectedPage><OthersProfile /></ProtectedPage>} />
+            <Route path="/search" element={<ProtectedPage><Search /></ProtectedPage>} />
+            <Route path="/message" element={<ProtectedPage><Message /></ProtectedPage>} />
+            <Route path="/notification" element={<ProtectedPage><Notification /></ProtectedPage>} />
+            <Route path="/admin" element={<ProtectedPage><AdminHome /></ProtectedPage>} />
+            <Route path="/post/:id" element={<ProtectedPage><VisitPostById /></ProtectedPage>} />
+            <Route path="/topPostInLastWeek" element={<ProtectedPage><TopPostInLastWeek /></ProtectedPage>} />
+            <Route path="/allTimeHighestRatedPost" element={<ProtectedPage><MostLikedPost /></ProtectedPage>} />
+            <Route path="/LeadingInComments" element={<ProtectedPage><MostEngagingPost /></ProtectedPage>} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </div>
-  )
-}
+  );
+};
 
 export default App;
