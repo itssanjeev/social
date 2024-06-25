@@ -216,6 +216,7 @@ const index = () => {
                         <FilterByTopics setPosts={setPosts}></FilterByTopics>
                     </div>
                 </Col>
+                {/* main content */}
                 <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                     <div className=''>
                         <div className='w-full bg-slate-50 overflow-y-scroll h-screen mb-2' id="scrollableDiv">
