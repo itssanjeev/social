@@ -6,8 +6,8 @@ function getToken() {
 }
 
 export const axiosInstances = axios.create({
-    baseURL: 'http://localhost:8080/',
-    // baseURL: 'https://ghost-chat-m4a4.onrender.com/',
+    // baseURL: 'http://localhost:8080/',
+    baseURL: 'https://ghost-chat-m4a4.onrender.com/',
     headers: {
         authorization: `Bearer ${getToken()}`
     }
