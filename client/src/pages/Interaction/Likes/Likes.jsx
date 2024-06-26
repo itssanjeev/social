@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Likes = ({ userId, postId, initialLike, getAllPostFunction, handleClickLike, index }) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const [showLike, setShowLike] = useState(false);
 
     /**
      * The function `handleVisitProfile` sets the `otherUserId` in localStorage and navigates to either
@@ -33,18 +34,12 @@ const Likes = ({ userId, postId, initialLike, getAllPostFunction, handleClickLik
      * array, the function returns `false`, indicating that the user has not liked the post
      */
     const alreadyLike = () => {
-        let flag = false;
-        initialLike.forEach(li => {
-            if (li._id === userId) {
-                flag = true;
-            }
-        })
-        if (flag) {
-            return true;
-        } else {
-            return false;
-        }
+        const found = initialLike.some(li => li._id === userId);
+        setShowLike(found);
     }
+    useEffect(() => {
+        alreadyLike();
+    }, [initialLike, handleClickLike]);
 
     /* The `renderLikedUsers` function is responsible for rendering a list of users who have liked a
     particular post. Here's a breakdown of what it does: */
@@ -98,9 +93,9 @@ const Likes = ({ userId, postId, initialLike, getAllPostFunction, handleClickLik
 
     return (
         <div className='flex flex-col' onClick={() => handleClickLike(userId, postId, index)}>
-            <div className='ml-7 mr-7 text-5xl cursor-pointer'>
+            <div className='ml-7 mr-7 text-5xl cursor-pointer' onClick={handleClickLike}>
                 {
-                    alreadyLike() ? <i className='ri-thumb-up-fill' ></i> : <i className='ri-thumb-up-line'></i>
+                    showLike ? <i className='ri-thumb-up-fill' ></i> : <i className='ri-thumb-up-line'></i>
                 }
             </div>
             <div className='flex justify-center font-bold cursor-pointer mt-2' onClick={() => setOpen(true)}>{initialLike ? initialLike.length : 0} likes</div>

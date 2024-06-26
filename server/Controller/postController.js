@@ -138,6 +138,7 @@ exports.GetOtherUserPost = async (req, res) => {
     }
 }
 exports.Likes = async (req, res) => {
+    let success = true;
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
@@ -146,13 +147,17 @@ exports.Likes = async (req, res) => {
         const postId = req.body.postId;
         const beforeLikePost = await Post.findOne({ _id: postId }).session(session);
         const liked = beforeLikePost.likes;
+        const disliked = beforeLikePost.dislikes;
         const postOwner = beforeLikePost.user.toString();
-        // console.log(postOwner, 'post like 128');
         const currentUser = await User.find({ _id: userId });
 
         //if user id present in liked array it return true else false 
         const alreadyLiked = liked.some(like => {
             return like._id.toString() === userId;
+        });
+
+        const alreadyDisLiked = disliked.some(dislikes => {
+            return dislikes._id.toString() === userId;
         });
 
         // console.log(alreadyLiked);
@@ -177,7 +182,6 @@ exports.Likes = async (req, res) => {
                 read: false,
             });
             await notification.save();
-
         } else {
             await Post.findByIdAndUpdate(
                 postId,
@@ -189,13 +193,16 @@ exports.Likes = async (req, res) => {
                 { $pull: { postsLikedByCurrentUser: postId } },
                 { new: true, session }
             )
+            success = false;
         }
         const posts = await Post.findById(postId).populate('likes').session(session);
         await session.commitTransaction();
         session.endSession();
         res.send({
-            success: true,
-            data: posts
+            success: success,
+            data: posts,
+            alreadyDisLiked: alreadyDisLiked,
+            // message: "working"
         })
     } catch (error) {
         // console.log(error.message);
@@ -212,31 +219,37 @@ exports.Dislikes = async (req, res) => {
         const postId = req.body.postId;
         const beforeLikePost = await Post.findOne({ _id: postId });
         const disliked = beforeLikePost.dislikes;
+        const liked = beforeLikePost.likes;
+        let success = true;
 
-        //if user id present in liked array it return true else false 
         const alreadyDisLiked = disliked.some(dislikes => {
             return dislikes._id.toString() === userId;
         });
-        // console.log(alreadyDisLiked);
+
+        const alreadyLiked = liked.some(like => {
+            return like._id.toString() === userId;
+        });
+
         if (!alreadyDisLiked) {
             await Post.findByIdAndUpdate(
                 postId,
                 { $push: { dislikes: userId } },
                 { new: true }
             )
-
         } else {
             await Post.findByIdAndUpdate(
                 postId,
                 { $pull: { dislikes: userId } },
                 { new: true }
             )
+            success = false;
         }
         const posts = await Post.findById(postId).populate('dislikes');
         // console.log(posts);
         res.send({
-            success: true,
-            data: posts
+            success: success,
+            data: posts,
+            alreadyLiked: alreadyLiked
         })
     } catch (error) {
         res.send(error.message);
