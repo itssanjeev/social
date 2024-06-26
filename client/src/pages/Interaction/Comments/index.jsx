@@ -16,8 +16,9 @@ const Comment = ({ userId, postId, comment }) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
 
-    const [userComment, setUserComments] = useState();
-    const [existingComment, setExistingComment] = useState()
+    const [userComment, setUserComments] = useState('');
+    const [existingComment, setExistingComment] = useState();
+    const [commentLength, setCommentLength] = useState(comment.length)
     const handleClick = () => {
         setExistingComment(comment);
         setOpen(true)
@@ -34,6 +35,7 @@ const Comment = ({ userId, postId, comment }) => {
             // console.log(result.data.comment);
             setUserComments('');
             setExistingComment(result.data.comment);
+            setCommentLength(commentLength + 1);
         } catch (error) {
             // console.log(error);
         }
@@ -52,7 +54,7 @@ const Comment = ({ userId, postId, comment }) => {
     return (
         <div className='flex flex-col'>
             <i className="ml-7 mr-7 text-5xl ri-discuss-line cursor-pointer" onClick={handleClick}></i>
-            <div className='flex items-center justify-center font-bold cursor-pointer mt-1'>{comment.length}</div>
+            <div className='flex items-center justify-center font-bold cursor-pointer mt-1'>{commentLength}</div>
             <div>
                 <Modal
                     title="commented by"

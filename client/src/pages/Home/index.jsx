@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { setLoader } from '../../redux/loaderSlice';
 import { getCurrentUser } from '../../apicall/userApi';
 import { setUser } from '../../redux/userSlice';
-import { Row, Col } from 'antd';
+import { Row, Col, Result } from 'antd';
 import { getAllPost } from '../../apicall/postApi';
 import { followUser } from '../../apicall/userApi';
 import Likes from '../Interaction/Likes/Likes';
@@ -128,15 +128,20 @@ const index = () => {
      * state accordingly.
      */
     const handleClickLike = async (userId, postId, index) => {
-        // console.log('click on like');
         const result = await postLike({ userId: userId, postId: postId })
+        console.log(result);
         if (result.success) {
-            // console.log(posts);
-            // console.log(index);
             const postLiked = [...posts];
             postLiked[index].likes.push(currentUsers);
             setPosts(postLiked);
-            // console.log(postLiked);
+            if (result.alreadyDisLiked) {
+                handleClickDisLike(userId, postId, index);
+            }
+        } else {
+            // console.log('in else block')
+            const postLiked = [...posts];
+            postLiked[index].likes.pop();
+            setPosts(postLiked);
         }
     }
 
@@ -147,15 +152,18 @@ const index = () => {
     const handleClickDisLike = async (userId, postId, index) => {
         try {
             const result = await postDistLike({ userId: userId, postId: postId })
-            // console.log(result.data);
-            // console.log(userId, 'user');
-            // console.log(initialDisLike);
+            console.log(result.alreadyLiked);
             if (result.success) {
-                // console.log(posts);
-                // console.log(index);
                 const postLiked = [...posts];
-                postLiked[index].dislikes.push(currentUsers);
-                // console.log(postLiked);
+                postLiked[index].dislikes.push(currentUsers._id);
+                console.log(postLiked);
+                setPosts(postLiked);
+                if (result.alreadyLiked) {
+                    handleClickLike(userId, postId, index);
+                }
+            } else {
+                const postLiked = [...posts];
+                postLiked[index].dislikes.pop();
                 setPosts(postLiked);
             }
         } catch (error) {
