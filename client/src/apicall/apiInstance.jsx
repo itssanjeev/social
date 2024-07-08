@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { baseUrl } from './baseUrl';
 
 //create a function to get current token 
 function getToken() {
@@ -7,7 +8,7 @@ function getToken() {
 
 export const axiosInstances = axios.create({
     // baseURL: 'http://localhost:8080/',
-    baseURL: 'https://ghost-chat-m4a4.onrender.com/',
+    baseURL: baseUrl,
     headers: {
         authorization: `Bearer ${getToken()}`
     }
