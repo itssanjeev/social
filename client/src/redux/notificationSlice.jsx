@@ -1,14 +1,35 @@
-import { createSlice } from "@reduxjs/toolkit";
-export const notificationSlice = createSlice({
-    name: 'notification',
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchNotifications, readNotifications } from './redux-thunk/notificationReduxThunk';
+
+
+
+const notificationSlice = createSlice({
+    name: 'notifications',
     initialState: {
-        notification: null,
+        list: [],
     },
     reducers: {
-        setNotification: (state, action) => {
-            state.notification = action.payload;
-            // console.log(action,'redux notitication 10');
-        }
-    }
-})
-export const { setNotification } = notificationSlice.actions;
+        addNotification: (state, action) => {
+            state.list.unshift(action.payload);
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchNotifications.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchNotifications.fulfilled, (state, action) => {
+                state.list = action.payload; // Set the fetched notifications to the initial state
+                state.loading = false;
+            })
+            .addCase(fetchNotifications.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload; // Handle error
+            })
+    },
+});
+
+export const { addNotification } = notificationSlice.actions;
+
+export default notificationSlice.reducer;

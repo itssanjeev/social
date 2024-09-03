@@ -2,6 +2,8 @@
 const Message = require('../models/messageModel');
 const Chat = require('../models/chatModels');
 const Notification = require('../models/noficationModel');
+const User = require('../models/userModel')
+const { sendMessageNotification } = require('../socket/socketManager')
 
 
 
@@ -46,10 +48,10 @@ exports.SentMessage = async (req, res) => {
             read: false,
             readMessage: false
         })
-        // console.log(notification);
-        // await notification.save({ writeConcern: { w: 0 } }); //this only for devlopment purpose when not trhowing error even though there is as error 
         await notification.save();
-        // console.log('notification saved');
+        const user = await User.findById(userid);
+        notification.sender = user;
+        sendMessageNotification({ receiverId, notification });
         res.send({
             success: true,
             message: "sent successfully"
@@ -113,6 +115,7 @@ exports.GetMessageUserList = async (req, res) => {
                 action: 'message',
                 read: false,
             });
+
             return {
                 chatId,
                 receiverId,

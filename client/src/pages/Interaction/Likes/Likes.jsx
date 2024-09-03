@@ -5,6 +5,8 @@ import { Modal } from 'antd';
 import { Avatar, Divider, List, Skeleton } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate } from 'react-router-dom';
+import { socket } from '../../../component/socket';
+
 
 const Likes = ({ userId, postId, initialLike, getAllPostFunction, handleClickLike, index }) => {
     const navigate = useNavigate();

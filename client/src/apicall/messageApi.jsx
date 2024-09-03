@@ -33,7 +33,6 @@ export const messageUserList = async () => {
 export const createNewMessage = async (payload) => {
     try {
         const response = await axiosInstances.post('/api/message/CreateNewChat', payload);
-        // console.log(response.data);
         return response.data;
     } catch (error) {
         return error;

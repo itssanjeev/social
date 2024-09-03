@@ -52,7 +52,7 @@ const ChatBox = ({ chatId, receiverId, handleToggle }) => {
             setText('');
             getUserMessage();
         } catch (error) {
-            // console.log(error);
+            // console.log(error); 
         }
     }
 

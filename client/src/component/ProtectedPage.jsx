@@ -58,8 +58,7 @@ const ProtectedPage = ({ children }) => {
     }
     const readMessageNotification = async () => {
         try {
-            const result = await readMessageNotificationApi(
-            );
+            const result = await readMessageNotificationApi();
             if (result.count > 0) {
                 setCountMessage(0);
             }

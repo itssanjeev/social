@@ -2,12 +2,27 @@ const axios = require('axios');
 const { io } = require('../server');
 
 let activeUsers = [];
-// console.log('hi')
-// console.log('socketManager', io);
+
+const sendLikedNotification = (data) => {
+    const { postOwner, notification } = data;
+    const user = activeUsers.find((user) => user.userId === postOwner);
+    if (user) {
+        io.to(user.socketId).emit("like", notification);
+    }
+}
+const sendMessageNotification = (data) => {
+    const { receiverId, notification } = data;
+    const user = activeUsers.find((user) => user.userId === receiverId);
+    if (user) {
+        io.to(user.socketId).emit("message", notification);
+    }
+}
+
 io.on("connection", (socket) => {
     // add new User
     socket.on("new-user-add", (newUserId) => {
         // if user is not added previously
+        // console.log(newUserId);
         if (!activeUsers.some((user) => user.userId === newUserId)) {
             activeUsers.push({ userId: newUserId, socketId: socket.id });
             // console.log("New User Connected", activeUsers);
@@ -19,7 +34,7 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         // remove user from active users
         activeUsers = activeUsers.filter((user) => user.socketId !== socket.id);
-        // console.log("User Disconnected", activeUsers);
+
         // send all active users to all users
         io.emit("get-users", activeUsers);
     });
@@ -34,4 +49,9 @@ io.on("connection", (socket) => {
             return;
         }
     });
+    // socket.on("like", (data) => {
+    //     sendLikedNotification(data);
+    // })
 });
+
+module.exports = { sendLikedNotification, sendMessageNotification };

@@ -3,13 +3,16 @@ const Notificaiton = require('../models/noficationModel');
 exports.GetNotificationRoute = async (req, res) => {
     try {
         const userId = req.userId;
+        // console.log(userId);
         const notification = await Notificaiton.find({
             receiver: userId,
             $or: [
                 { action: 'like' },
-                { action: 'comment' }
+                { action: 'comment' },
+                { action: 'message' }
             ]
         }).populate('sender').sort({ createdAt: -1 });
+        // console.log(notification);
         res.send({
             success: true,
             message: "notication got successfully",
@@ -23,19 +26,17 @@ exports.GetNotificationRoute = async (req, res) => {
 exports.MarkReadNofication = async (req, res) => {
     try {
         const currentUserId = req.body.currentUserId;
+        console.log(currentUserId);
         const notification = await Notificaiton.updateMany(
             {
                 receiver: currentUserId,
                 read: false,
-                $or: [
-                    { action: 'like' },
-                    { action: 'comment' }
-                ]
             },
             {
                 read: true
             }
         );
+        console.log(notification);
         res.send({
             success: true,
             data: notification,
@@ -52,11 +53,11 @@ exports.CountNotication = async (req, res) => {
         const notification = await Notificaiton.find({ receiver: userId });
         let count = 0;
         notification.forEach(ele => {
-            if (ele.read === false && ele.action !== "message") {
+            if (ele.read === false) {
                 count++;
             }
         })
-        // console.log({});
+        console.log(count);
         res.send({
             success: true,
             data: count

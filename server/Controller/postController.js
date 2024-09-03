@@ -10,6 +10,7 @@ const path = require('path');
 const fs = require('fs');
 const Notification = require('../models/noficationModel');
 const moment = require('moment');
+const { sendLikedNotification } = require('../socket/socketManager')
 // const socketManager = require('../socket/socketManager');
 
 
@@ -149,7 +150,7 @@ exports.Likes = async (req, res) => {
         const liked = beforeLikePost.likes;
         const disliked = beforeLikePost.dislikes;
         const postOwner = beforeLikePost.user.toString();
-        const currentUser = await User.find({ _id: userId });
+        const currentUser = await User.findById(userId).session(session);
 
         //if user id present in liked array it return true else false 
         const alreadyLiked = liked.some(like => {
@@ -182,6 +183,9 @@ exports.Likes = async (req, res) => {
                 read: false,
             });
             await notification.save();
+            // console.log(notification);
+            notification.sender = currentUser;
+            sendLikedNotification({ postOwner, notification });
         } else {
             await Post.findByIdAndUpdate(
                 postId,

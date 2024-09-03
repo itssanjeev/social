@@ -1,9 +1,10 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Spinner from './component/Spinner';
 import ProtectedPage from './component/ProtectedPage';
 import { Skeleton } from 'antd';
+import NotificationSocket from './pages/Notification/NotificationSocket';
 
 // Lazy load pages
 const Register = lazy(() => import('./pages/Register'));
@@ -30,6 +31,7 @@ const App = () => {
   return (
     <div>
       {loading && <Spinner />}
+      <NotificationSocket />
       <BrowserRouter>
         <Suspense fallback={<Skeleton active />}>
           <Routes>

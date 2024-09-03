@@ -16,12 +16,7 @@ const Message = () => {
     const [activeUserMaps, setActiveUserMaps] = useState({});
     const userid = localStorage.getItem('currentUserId');
     const navigate = useNavigate();
-    /**
-     * The function `loadMoreData` asynchronously loads more data for a user list in a React
-     * application.
-     * @returns If the `loading` variable is true, the function will return early and not execute the
-     * rest of the code block.
-     */
+
     const loadMoreData = async () => {
         try {
             if (loading) {
@@ -69,7 +64,6 @@ const Message = () => {
     effects in a functional component in React. Here's a breakdown of what the `useEffect` hook is
     doing in this specific case: */
     useEffect(() => {
-        socket.emit("new-user-add", userid)
         socket.on("get-users", (activeUser) => {
             // console.log(activeUser);
             // console.log('inside socket', data);
@@ -79,8 +73,8 @@ const Message = () => {
             });
             setActiveUserMaps(activeUserMap);
         })
+
         socket.on("recieve-message", loadMoreData)
-        // console.log('inside useEffect');
 
         return () => {
             // Remove event listener when component unmounts

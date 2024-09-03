@@ -5,7 +5,6 @@ export const getNotificationApi = async (payload) => {
         const response = await axiosInstances.post('/api/notification/getAllNotification', payload);
         // console.log(response.data);
         return response.data;
-        // console.log(response.data);
     } catch (error) {
         // console.log(error);
     }
