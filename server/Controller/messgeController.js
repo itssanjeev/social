@@ -57,8 +57,6 @@ exports.SentMessage = async (req, res) => {
             message: "sent successfully"
         });
     } catch (error) {
-        // console.error("Error while saving notification:", error.message);
-        // console.error("Stack trace:", error.stack);
         res.status(500).send({
             success: false,
             message: "Error while saving the notification",

@@ -2,13 +2,15 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addNotification } from '../../redux/notificationSlice';
 import { socket } from '../../component/socket';
-import { fetchNotifications } from '../../redux/redux-thunk/notificationReduxThunk';
+import { messageCountNotifications, countNotifications, fetchNotifications } from '../../redux/redux-thunk/notificationReduxThunk';
 
 const currentUserId = localStorage.getItem('currentUserId');
 
 const NotificationSocket = () => {
     const dispatch = useDispatch();
     dispatch(fetchNotifications({ currentUserId: currentUserId }));
+    dispatch(countNotifications());
+    dispatch(messageCountNotifications());
 
     useEffect(() => {
         socket.emit("new-user-add", currentUserId)
@@ -23,7 +25,7 @@ const NotificationSocket = () => {
         });
 
         socket.on('message', (data) => {
-            dispatch(addNotification({ type: 'message', ...data }));
+            dispatch(messageCountNotifications({ type: 'message', ...data }));
         });
 
         return () => {

@@ -6,6 +6,8 @@ import { Avatar, Divider, List, Skeleton } from 'antd';
 import { useNavigate } from 'react-router-dom'
 // import { readMessageNotificationApi } from '../../apicall/notificationApi';
 import { socket } from '../../component/socket';
+import { useDispatch } from 'react-redux';
+import { readMessageNotifications } from '../../redux/redux-thunk/notificationReduxThunk';
 
 const Message = () => {
     const [loading, setLoading] = useState(false);
@@ -14,8 +16,8 @@ const Message = () => {
     const [toggleList, setToggleList] = useState(true);
     const [toggleChat, setToggleChat] = useState(false);
     const [activeUserMaps, setActiveUserMaps] = useState({});
-    const userid = localStorage.getItem('currentUserId');
-    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    dispatch(readMessageNotifications());
 
     const loadMoreData = async () => {
         try {
@@ -41,13 +43,8 @@ const Message = () => {
         setToggleList(!toggleList);
         setToggleChat(!toggleChat);
     }
-    /**
-     * The handleClick function in JavaScript React updates the chatId state and resets the notifications
-     * count if the chatId is different from the value's chatId.
-     */
+
     const handleClick = (value) => {
-        // console.log(value.receiverId, 'userid', userid);
-        console.log(value);
         if (chatId?.chatId != value.chatId) {
             setChatId('');
             setChatId(value)
@@ -60,13 +57,9 @@ const Message = () => {
     useEffect(() => {
         loadMoreData();
     }, []);
-    /* The `useEffect` hook in the provided code snippet is responsible for setting up and managing side
-    effects in a functional component in React. Here's a breakdown of what the `useEffect` hook is
-    doing in this specific case: */
+
     useEffect(() => {
         socket.on("get-users", (activeUser) => {
-            // console.log(activeUser);
-            // console.log('inside socket', data);
             const activeUserMap = {};
             activeUser.forEach(d => {
                 activeUserMap[d.userId] = true;
@@ -77,7 +70,6 @@ const Message = () => {
         socket.on("recieve-message", loadMoreData)
 
         return () => {
-            // Remove event listener when component unmounts
             socket.off("get-users");
             socket.off("recieve-message");
         };

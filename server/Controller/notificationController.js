@@ -9,10 +9,8 @@ exports.GetNotificationRoute = async (req, res) => {
             $or: [
                 { action: 'like' },
                 { action: 'comment' },
-                { action: 'message' }
             ]
         }).populate('sender').sort({ createdAt: -1 });
-        // console.log(notification);
         res.send({
             success: true,
             message: "notication got successfully",
@@ -25,22 +23,23 @@ exports.GetNotificationRoute = async (req, res) => {
 
 exports.MarkReadNofication = async (req, res) => {
     try {
-        const currentUserId = req.body.currentUserId;
-        console.log(currentUserId);
+        const userId = req.userId;
+        // console.log(userId);
         const notification = await Notificaiton.updateMany(
             {
-                receiver: currentUserId,
-                read: false,
+                receiver: userId,
+                $or: [
+                    { action: 'like' },
+                    { action: 'comment' },
+                ],
+                read: false
             },
-            {
-                read: true
-            }
+            { read: true }
         );
-        console.log(notification);
         res.send({
             success: true,
-            data: notification,
-            message: "notification has been read"
+            message: "notication got successfully",
+            data: notification
         })
     } catch (error) {
         res.send(error.message);
@@ -53,11 +52,10 @@ exports.CountNotication = async (req, res) => {
         const notification = await Notificaiton.find({ receiver: userId });
         let count = 0;
         notification.forEach(ele => {
-            if (ele.read === false) {
+            if (ele.read === false && ele.action !== "message") {
                 count++;
             }
         })
-        console.log(count);
         res.send({
             success: true,
             data: count
@@ -77,7 +75,6 @@ exports.CountMessage = async (req, res) => {
                 count++;
             }
         })
-        // console.log({});
         res.send({
             success: true,
             data: count
@@ -86,6 +83,7 @@ exports.CountMessage = async (req, res) => {
         res.send(error.message);
     }
 }
+
 exports.MarkMessageAsRead = async (req, res) => {
     try {
         const userid = req.userId;

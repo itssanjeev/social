@@ -9,6 +9,7 @@ import image from '../assets/logo1.png';
 import { Tooltip } from 'antd'
 import { countMessageNotificationApi, notificationCountApi, readMessageNotificationApi } from '../apicall/notificationApi';
 import { socket } from './socket';
+import { useSelector } from 'react-redux';
 
 const ProtectedPage = ({ children }) => {
     let currentUserId = localStorage.getItem('currentUserId');
@@ -36,59 +37,48 @@ const ProtectedPage = ({ children }) => {
 
 
     /*------------------------------------notification part from here----------------------------*/
-    const [countNotification, setCountNotification] = useState(0);
-    const [countMessage, setCountMessage] = useState(0);
-    const getNotificationCountFun = async () => {
-        try {
-            const result = await notificationCountApi();
-            // console.log(result);
-            setCountNotification(result.data);
-        } catch (error) {
-            // console.log(error);
-        }
-    }
-    const getMessageNotification = async () => {
-        try {
-            const result = await countMessageNotificationApi();
-            // console.log(result.data);
-            setCountMessage(result.data);
-        } catch (error) {
-            // console.log(error);
-        }
-    }
-    const readMessageNotification = async () => {
-        try {
-            const result = await readMessageNotificationApi();
-            if (result.count > 0) {
-                setCountMessage(0);
-            }
-        } catch (error) {
-            // console.log(error);
-        }
-    }
+    const countNotification = useSelector((state) => state.notifications.notificationCount);
+    const countMessage = useSelector((state) => state.notifications.notificationMessageCount);
+    // const [countMessage, setCountMessage] = useState(0);
+
+
+    // const getMessageNotification = async () => {
+    //     try {
+    //         const result = await countMessageNotificationApi();
+    //         setCountMessage(result.data);
+    //     } catch (error) {
+    //     }
+    // }
+
+    // const readMessageNotification = async () => {
+    //     try {
+    //         const result = await readMessageNotificationApi();
+    //         if (result.count > 0) {
+    //             setCountMessage(0);
+    //         }
+    //     } catch (error) {
+    //         // console.log(error);
+    //     }
+    // }
+
     const handleMessageClick = () => {
-        readMessageNotification();
         navigate('/message');
     }
-    useEffect(() => {
-        if (location.pathname !== '/notification') {
-            getNotificationCountFun();
-        }
-    }, [location]);
-    useEffect(() => {
-        if (location.pathname !== '/message') {
-            getMessageNotification();
-        }
-    }, [location]);
-    const userid = localStorage.getItem('currentUserId');
-    useEffect(() => {
-        socket.emit("new-user-add", userid)
-        socket.on("recieve-message", getMessageNotification);
-        // console.log('inside protected route in socket');
-        return () => {
-            socket.off("recieve-message");
-        }
-    }, [])
+
+    // useEffect(() => {
+    //     if (location.pathname !== '/message') {
+    //         getMessageNotification();
+    //     }
+    // }, [location]);
+    // const userid = localStorage.getItem('currentUserId');
+    // useEffect(() => {
+    //     socket.emit("new-user-add", userid)
+    //     socket.on("recieve-message", getMessageNotification);
+    //     // console.log('inside protected route in socket');
+    //     return () => {
+    //         socket.off("recieve-message");
+    //     }
+    // }, [])
     return (
         currentUser &&
         <div className="h-screen overflow-hidden">

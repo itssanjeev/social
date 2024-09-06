@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from 'react'
 import { List } from 'antd';
-import { readNotificationApi } from '../../apicall/notificationApi';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { markNotificatonsRead } from '../../redux/redux-thunk/notificationReduxThunk';
 
 function formatCustomRelativeTime(date) {
     const inputDate = new Date(date);
@@ -30,31 +26,16 @@ function formatCustomRelativeTime(date) {
 }
 
 const Notificaton = () => {
-    const navigate = useNavigate();
-
+    // const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const userId = localStorage.getItem('currentUserId')
     const result = useSelector((state) => state.notifications.list);
     const loading = useSelector((state) => state.notifications.loading);
     const error = useSelector((state) => state.notifications.error);
-    // console.log(result);
+    dispatch(markNotificatonsRead({ userId: userId }));
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
-
-    const readNotificationFun = async () => {
-        try {
-            await readNotificationApi({ currentUserId: currentUserId });
-        } catch (error) {
-            // console.log(error);
-        }
-    }
-
-    // const handleClick = (id) => {
-    //     navigate(`/post/${id}`);
-    // } 
-
-    useEffect(() => {
-        readNotificationFun();
-    }, []);
 
     return (
         <div className='notification h-screen overflow-y-scroll mt-0 bg-sky-50'>
